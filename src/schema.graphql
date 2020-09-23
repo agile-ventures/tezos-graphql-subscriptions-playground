@@ -1,0 +1,31 @@
+type Query {
+  operations: [Operation!]!
+  transactions: [Operation!]!
+  endorsements: [Operation!]!
+  reveals: [Operation!]!
+}
+
+type Mutation {
+  post(kind: String!): Operation!
+}
+
+type Subscription {
+  operation: Operation
+  transaction(source: String, destination: String): Transaction
+  endorsement: Operation
+  reveal: Operation
+}
+
+type Operation {
+  kind: String!
+  hash: String!
+}
+
+type Transaction {
+  kind: String!
+  hash: String!
+  fee: String!
+  amount: String!
+  source: String!
+  destination: String!
+}
