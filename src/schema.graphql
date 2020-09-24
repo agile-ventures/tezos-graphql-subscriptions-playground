@@ -1,8 +1,8 @@
 type Query {
   operations: [Operation!]!
-  transactions: [Operation!]!
-  endorsements: [Operation!]!
-  reveals: [Operation!]!
+  transactions: [Transaction!]!
+  endorsements: [Endorsement!]!
+  reveals: [Reveal!]!
 }
 
 type Mutation {
@@ -12,8 +12,8 @@ type Mutation {
 type Subscription {
   operation: Operation
   transaction(source: String, destination: String): Transaction
-  endorsement: Operation
-  reveal: Operation
+  endorsement(hash: String, delegate: String): Endorsement
+  reveal(hash: String, source: String, status: String): Reveal
 }
 
 type Operation {
@@ -28,4 +28,17 @@ type Transaction {
   amount: String!
   source: String!
   destination: String!
+}
+
+type Endorsement {
+  kind: String!
+  hash: String!
+  delegate: String!
+}
+
+type Reveal {
+  kind: String!
+  hash: String!
+  source: String!
+  status: String!
 }

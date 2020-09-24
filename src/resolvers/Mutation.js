@@ -1,3 +1,5 @@
+const { pubSubKeys } = require('./PubSubKeys');
+
 function post(parent, args, context) {
     const newOperation = {
         kind: args.kind,
@@ -15,18 +17,29 @@ function post(parent, args, context) {
             source: 'source',
             destination: 'destination'
         }
-        context.pubsub.publish("NEW_TRANSACTION", newTransaction)
+        context.pubSub.publish(pubSubKeys.newTransaction, newTransaction)
     }
 
     if (newOperation.kind === 'endorsement') {
-        context.pubsub.publish("NEW_ENDORSEMENT", newOperation)
+        const newEndrosement = {
+            kind: newOperation.kind,
+            hash: newOperation.hash,
+            delegate: "delegate"
+        }
+        context.pubSub.publish(pubSubKeys.newEndrosement, newEndrosement)
     }
 
     if (newOperation.kind === 'reveal') {
-        context.pubsub.publish("NEW_REVEAL", newOperation)
+        const newReveal = {
+            kind: newOperation.kind,
+            hash: newOperation.hash,
+            source: "source",
+            status: "status",
+        }
+        context.pubSub.publish(pubSubKeys.newReveal, newReveal)
     }
 
-    context.pubsub.publish("NEW_OPERATION", newOperation)
+    context.pubSub.publish(pubSubKeys.newOperation, newOperation)
 
     return newOperation
 }
