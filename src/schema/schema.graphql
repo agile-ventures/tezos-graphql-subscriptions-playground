@@ -1,19 +1,15 @@
 type Query {
-  operations: [Operation!]!
-  transactions: [Transaction!]!
-  endorsements: [Endorsement!]!
-  reveals: [Reveal!]!
-}
-
-type Mutation {
-  post(kind: String!): Operation!
+    operations: [Operation!]!
+    transactions: [Transaction!]!
+    endorsements: [Endorsement!]!
+    reveals: [Reveal!]!
 }
 
 type Subscription {
-  operation: Operation
-  transaction(source: String, destination: String): Transaction
-  endorsement(hash: String, delegate: String): Endorsement
-  reveal(hash: String, source: String, status: String): Reveal
+    operation: Operation
+    transaction(source: String, destination: String): Transaction
+    endorsement(hash: String, delegate: String): Endorsement
+    reveal(hash: String, source: String, status: String): Reveal
 }
 
 type Operation {

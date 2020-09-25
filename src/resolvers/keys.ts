@@ -1,4 +1,4 @@
-const pubSubKeys = {
+export const keys = {
     newOperation: "OPERATION",
     newActivateAccount: "ACTIVATE_ACCOUNT",
     newBallot: "BALLOT",
@@ -11,8 +11,4 @@ const pubSubKeys = {
     newReveal: "REVEAL",
     newSeedNonceRevelation: "SEED_NONCE_REVELATION",
     newTransaction: "TRANSACTION",
-}
-
-module.exports = {
-    pubSubKeys
 }

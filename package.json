@@ -1,18 +1,20 @@
 {
-  "name": "subscriptions-playground",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "dependencies": {
-    "@taquito/rpc": "^6.3.5-beta.0",
-    "graphql-yoga": "^1.18.3",
-    "taquito": "^1.0.0"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "name": "taas-graphql-subscriptions",
+    "version": "0.0.1",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "tsc && node dist/server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@taquito/rpc": "^6.3.5-beta.0",
+        "@types/express": "^4.17.8",
+        "express": "^4.17.1",
+        "graphql-yoga": "^1.18.3",
+        "taquito": "^1.0.0"
+    }
 }
