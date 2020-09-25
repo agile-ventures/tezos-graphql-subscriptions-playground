@@ -1,9 +1,30 @@
 *****************************************************************************************
 // generic operations
 query {
-  operations{
+  operations {
     kind,
     hash
+  }
+}
+
+*****************************************************************************************
+// transactions
+query {
+  transactions {
+    hash,
+    fee,
+    amount,
+    source,
+    destination
+  }
+}
+
+*****************************************************************************************
+// endorsements
+query {
+  endorsements{
+    hash,
+    delegate
   }
 }
 
@@ -12,7 +33,7 @@ query {
 subscription {
   operation {
     kind,
-    	hash
+    hash
   }
 }
 
@@ -20,11 +41,20 @@ subscription {
 // subscribe to transactions only
 subscription {
   transaction {
-    hash
-    fee
-    amount
-    source
+    hash,
+    fee,
+    amount,
+    source,
     destination
+  }
+}
+
+******************************************************************************************
+// subscribe to endorsements only
+subscription {
+  endorsement {
+    hash
+    delegate
   }
 }
 
