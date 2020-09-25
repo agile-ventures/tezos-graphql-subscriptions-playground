@@ -1,6 +1,6 @@
 import { GraphQLServer } from 'graphql-yoga'
 import { PubSub } from 'graphql-yoga'
-import { Operation, Block } from './types/types'
+import { OperationEntry, Block } from './types/types'
 import { TezosWorker } from './tezos-worker'
 import { Query } from './resolvers/query'
 import { Subscription } from './resolvers/subscription'
@@ -8,7 +8,7 @@ import { Subscription } from './resolvers/subscription'
 const pubSub = new PubSub();
 
 declare global {
-    var Operations: Operation[]
+    var Operations: any[]
     var Head: Block
 };
 

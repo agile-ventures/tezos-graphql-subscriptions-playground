@@ -1,23 +1,930 @@
+"""
+Tezos address. Represented as public key hash (Base58Check-encoded) prefixed with tz1, tz2, tz3 or KT1.
+"""
+scalar Address
+
+"""
+Timestamp specified as a ISO-8601 UTC date string (2020-02-04T15:31:39Z)
+"""
+scalar DateTime
+
+"""
+JSON represents any valid JSON object
+"""
+scalar JSON
+
+"""
+Raw Michelson expression represented as JSON
+"""
+scalar MichelsonExpression
+
+"""
+Arbitrary precision number represented as string in JSON.
+"""
+scalar BigNumber
+
+"""
+Micro tez. Positive bignumber. 1 tez = 1,000,000 micro tez.
+"""
+scalar Mutez
+
+"""
+Operation identifier (Base58Check-encoded) prefixed with o.
+"""
+scalar OperationHash
+
+"""
+Block identifier (Base58Check-encoded) prefixed with B.
+"""
+scalar BlockHash
+
+"""
+Protocol identifier (Base58Check-encoded) prefixed with P.
+"""
+scalar ProtocolHash
+
+"""
+Context identifier (Base58Check-encoded) prefixed with Co.
+"""
+scalar ContextHash
+
+"""
+Operations identifier (Base58Check-encoded) prefixed with LLo (List of a list of operations).
+"""
+scalar OperationsHash
+
+"""
+Chain identifier (Base58Check-encoded) prefixed with Net.
+"""
+scalar ChainId
+
+"""
+Generic signature (Base58Check-encoded) prefixed with sig.
+"""
+scalar Signature
+
+"""
+Public key (Base58Check-encoded) prefixed with edpk, sppk or p2pk.
+"""
+scalar PublicKey
+
+"""
+Nonce hash (Base58Check-encoded).
+"""
+scalar NonceHash
+
+"""
+Block identifier. Hash (Base58Check-encoded), level (specified as a number), relative pointer (head~n) and head are allowed.
+
+Examples of valid block identifiers:
+"head"
+946213 (level - specified as a number)
+"head~4" (5th block relative to head)
+"BMX2db8rN3MczS9urDdS8Hh6Q7UyGve3631t2YwzunU3VDddoJf" (hash)
+"""
+scalar BlockIdentifier
+
+schema {
+    query: Query
+}
 type Query {
-    operations: [Operation!]!
-    transactions: [Transaction!]!
-    endorsements: [Endorsement!]!
-    reveals: [Reveal!]!
+    """
+    Block fetches a Tezos block by number, hash (Base58Check-encoded) or relative pointer (head~n).
+    If neither is supplied, the most recent known block (head) is returned.
+ 
+    NOTE: not used in subscriptions project
+    """
+    block(block: BlockIdentifier): Block
+
+    """
+    Blocks returns all blocks in a given interval, but maximum of <count> elements.
+    Hash (Base58Check-encoded), level, relative pointer (head~n) and head are allowed in the "from" a "to" arguments.
+
+    Example queries:
+    blocks(from: "head~4") {...}  # return last 5 blocks
+    blocks(count: 5) {...}  # return last 5 blocks
+    blocks(from: "head~9", count: 5) {...}  # five blocks before them
+    blocks(to: "<somehash>", count: 5) {...}  # return 5 blocks before and including <somehash>
+    blocks(from: "<somehash>", count: 5) {...}  # return 5 blocks since and including <somehash>
+
+    NOTE: not used in subscriptions project
+    """
+    blocks(from: BlockIdentifier, to: BlockIdentifier, count: Int): [Block!]!
+
+    """
+    Particular operations stored in memory for dev and debug purposes
+    """
+    operations: [OperationNotification!]!
+    transactions: [TransactionNotification!]!
+    endorsements: [EndorsementNotification!]!
+    reveals: [RevealNotification!]!
+    originations: [OriginationNotification!]!
+    delegations: [DelegationNotification!]!
 }
 
+"""
+Tezos block. See https://tezos.gitlab.io/api/rpc.html#get-block-id
+"""
+type Block {
+    """
+    Tezos protocol ID (Base58Check-encoded)
+    """
+    protocol: ProtocolHash!
+
+    """
+    The network identifier (Base58Check-encoded)
+    """
+    chainId: ChainId!
+
+    """
+    The block's unique identifier (Base58Check-encoded)
+    """
+    hash: BlockHash!
+
+    """
+    Associated header object.
+    """
+    header: BlockHeader!
+
+    """
+    Associated metadata object.
+    """
+    metadata: BlockMetadata!
+
+    """
+    Returns the delegate with the given address, or null
+    """
+    delegate(address: Address!): Delegate
+
+    """
+    Returns the constants
+    """
+    constants: Constants!
+
+    """
+    Returns the contract with the given address, or null
+    """
+    contract(address: Address): Contract
+
+    """
+    Returns the operation entry with the given hash, or null
+    """
+    operation(hash: OperationHash!): OperationEntry
+
+    """
+    All operations in this block as returned from the Tezos node
+    """
+    operations: [[OperationEntry]]
+
+    """
+    Returns activations from block. Results can be filtered by operation hash, or address (pkh)
+    """
+    activations(hash: OperationHash, address: Address): [ActivateAccount!]!
+
+    """
+    Returns ballots from block. Results can be filtered by operation hash, source, proposal or vote (ballot).
+    """
+    ballots(hash: OperationHash, source: Address, proposal: ProtocolHash, ballot: BallotVote): [Ballot!]!
+
+    """
+    Returns delegations from block. Results can be filtered by operation hash, source, delegate or operation result status.
+    """
+    delegations(hash: OperationHash, source: Address, delegate: Address, status: OperationResultStatus): [Delegation!]!
+
+    """
+    Returns double baking evidence from block. Results can be filtered by operation hash or delegate.
+    """
+    doubleBakingEvidence(hash: OperationHash, delegate: Address): [DoubleBakingEvidence!]!
+
+    """
+    Returns double endorsement evidence from block. Results can be filtered by operation hash or delegate.
+    """
+    doubleEndorsementEvidence(hash: OperationHash, delegate: Address): [DoubleEndorsementEvidence!]!
+
+    """
+    Returns endorsements from block. Results can be filtered by operation hash, or delegate.
+    """
+    endorsements(hash: OperationHash, delegate: Address): [Endorsement!]!
+
+    """
+    Returns originations from block. Results can be filtered by
+    operation hash, source, delegate, originated contract or operation result status.
+    """
+    originations(hash: OperationHash, source: Address, delegate: Address, originatedContract: Address, status: OperationResultStatus): [Origination!]!
+
+    """
+    Returns proposals from block. Results can be filtered by operation hash, source or proposal hash.
+    """
+    proposals(hash: OperationHash, source: Address, proposal: ProtocolHash): [Proposals!]!
+
+    """
+    Returns reveals from block. Results can be filtered by operation hash, source or operation result status.
+    """
+    reveals(hash: OperationHash, source: Address, status: OperationResultStatus): [Reveal!]!
+
+    """
+    Returns seed nonce revelations from block. Results can be filtered by operation hash, source or operation result status.
+    """
+    seedNonceRevelations(hash: OperationHash, delegate: Address): [SeedNonceRevelation!]!
+
+    """
+    Returns transactions from block. Results can be filtered by operation hash, source, destination or operation result status.
+    """
+    transactions(hash: OperationHash, source: Address, destination: Address, status: OperationResultStatus): [Transaction!]!
+}
+
+"""
+A block header. See https://tezos.gitlab.io/api/rpc.html#get-block-id-header
+"""
+type BlockHeader {
+    level: Int!
+    proto: Int!
+    predecessor: BlockHash!
+    timestamp: DateTime!
+    validationPass: Int!
+    operationsHash: OperationsHash
+    fitness: [String!]!
+    context: ContextHash!
+    priority: Int!
+    proofOfWorkNonce: String!
+    seedNonceHash: NonceHash
+    signature: Signature!
+}
+
+"""
+Block metadata. See https://tezos.gitlab.io/api/rpc.html#get-block-id-metadata
+"""
+type BlockMetadata {
+    protocol: ProtocolHash!
+    nextProtocol: ProtocolHash!
+    testChainStatus: TestChainStatus!
+    maxOperationsTtl: Int!
+    maxOperationDataLength: Int!
+    maxBlockHeaderLength: Int!
+    maxOperationListLength: [MaxOperationListLength!]
+    baker: Address!
+    level: Level!
+    votingPeriodKind: VotingPeriodKind!
+    nonceHash: NonceHash
+    consumedGas: BigNumber
+    deactivated: [Address!]
+    balanceUpdates: [BalanceUpdate!]
+}
+
+"""
+Contains information about the block's level.
+"""
+type Level {
+    """
+    The level of the block relative to genesis. This is also the Shell's notion of level
+    """
+    level: Int!
+
+    """
+    The level of the block relative to the block that starts protocol alpha
+    """
+    levelPosition: Int!
+
+    """
+    The current cycle's number. Note that cycles are a protocol-specific notion. As a result, the cycle number starts at 0 with the first block of protocol alpha.
+    """
+    cycle: Int!
+
+    """
+    The current level of the block relative to the first block of the current cycle.
+    """
+    cyclePosition: Int!
+
+    """
+    The current voting period's index. Note that cycles are a protocol-specific notion. As a result, the voting period index starts at 0 with the first block of protocol alpha.
+    """
+    votingPeriod: Int!
+
+    """
+    The current level of the block relative to the first block of the current voting period.
+    """
+    votingPeriodPosition: Int!
+
+    """
+    Tells whether the baker of this block has to commit a seed nonce hash.
+    """
+    expectedCommitment: Boolean!
+}
+
+"""
+Status of the test chain
+"""
+type TestChainStatus {
+    """
+    The status value: notRunning (there is no test chain at the moment), forking (the test chain is being setup),
+    running (the test chain is running).
+    """
+    status: TestChainStatusType!
+}
+
+type MaxOperationListLength {
+    maxSize: Int!
+    maxOp: Int
+}
+
+enum BalanceUpdateKind {
+    CONTRACT
+    FREEZER
+}
+
+enum BalanceUpdateCategory {
+    DEPOSITS
+    FEES
+    REWARDS
+}
+
+"""
+Everything about a delegate. See https://tezos.gitlab.io/api/rpc.html#get-block-id-context-delegates-pkh
+"""
+type Delegate {
+    """
+    The full balance of a given delegate, including the frozen balances.
+    """
+    balance: Mutez!
+
+    """
+    The total frozen balances of a given delegate, this includes the frozen deposits, rewards and fees.
+    """
+    frozenBalance: Mutez!
+
+    """
+    Returns the frozen balances of a given delegate, indexed by the cycle by which it will be unfrozen.
+    """
+    frozenBalanceByCycle: [FrozenBalanceByCycle!]!
+
+    """
+    The total amount of tokens delegated to a given delegate. This includes the balances of all the contracts that delegate to it,
+    but also the balance of the delegate itself and its frozen fees and deposits. The rewards do not count in the delegated balance until they are unfrozen.
+    """
+    stakingBalance: Mutez!
+
+    """
+    The list of contracts that delegate to a given delegate.
+    """
+    delegatedContracts: [Address!]!
+
+    """
+    The balances of all the contracts that delegate to a given delegate. This excludes the delegate's own balance and its frozen balances.
+    """
+    delegatedBalance: Mutez!
+
+    """
+    Tells whether the delegate is currently tagged as deactivated or not.
+    """
+    deactivated: Boolean!
+
+    """
+    The cycle by the end of which the delegate might be deactivated if she fails to execute any delegate action. A deactivated delegate might be reactivated
+    (without loosing any rolls) by simply re-registering as a delegate. For deactivated delegates, this value contains the cycle by which they were deactivated.
+    """
+    gracePeriod: Int!
+
+    """
+    Returns baking rights for a delegate or null. Results can be filtered by maxPriority, level or cycle. If maxPriority parameter is empty, server will default to the ENV value TEZOS_BAKING_RIGHTS_MAX_PRIORITY.
+    """
+    bakingRights(maxPriority: Int, level: [Int], cycle: [Int]): [BakingRight]
+
+    """
+    Returns endorsing rights for a delegate or null. Results can be filtered by level or cycle.
+    """
+    endorsingRights(level: [Int], cycle: [Int]): [EndorsingRight]
+}
+
+type BakingRight {
+    level: Int!
+    delegate: Address!
+    priority: Int!
+
+    """
+    Omitted for levels in the past, and only an estimate for levels later that the next block, based on the hypothesis that all predecessor blocks were baked at the first priority.
+    """
+    estimatedTime: DateTime
+}
+
+type EndorsingRight {
+    level: Int!
+    delegate: Address!
+    slots: [Int]!
+
+    """
+    Omitted for levels in the past, and only an estimate for levels later that the next block, based on the hypothesis that all predecessor blocks were baked at the first priority.
+    """
+    estimatedTime: DateTime
+}
+
+"""
+Frozen balance of a given delegate, indexed by the cycle by which it will be unfrozen
+"""
+type FrozenBalanceByCycle {
+    cycle: Int!
+    deposit: Mutez!
+    fees: Mutez!
+    rewards: Mutez!
+}
+
+"""
+All constants
+"""
+type Constants {
+    bakingRewardPerEndorsement: [BigNumber]
+    blockSecurityDeposit: Mutez
+    blocksPerCommitment: Int
+    blocksPerCycle: Int
+    blocksPerRollSnapshot: Int
+    blocksPerVotingPeriod: Int
+    costPerByte: Mutez
+    delayPerMissingEndorsement: BigNumber
+    endorsementReward: [Mutez]
+    endorsementSecurityDeposit: Mutez
+    endorsersPerBlock: Int
+    hardGasLimitPerBlock: BigNumber
+    hardGasLimitPerOperation: BigNumber
+    hardStorageLimitPerOperation: BigNumber
+    initialEndorsers: Int
+    maxOperationDataLength: Int
+    maxProposalsPerDelegate: Int
+    maxRevelationsPerBlock: Int
+    michelsonMaximumTypeSize: Int
+    minProposalQuorum: Int
+    nonceLength: Int
+    originationSize: Int
+    preservedCycles: Int
+    proofOfWorkNonceSize: Int
+    proofOfWorkThreshold: BigNumber
+    quorumMax: Int
+    quorumMin: Int
+    seedNonceRevelationTip: Mutez
+    testChainDuration: BigNumber
+    timeBetweenBlocks: [BigNumber]
+    tokensPerRoll: Mutez
+    """
+    Pre Carthaganet
+    """
+    blockReward: BigNumber
+}
+
+"""
+Information about a smart contract.
+"""
+type Contract {
+    """
+    The unique address (public key hash).
+    """
+    address: Address!
+
+    """
+    The balance of the contract.
+    """
+    balance: Mutez!
+
+    """
+    Script belonging to the contract.
+    """
+    script: ScriptedContracts
+
+    """
+    The counter of the contract, if any
+    """
+    counter: BigNumber
+
+    """
+    Entrypoint information of the contract
+    """
+    entrypoints: Entrypoints
+
+    """
+    The delegate of the contract, if any
+    """
+    delegate: Address
+
+    """
+    The manager of the contract.
+    """
+    managerKey: ManagerKey
+
+    """
+    Storage in Michelson format.
+    """
+    storage: MichelsonExpression
+
+    """
+    Decoded version of the storage.
+    """
+    storageDecoded: JSON
+
+    """
+    JSON representation of the storage schema.
+    """
+    schema: JSON
+
+    """
+    Returns the value stored for a given key in a big map owned by this contract. If a map ID is given, the keyType argument is also required.
+    """
+    bigMapValue(key: String!, keyType: BigMapKeyType, bigMapId: Int): MichelsonExpression
+
+    """
+    Returns the decoded value stored for a given key in this contract's big map. Note that this is only supported for the contracts originated
+    with the "one bigMap per contract" scheme. Babylon protocol introduced multiple bigmaps per contract, which cannot be accessed using this field.
+    """
+    bigMapValueDecoded(key: String!): JSON
+}
+
+"""
+One of the currently supported key types used for fetching bigMap values.
+"""
+enum BigMapKeyType {
+    STRING
+    NAT
+    INT
+    BYTES
+    BOOL
+    MUTEZ
+    ADDRESS
+    KEY_HASH
+}
+
+"""
+Manager of a contract.
+"""
+type ManagerKey {
+    """
+    The public key
+    """
+    key: PublicKey!
+
+    """
+    Validity flag
+    """
+    invalid: Boolean
+}
+
+"""
+Information about entrypoints in a contract.
+"""
+type Entrypoints {
+    """
+    List of entrypoints
+    """
+    entrypoints: JSON!
+
+    unreachable: [EntrypointUnreachable!]
+}
+
+type EntrypointUnreachable {
+    path: [String!]!
+}
+
+"""
+Code and storage a contract
+"""
+type ScriptedContracts {
+    """
+    The code of the script
+    """
+    code: [MichelsonExpression!]!
+
+    """
+    The current storage value in Michelson format
+    """
+    storage: MichelsonExpression!
+}
+
+type OperationEntry {
+    info: OperationEntryInfo!
+    contents: [OperationContents!]!
+}
+
+type OperationEntryInfo {
+    protocol: ProtocolHash!
+    chainId: ChainId!
+    hash: OperationHash!
+    branch: BlockHash!
+    signature: Signature
+}
+
+interface OperationContents {
+    kind: OperationKind!
+    operation: OperationEntryInfo!
+}
+
+enum OperationKind {
+    ACTIVATE_ACCOUNT
+    BALLOT
+    DELEGATION
+    DOUBLE_BAKING_EVIDENCE
+    DOUBLE_ENDORSEMENT_EVIDENCE
+    ENDORSEMENT
+    ORIGINATION
+    PROPOSALS
+    REVEAL
+    SEED_NONCE_REVELATION
+    TRANSACTION
+}
+
+type Endorsement implements OperationContents {
+    # kind is always 'endorsement'
+    kind: OperationKind!
+    level: Int!
+    metadata: EndorsementMetadata!
+    operation: OperationEntryInfo!
+}
+
+type EndorsementMetadata {
+    balanceUpdates: [BalanceUpdate!]!
+    delegate: Address!
+    slots: [Int!]!
+}
+
+type SeedNonceRevelation implements OperationContents {
+    # kind is always 'seedNonceRevelation'
+    kind: OperationKind!
+    level: Int!
+    nonce: String!
+    metadata: OperationContentMetadata!
+    operation: OperationEntryInfo!
+}
+
+type DoubleEndorsementEvidence implements OperationContents {
+    # kind is always 'doubleEndorsementEvidence'
+    kind: OperationKind!
+    op1: InlinedEndorsement!
+    op2: InlinedEndorsement!
+    metadata: OperationContentMetadata!
+    operation: OperationEntryInfo!
+}
+
+type InlinedEndorsement {
+    branch: BlockHash!
+    operations: InlinedEndorsementContents!
+    signature: Signature
+}
+
+type InlinedEndorsementContents {
+    # kind is always 'endorsement'
+    kind: OperationKind!
+    level: Int!
+}
+
+type OperationContentMetadata {
+    balanceUpdates: [BalanceUpdate!]!
+}
+
+type DoubleBakingEvidence implements OperationContents {
+    # kind is always 'doubleBakingEvidence'
+    kind: OperationKind!
+    bh1: BlockHeader!
+    bh2: BlockHeader!
+    metadata: OperationContentMetadata!
+    operation: OperationEntryInfo!
+}
+
+type ActivateAccount implements OperationContents {
+    # kind is always 'activateAccount'
+    kind: OperationKind!
+    pkh: Address!
+    secret: String!
+    metadata: OperationContentMetadata!
+    operation: OperationEntryInfo!
+}
+
+type Reveal implements OperationContents {
+    # kind is always 'reveal'
+    kind: OperationKind!
+    source: Address!
+    fee: Mutez!
+    counter: BigNumber!
+    gasLimit: BigNumber!
+    storageLimit: BigNumber!
+    publicKey: PublicKey!
+    metadata: RevealMetadata!
+    operation: OperationEntryInfo!
+}
+
+type RevealMetadata {
+    balanceUpdates: [BalanceUpdate!]!
+    internalOperationResults: [InternalOperationResult!]
+    operationResult: RevealOperationResult!
+}
+
+type RevealOperationResult implements OperationResult {
+    status: OperationResultStatus!
+    consumedGas: BigNumber
+    errors: [OperationError!]
+}
+
+type Transaction implements OperationContents {
+    # kind is always 'transaction'
+    kind: OperationKind!
+    source: Address!
+    fee: Mutez!
+    counter: BigNumber!
+    gasLimit: BigNumber!
+    storageLimit: BigNumber!
+    amount: Mutez!
+    destination: Address!
+    parameters: MichelsonExpression
+    metadata: TransactionMetadata!
+    operation: OperationEntryInfo!
+}
+
+type TransactionMetadata {
+    balanceUpdates: [BalanceUpdate!]!
+    operationResult: TransactionOperationResult!
+    internalOperationResults: [InternalOperationResult!]
+}
+
+type TransactionOperationResult implements OperationResult {
+    status: OperationResultStatus!
+    consumedGas: BigNumber
+    errors: [OperationError!]
+    storage: MichelsonExpression
+    bigMapDiff: [BigMapDiffItem!]
+    balanceUpdates: [BalanceUpdate!]
+    originatedContracts: [Address!]
+    storageSize: BigNumber
+    paidStorageSizeDiff: BigNumber
+    allocatedDestinationContract: Boolean
+}
+
+type BigMapDiffItem {
+    keyHash: String!
+    key: MichelsonExpression!
+    value: MichelsonExpression
+}
+
+type Delegation implements OperationContents {
+    # kind is always 'delegation'
+    kind: OperationKind!
+    source: Address!
+    fee: Mutez!
+    counter: BigNumber!
+    gasLimit: BigNumber!
+    storageLimit: BigNumber!
+    delegate: Address
+    metadata: DelegationMetadata!
+    operation: OperationEntryInfo!
+}
+
+type DelegationMetadata {
+    balanceUpdates: [BalanceUpdate!]!
+    operationResult: DelegationOperationResult!
+    internalOperationResults: [InternalOperationResult!]
+}
+
+type DelegationOperationResult implements OperationResult {
+    status: OperationResultStatus!
+    consumedGas: BigNumber
+    errors: [OperationError!]
+}
+
+type Origination implements OperationContents {
+    # kind is always 'origination'
+    kind: OperationKind!
+    source: Address!
+    fee: Mutez!
+    counter: BigNumber!
+    gasLimit: BigNumber!
+    storageLimit: BigNumber!
+    balance: Mutez!
+    delegate: Address
+    script: ScriptedContracts
+    metadata: OriginationMetadata!
+    operation: OperationEntryInfo!
+}
+
+type OriginationMetadata {
+    balanceUpdates: [BalanceUpdate!]!
+    operationResult: OriginationOperationResult!
+    internalOperationResults: [InternalOperationResult!]
+}
+
+type OriginationOperationResult implements OperationResult {
+    status: OperationResultStatus!
+    consumedGas: BigNumber
+    errors: [OperationError!]
+    balanceUpdates: [BalanceUpdate!]
+    originatedContracts: [Address!]
+    storageSize: BigNumber
+    paidStorageSizeDiff: BigNumber
+}
+
+type Proposals implements OperationContents {
+    # kind is always 'proposals'
+    kind: OperationKind!
+    source: Address!
+    period: Int!
+    proposals: [ProtocolHash!]!
+    metadata: JSON
+    operation: OperationEntryInfo!
+}
+
+type Ballot implements OperationContents {
+    # kind is always 'ballot'
+    kind: OperationKind!
+    source: Address!
+    period: Int!
+    proposal: ProtocolHash!
+    ballot: BallotVote!
+    metadata: JSON
+    operation: OperationEntryInfo!
+}
+
+enum BallotVote {
+    NAY
+    PASS
+    YAY
+}
+
+type BalanceUpdate {
+    kind: BalanceUpdateKind!
+    category: BalanceUpdateCategory
+    contract: Address
+    delegate: Address
+    cycle: Int
+    change: BigNumber!
+}
+
+type InternalOperationResult {
+    kind: InternalOperationKind!
+    source: Address!
+    nonce: Int!
+    amount: Mutez
+    destination: Address
+    parameters: TransactionOperationParameter
+    publicKey: PublicKey
+    balance: Mutez
+    delegate: Address
+    script: ScriptedContracts
+    result: OperationResult!
+}
+
+enum InternalOperationKind {
+    DELEGATION
+    ORIGINATION
+    REVEAL
+    TRANSACTION
+}
+
+type TransactionOperationParameter {
+    entrypoint: String!
+    value: MichelsonExpression!
+}
+
+interface OperationResult {
+    status: OperationResultStatus!
+    consumedGas: BigNumber
+    errors: [OperationError!]
+}
+
+enum OperationResultStatus {
+    APPLIED
+    BACKTRACKED
+    FAILED
+    SKIPPED
+}
+
+type OperationError {
+    kind: String!
+    id: String!
+}
+
+enum TestChainStatusType {
+    NOT_RUNNING
+    FORKING
+    RUNNING
+}
+
+enum VotingPeriodKind {
+    PROPOSAL
+    TESTING_VOTE
+    TESTING
+    PROMOTION_VOTE
+}
+
+"""
+Subscription related type definitions
+"""
 type Subscription {
-    operation: Operation
-    transaction(source: String, destination: String): Transaction
-    endorsement(hash: String, delegate: String): Endorsement
-    reveal(hash: String, source: String, status: String): Reveal
+    operation: OperationNotification
+    transaction(source: String, destination: String): TransactionNotification
+    endorsement(hash: String, delegate: String): EndorsementNotification
+    reveal(hash: String, source: String, status: String): RevealNotification
+    origination(hash: String, source: String, status: String): OriginationNotification
+    delegation(hash: String, source: String, status: String): DelegationNotification
 }
 
-type Operation {
+# NOTE: notification types are used for transfering partial data through pubsub to clients
+type OperationNotification {
   kind: String!
   hash: String!
 }
 
-type Transaction {
+type TransactionNotification {
   kind: String!
   hash: String!
   fee: String!
@@ -26,15 +933,31 @@ type Transaction {
   destination: String!
 }
 
-type Endorsement {
+type EndorsementNotification {
   kind: String!
   hash: String!
   delegate: String!
 }
 
-type Reveal {
+type RevealNotification {
   kind: String!
   hash: String!
   source: String!
+  status: String!
+}
+
+type OriginationNotification {
+  kind: String!
+  hash: String!
+  source: String!
+  delegate: String!
+  status: String!
+}
+
+type DelegationNotification {
+  kind: String!
+  hash: String!
+  source: String!
+  delegate: String!
   status: String!
 }

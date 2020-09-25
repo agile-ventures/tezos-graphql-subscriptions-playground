@@ -84,6 +84,70 @@ export const Subscription = {
             resolve: (payload: any) => {
                 return payload;
             },
+        },
+        origination: {
+            subscribe: withFilter(
+                originationSubscribe,
+                (payload: any, variables: any) => {
+                    let ret = true;
+                    if (!variables.hash && !variables.source && !variables.delegate && !variables.status) {
+                        return ret;
+                    }
+
+                    if (variables.hash) {
+                        ret = ret && payload.hash === variables.hash;
+                    }
+
+                    if (variables.source) {
+                        ret = ret && payload.source === variables.source;
+                    }
+
+                    if (variables.delegate) {
+                        ret = ret && payload.delegate === variables.delegate;
+                    }
+                    
+                    if (variables.status) {
+                        ret = ret && payload.status === variables.status;
+                    }
+
+                    return ret;
+                },
+            ),
+            resolve: (payload: any) => {
+                return payload;
+            },
+        },
+        delegation: {
+            subscribe: withFilter(
+                delegationSubscribe,
+                (payload: any, variables: any) => {
+                    let ret = true;
+                    if (!variables.hash && !variables.source && !variables.delegate && !variables.status) {
+                        return ret;
+                    }
+
+                    if (variables.hash) {
+                        ret = ret && payload.hash === variables.hash;
+                    }
+
+                    if (variables.source) {
+                        ret = ret && payload.source === variables.source;
+                    }
+
+                    if (variables.delegate) {
+                        ret = ret && payload.delegate === variables.delegate;
+                    }
+                    
+                    if (variables.status) {
+                        ret = ret && payload.status === variables.status;
+                    }
+
+                    return ret;
+                },
+            ),
+            resolve: (payload: any) => {
+                return payload;
+            },
         }
 }
 
@@ -101,4 +165,12 @@ function endorsementSubscribe(parent: any, args: any, context: any, info: any) {
 
 function revealSubscribe(parent: any, args: any, context: any, info: any) {
     return context.pubSub.asyncIterator(keys.newReveal);
+}
+
+function originationSubscribe(parent: any, args: any, context: any, info: any) {
+    return context.pubSub.asyncIterator(keys.newOrigination);
+}
+
+function delegationSubscribe(parent: any, args: any, context: any, info: any) {
+    return context.pubSub.asyncIterator(keys.newDelegation);
 }

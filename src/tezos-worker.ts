@@ -1,7 +1,7 @@
 import { RpcClient } from '@taquito/rpc';
 import { PubSub } from 'graphql-yoga';
 import { keys } from './resolvers/keys';
-import { Operation, Content, Block } from './types/types'
+import { OperationEntry, Block } from './types/types'
 
 export class TezosWorker {
     static start(pubSub: PubSub) {
@@ -18,13 +18,13 @@ export class TezosWorker {
 
 function getBlock(client: RpcClient, pubSub: PubSub)
 {
-    // will be replaced by call to tezos indexer
+    // NOTE: will be replaced by call to tezos indexer
     client.getBlock()
         .then(data => processBlock(data, pubSub))
         .catch(err => console.error(err));
 }
 
-function processBlock(block: Block, pubSub: PubSub) {
+function processBlock(block: any, pubSub: PubSub) {
     if (global.Head && global.Head.hash === block.hash) {
         console.log('block ' + block.hash + ' already notified');
         return;
@@ -33,10 +33,8 @@ function processBlock(block: Block, pubSub: PubSub) {
     global.Head = block;
     let operationsCount = 0;
 
-    block.operations.forEach(o => {
-        if (!o) {
-            return;
-        }
+    block.operations.forEach((o: any[]) => {
+        if (!o) return;
 
         operationsCount += o.length;
         processOperations(o, pubSub);
@@ -46,48 +44,72 @@ function processBlock(block: Block, pubSub: PubSub) {
     console.log('operations count ' + operationsCount);
 }
 
-function processOperations(operations: Operation[], pubSub: PubSub) {
-    operations.forEach(operation => {
-        operation.contents.forEach(content => {
-            const newOperation: Operation = {
-                kind: content.kind,
-                hash: operation.hash,
-                contents: []
+function processOperations(operations: OperationEntry[], pubSub: PubSub) {
+    operations.forEach((oe: any) => {
+        oe.contents.forEach((oc: any) => {
+            const newOperation = {
+                kind: oc.kind,
+                hash: oe.hash
             };
             pubSub.publish(keys.newOperation, newOperation);
 
-            if (newOperation.kind === 'transaction') {
+            if (oc.kind === 'transaction') {
                 const newTransaction = {
-                    kind: newOperation.kind,
-                    hash: newOperation.hash,
-                    fee: content.fee,
-                    amount: content.amount,
-                    source: content.source,
-                    destination: content.destination,
+                    kind: oc.kind,
+                    hash: oe.hash,
+                    fee: oc.fee,
+                    amount: oc.amount,
+                    source: oc.source,
+                    destination: oc.destination,
                 };
                 pubSub.publish(keys.newTransaction, newTransaction);
+                global.Operations.push(newTransaction);
             }
-
-            if (newOperation.kind === 'endorsement') {
+            else if (oc.kind === 'endorsement') {
                 const newEndorsement = {
-                    kind: newOperation.kind,
-                    hash: newOperation.hash,
-                    delegate: content.delegate,
+                    kind: oc.kind,
+                    hash: oe.hash,
+                    delegate: oc.metadata.delegate,
                 };
                 pubSub.publish(keys.newEndrosement, newEndorsement);
+                global.Operations.push(newEndorsement);
             }
-
-            if (newOperation.kind === 'reveal') {
+            else if (oc.kind === 'reveal') {
                 const newReveal = {
-                    kind: newOperation.kind,
-                    hash: newOperation.hash,
-                    source: content.source,
-                    status: content.status,
+                    kind: oc.kind,
+                    hash: oe.hash,
+                    source: oc.source,
+                    status: "not defined"
+                    // status: oc.status,
                 };
                 pubSub.publish(keys.newReveal, newReveal);
+                global.Operations.push(newReveal);
             }
-
-            global.Operations.push(newOperation);
+            else if (oc.kind === 'origination') {
+                const newOrigination = {
+                    kind: oc.kind,
+                    hash: oe.hash,
+                    source: oc.source,
+                    delegate: oc.metadata.delegate,
+                    status: "not defined"
+                };
+                pubSub.publish(keys.newOrigination, newOrigination);
+                global.Operations.push(newOrigination);
+            }
+            else if (oc.kind === 'delegation') {
+                const newDelegation = {
+                    kind: oc.kind,
+                    hash: oe.hash,
+                    source: oc.source,
+                    delegate: oc.metadata.delegate,
+                    status: "not defined"
+                };
+                pubSub.publish(keys.newDelegation, newDelegation);
+                global.Operations.push(newDelegation);
+            }
+            else {
+                global.Operations.push(newOperation);
+            }
 
             if (global.Operations.length > 1000){
                 global.Operations.splice(0, 500);

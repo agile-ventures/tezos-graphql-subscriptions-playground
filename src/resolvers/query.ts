@@ -14,4 +14,12 @@ export const Query = {
     reveals(parent: any, args: any, context: any) {
         return global.Operations.filter(o => o.kind === 'reveal');
     },
+
+    originations(parent: any, args: any, context: any) {
+        return global.Operations.filter(o => o.kind === 'origination');
+    },
+
+    delegations(parent: any, args: any, context: any) {
+        return global.Operations.filter(o => o.kind === 'delegation');
+    },
 }
