@@ -4,112 +4,199 @@ import { keys } from './resolvers/keys';
 import { OperationEntry, Block } from './types/types'
 
 export class TezosWorker {
-    static start(pubSub: PubSub) {
+    client: RpcClient;
+    pubSub: PubSub;
+
+    constructor(client: RpcClient, pubSub: PubSub){
+        this.client = client;
+        this.pubSub = pubSub;
+    }
+
+    start() {
+        // NOTE keeping operations in memory for dev and testing purposes
         global.Operations = [];
 
-        const provider = 'https://testnet-tezos.giganode.io'; //'https://api.tezos.org.ua';
-        let client = new RpcClient(provider);
-        getBlock(client, pubSub);
+        // getBlock(client, pubSub);
         let interval = setInterval(() => {
-            getBlock(client, pubSub);
+            this.getBlock();
         }, 5000);
     }
-}
 
-function getBlock(client: RpcClient, pubSub: PubSub)
-{
-    // NOTE: will be replaced by call to tezos indexer
-    client.getBlock()
-        .then(data => processBlock(data, pubSub))
-        .catch(err => console.error(err));
-}
-
-function processBlock(block: any, pubSub: PubSub) {
-    if (global.Head && global.Head.hash === block.hash) {
-        console.log('block ' + block.hash + ' already notified');
-        return;
+    getBlock()
+    {
+        // NOTE: will be replaced by call to tezos indexer
+        this.client.getBlock()
+            .then(data => this.processBlock(data))
+            .catch(err => console.error(err));
     }
 
-    global.Head = block;
-    let operationsCount = 0;
+    processBlock(block: any) {
+        if (global.Head && global.Head.hash === block.hash) {
+            console.log('block ' + block.hash + ' already notified');
+            return;
+        }
 
-    block.operations.forEach((o: any[]) => {
-        if (!o) return;
+        global.Head = block;
+        let operationsCount = 0;
 
-        operationsCount += o.length;
-        processOperations(o, pubSub);
-    })
+        block.operations.forEach((o: any[]) => {
+            if (!o) return;
 
-    console.log('block ' + block.hash + ' processed');
-    console.log('operations count ' + operationsCount);
-}
+            operationsCount += o.length;
+            this.processOperations(o);
+        })
 
-function processOperations(operations: OperationEntry[], pubSub: PubSub) {
-    operations.forEach((oe: any) => {
-        oe.contents.forEach((oc: any) => {
-            const newOperation = {
-                kind: oc.kind,
-                hash: oe.hash
-            };
-            pubSub.publish(keys.newOperation, newOperation);
+        console.log('block ' + block.hash + ' processed');
+        console.log('operations count ' + operationsCount);
+    }
 
-            if (oc.kind === 'transaction') {
-                const newTransaction = {
-                    kind: oc.kind,
+    processOperations(operations: OperationEntry[]) {
+        
+        operations
+            .forEach((oe: any) => oe.contents
+                .forEach((oc: any) => this.publishNotification(oe, oc)));
+
+        // NOTE keeping operations in memory for dev and testing purposes
+        if (global.Operations.length > 1000){
+            global.Operations.splice(0, 500);
+        }
+    }
+
+    publishNotification(oe: any, oc: any)
+    {
+        var payload: any;
+        var key: string;
+        switch (oc.kind)
+        {
+            case 'activation':{
+                payload = {
                     hash: oe.hash,
+                    kind: keys.newActivateAccount,
+                    pkh: oc.pkh,
+                    secret: oc.secret,
+                };
+                key = keys.newActivateAccount;
+                break;
+            }
+            case 'ballot':{
+                payload = {
+                    hash: oe.hash,
+                    kind: keys.newBallot,
+                    source: oc.source,
+                    period: oc.period,
+                    proposal: oc.proposal,
+                    ballot: oc.ballot,
+                };
+                key = keys.newBallot;
+                break;
+            }
+            case 'delegation':{
+                payload = {
+                    hash: oe.hash,
+                    kind: keys.newDelegation,
+                    source: oc.source,
+                    fee: oc.fee,
+                    counter: oc.counter,
+                    gasLimit: oc.gasLimit,
+                    storateLimit: oc.storateLimit,
+                    delegate: oc.metadata.delegate,
+                };
+                key = keys.newDelegation;
+                break;
+            }
+            case 'doubleBakingEvidence':{
+                payload = {
+                    hash: oe.hash,
+                    kind: keys.newDoubleBakingEvidence,
+                    bh1: oc.bh1,
+                    bh2: oc.bh2,
+                };
+                key = keys.newDoubleBakingEvidence;
+                break;
+            }
+            case 'doubleEndorsementEvidence':{
+                payload = {
+                    hash: oe.hash,
+                    kind: keys.newDoubleEndorsementEvidence,
+                    op1: oc.op1,
+                    op2: oc.op2,
+                };
+                key = keys.newDoubleEndorsementEvidence;
+                break;
+            }
+            case 'endorsement':{
+                payload = {
+                    hash: oe.hash,
+                    kind: keys.newEndorsement,
+                    delegate: oc.metadata.delegate,
+                };
+                key = keys.newEndorsement;
+                break;
+            }
+            case 'origination':{
+                payload = {
+                    hash: oe.hash,
+                    kind: keys.newOrigination,
+                    source: oc.source,
+                    delegate: oc.metadata.delegate,
+                };
+                key = keys.newOrigination;
+                break;
+            }
+            case 'proposals':{
+                payload = {
+                    hash: oe.hash,
+                    kind: keys.newProposals,
+                    source: oc.source,
+                    period: oc.period,
+                    proposals: oc.proposals
+                };
+                key = keys.newProposals;
+                break;
+            }
+            case 'reveal':{
+                payload = {
+                    hash: oe.hash,
+                    kind: keys.newReveal,
+                    source: oc.source,
+                };
+                key = keys.newReveal;
+                break;
+            }
+            case 'seedNonceRevelation':{
+                payload = {
+                    hash: oe.hash,
+                    kind: keys.newSeedNonceRevelation,
+                    level: oc.level,
+                    nonce: oc.nonce,
+                };
+                key = keys.newSeedNonceRevelation;
+                break;
+            }
+            case 'transaction':{
+                payload = {
+                    hash: oe.hash,
+                    kind: keys.newTransaction,
                     fee: oc.fee,
                     amount: oc.amount,
                     source: oc.source,
                     destination: oc.destination,
                 };
-                pubSub.publish(keys.newTransaction, newTransaction);
-                global.Operations.push(newTransaction);
+                key = keys.newTransaction;
+                break;
             }
-            else if (oc.kind === 'endorsement') {
-                const newEndorsement = {
-                    kind: oc.kind,
-                    hash: oe.hash,
-                    delegate: oc.metadata.delegate,
-                };
-                pubSub.publish(keys.newEndrosement, newEndorsement);
-                global.Operations.push(newEndorsement);
+            default: {
+                console.log(oc.kind);
             }
-            else if (oc.kind === 'reveal') {
-                const newReveal = {
-                    kind: oc.kind,
-                    hash: oe.hash,
-                    source: oc.source,
-                };
-                pubSub.publish(keys.newReveal, newReveal);
-                global.Operations.push(newReveal);
-            }
-            else if (oc.kind === 'origination') {
-                const newOrigination = {
-                    kind: oc.kind,
-                    hash: oe.hash,
-                    source: oc.source,
-                    delegate: oc.metadata.delegate,
-                };
-                pubSub.publish(keys.newOrigination, newOrigination);
-                global.Operations.push(newOrigination);
-            }
-            else if (oc.kind === 'delegation') {
-                const newDelegation = {
-                    kind: oc.kind,
-                    hash: oe.hash,
-                    source: oc.source,
-                    delegate: oc.metadata.delegate,
-                };
-                pubSub.publish(keys.newDelegation, newDelegation);
-                global.Operations.push(newDelegation);
-            }
-            else {
-                global.Operations.push(newOperation);
-            }
+        }
 
-            if (global.Operations.length > 1000){
-                global.Operations.splice(0, 500);
-            }
-        })
-    })
+        // publish generic operation notification
+        this.pubSub.publish(keys.newOperation, payload);
+        
+        // publish specific operation notification
+        this.pubSub.publish(key, payload);
+
+        // NOTE keeping operations in memory for dev and testing purposes
+        global.Operations.push(payload);
+    }
 }

@@ -5,7 +5,7 @@ export const keys = {
     newDelegation: "DELEGATION",
     newDoubleBakingEvidence: "DOUBLE_BAKING_EVIDENCE",
     newDoubleEndorsementEvidence: "DOUBLE_ENDORSEMENT_EVIDENCE",
-    newEndrosement: "ENDORSEMENT",
+    newEndorsement: "ENDORSEMENT",
     newOrigination: "ORIGINATION",
     newProposals: "PROPOSALS",
     newReveal: "REVEAL",

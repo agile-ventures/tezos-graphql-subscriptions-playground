@@ -1,25 +1,27 @@
+import { keys } from './keys';
+
 export const Query = {
     operations(parent: any, args: any, context: any) {
         return global.Operations;
     },
 
     transactions(parent: any, args: any, context: any) {
-        return global.Operations.filter(o => o.kind === 'transaction');
+        return global.Operations.filter(o => o.kind === keys.newTransaction);
     },
 
     endorsements(parent: any, args: any, context: any) {
-        return global.Operations.filter(o => o.kind === 'endorsement');
+        return global.Operations.filter(o => o.kind === keys.newEndorsement);
     },
 
     reveals(parent: any, args: any, context: any) {
-        return global.Operations.filter(o => o.kind === 'reveal');
+        return global.Operations.filter(o => o.kind === keys.newReveal);
     },
 
     originations(parent: any, args: any, context: any) {
-        return global.Operations.filter(o => o.kind === 'origination');
+        return global.Operations.filter(o => o.kind === keys.newOrigination);
     },
 
     delegations(parent: any, args: any, context: any) {
-        return global.Operations.filter(o => o.kind === 'delegation');
+        return global.Operations.filter(o => o.kind === keys.newDelegation);
     },
 }

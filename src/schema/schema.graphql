@@ -91,65 +91,161 @@ schema {
 
 type Query {
     operations: [OperationNotification!]!
-    transactions: [TransactionNotification!]!
-    endorsements: [EndorsementNotification!]!
-    reveals: [RevealNotification!]!
-    originations: [OriginationNotification!]!
+    activations: [ActivationNotification!]!
+    ballots: [BallotNotification!]!
     delegations: [DelegationNotification!]!
+    doubleBakingEvidences: [DoubleBakingEvidenceNotification!]!
+    doubleEndorsementEvidences: [DoubleEndorsementEvidenceNotification!]!
+    endorsements: [EndorsementNotification!]!
+    originations: [OriginationNotification!]!
+    proposals: [ProposalsNotification!]!
+    reveals: [RevealNotification!]!
+    newSeedNonceRevelations: [SeedNonceRevelationNotification!]!
+    transactions: [TransactionNotification!]!
 }
 
 type Subscription {
-    operation: OperationNotification
-    transaction(source: Address, destination: Address): TransactionNotification
-    endorsement(hash: OperationHash, delegate: Address): EndorsementNotification
-    reveal(hash: OperationHash, source: Address, status: OperationResultStatus): RevealNotification
-    origination(hash: OperationHash, source: Address, status: OperationResultStatus): OriginationNotification
-    delegation(hash: OperationHash, source: Address, status: OperationResultStatus): DelegationNotification
+    """
+    Pushes operation additions from block.
+    """
+    operationAdded: OperationNotification
+
+    # """
+    # Pushes activation additions from block. Can be filtered by address.
+    # """
+    activationAdded(address: Address): ActivationNotification
+
+    # """
+    # Pushes ballot additions from block. Can be filtered by source, proposal and vote.
+    # """
+    ballotAdded(source: Address, proposal: ProtocolHash, ballot: BallotVote): BallotNotification
+
+    # """
+    # Pushes delegation additions from block. Can be filtered by source, delegate and operation result status.
+    # """
+    delegationAdded(source: Address, delegate: Address, status: OperationResultStatus): DelegationNotification
+
+    # """
+    # Pushes double baking evidence additions from block. Can be filtered by delegate.
+    # """
+    doubleBakingEvidenceAdded(delegate: Address): DoubleBakingEvidenceNotification
+    
+    # """
+    # Pushes double endorsement evidence additions from block. Can be filtered by delegate.
+    # """
+    doubleEndorsementEvidenceAdded(delegate: Address): DoubleEndorsementEvidenceNotification
+
+    # """
+    # Pushes endorsement additions from block. Can be filtered by delegate.
+    # """
+    endorsementAdded(delegate: Address): EndorsementNotification
+
+    # """
+    # Pushes origination additions from block. Can be filtered by source, delegate, originated contract and operation result status.
+    # """
+    originationAdded(source: Address, delegate: Address, originatedContract: Address, status: OperationResultStatus): OriginationNotification
+
+    # """
+    # Pushes proposals additions from block. Can be filtered by source and proposal hash.
+    # """
+    proposalsAdded(source: Address, proposal: ProtocolHash): ProposalsNotification
+
+    # """
+    # Pushes reveal additions from block. Can be filtered by source or operation result status.
+    # """
+    revealAdded(source: Address, status: OperationResultStatus): RevealNotification
+
+    # """
+    # Pushes seed nonce revelation additions from block. Can be filtered by delegate.
+    # """
+    seedNonceRevelationAdded(delegate: Address): SeedNonceRevelationNotification
+
+    # """
+    # Pushes transaction additions from block. Can be filtered by source and destination.
+    # """
+    transactionAdded(source: Address, destination: Address): TransactionNotification
 }
 
 """
 Subscription related type definitions
+NOTE: notification types are used for transfering partial data through pubsub to clients
 """
-
-# NOTE: notification types are used for transfering partial data through pubsub to clients
 type OperationNotification {
-  kind: OperationKind!
+  kind: String!
   hash: OperationHash!
 }
 
+type ActivationNotification {
+  hash: OperationHash!
+  pkh: Address!
+  secret: String!
+}
+
+type BallotNotification {
+  hash: OperationHash!
+  source: Address!
+  period: Int!
+  proposal: ProtocolHash!
+  ballot: BallotVote!
+}
+
+type DelegationNotification {
+  hash: OperationHash!
+  source: Address!
+  fee: Mutez!
+  counter: BigNumber!
+  gasLimit: BigNumber!
+  storageLimit: BigNumber!
+  delegate: Address!
+}
+
+type DoubleBakingEvidenceNotification {
+  hash: OperationHash!
+  bh1: BlockHeader!
+  bh2: BlockHeader!
+}
+
+type DoubleEndorsementEvidenceNotification {
+  hash: OperationHash!
+  op1: InlinedEndorsement!
+  op2: InlinedEndorsement!
+}
+
+type EndorsementNotification {
+  hash: OperationHash!
+  delegate: Address!
+}
+
+type OriginationNotification {
+  hash: OperationHash!
+  source: Address!
+  delegate: Address!
+}
+
+type ProposalsNotification {
+  hash: OperationHash!
+  source: Address!
+  period: Int!
+  proposals: [ProtocolHash!]!
+}
+
+type RevealNotification {
+  hash: OperationHash!
+  source: Address!
+}
+
+type SeedNonceRevelationNotification {
+  hash: OperationHash!
+  level: Int!
+  nonce: String!
+}
+
 type TransactionNotification {
-  kind: OperationKind!
   hash: OperationHash!
   fee: Mutez!
   amount: Mutez!
   source: Address!
   destination: Address!
-}
-
-type EndorsementNotification {
-  kind: OperationKind!
-  hash: OperationHash!
-  delegate: Address!
-}
-
-type RevealNotification {
-  kind: OperationKind!
-  hash: OperationHash!
-  source: Address!
-}
-
-type OriginationNotification {
-  kind: OperationKind!
-  hash: OperationHash!
-  source: Address!
-  delegate: Address!
-}
-
-type DelegationNotification {
-  kind: OperationKind!
-  hash: OperationHash!
-  source: Address!
-  delegate: Address!
 }
 
 """

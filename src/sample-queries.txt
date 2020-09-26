@@ -1,0 +1,221 @@
+******************************************************************************************
+// subscribe to all operations
+subscription {
+  operationAdded {
+    kind,
+    hash
+  }
+}
+
+******************************************************************************************
+// subscribe to activations
+subscription {
+  activationAdded {
+    hash,
+    pkh,
+    secret
+  }
+}
+
+// subscribe to activations for specific address
+subscription onActivationAdded($address: Address) {
+  activationAdded(address: $address) {
+    hash,
+    pkh,
+    secret
+  }
+}
+
+QUERY VARIABLES:
+{
+  "address": "tz1RNwBwVmTJjNRnAcfaPet6b74ZR7NEFikA",
+}
+
+******************************************************************************************
+// subscribe to transactions
+subscription {
+  transactionAdded {
+    hash,
+    fee,
+    amount,
+    source,
+    destination
+  }
+}
+
+// subscribe to transactions for specific source and destination addresses
+subscription onTransactionAdded($source: Address, $destination: Address) {
+  transactionAdded(source: $source, destination: $destination) {
+    hash
+    fee
+    amount
+    source
+    destination
+  }
+}
+
+QUERY VARIABLES:
+{
+  "source": "tz1RNwBwVmTJjNRnAcfaPet6b74ZR7NEFikA",
+  "destination": "tz1W5kSd1Evb7AzJGbTmDNniS35yDYsz28c5"
+}
+
+******************************************************************************************
+// subscribe to ballots
+subscription {
+  ballotAdded {
+    hash,
+    source,
+    period,
+    proposal,
+    ballot
+  }
+}
+
+******************************************************************************************
+// subscribe to delegations
+subscription {
+  delegationAdded {
+    hash,
+    source,
+    fee,
+    counter,
+    gasLimit,
+    storageLimit,
+    delegate
+  }
+}
+
+// subscribe to delegations for specific source and delegate
+subscription onDelegationAdded($source: Address, $delegate: Address) {
+  delegationAdded(source: $source, delegate: $delegate) {
+    hash,
+    source,
+    fee,
+    counter,
+    gasLimit,
+    storageLimit,
+    delegate
+  }
+}
+
+QUERY VARIABLES:
+{
+  "source": "tz1RNwBwVmTJjNRnAcfaPet6b74ZR7NEFikA",
+  "delegate": "tz1RNwBwVmTJjNRnAcfaPet6b74ZR7NEFikA",
+}
+
+******************************************************************************************
+// subscribe to double baking evidence
+subscription {
+  doubleBakingEvidenceAdded {
+    hash,
+    bh1 {
+      level,
+      timestamp
+    },
+    bh2 {
+      level,
+      timestamp
+    }
+  }
+}
+
+******************************************************************************************
+// subscribe to double endorsement evidence
+subscription {
+  doubleEndorsementEvidenceAdded {
+    hash,
+    op1 {
+      branch,
+      signature
+    },
+    op2 {
+      branch,
+      signature
+    },
+  }
+}
+
+******************************************************************************************
+// subscribe to endorsements
+subscription {
+  endorsementAdded {
+    hash
+    delegate
+  }
+}
+
+// subscribe to endorsements for specific delegate
+subscription onEndorsementAdded($delegate: Address) {
+  endorsementAdded(delegate: $delegate) {
+    hash,
+    delegate
+  }
+}
+
+QUERY VARIABLES:
+{
+  "delegate": "tz1RNwBwVmTJjNRnAcfaPet6b74ZR7NEFikA",
+}
+
+******************************************************************************************
+// subscribe to originations
+subscription {
+  originationAdded {
+    hash,
+    source,
+    delegate
+  }
+}
+
+******************************************************************************************
+// subscribe to proposals
+subscription {
+  proposalsAdded {
+    hash,
+    source,
+    period,
+    proposals
+  }
+}
+
+******************************************************************************************
+// subscribe to reveals
+subscription {
+  revealAdded {
+    hash,
+    source
+  }
+}
+
+******************************************************************************************
+// subscribe to seed nonce revelations
+subscription {
+  seedNonceRevelationAdded {
+    hash,
+    level,
+    nonce
+  }
+}
+
+*****************************************************************************************
+// generic operations in cache
+query {
+  operations {
+    kind,
+    hash
+  }
+}
+
+*****************************************************************************************
+// endorsements in cache
+query {
+  endorsements {
+    hash,
+    delegate
+  }
+}
+
+******************************************************************************************
+
