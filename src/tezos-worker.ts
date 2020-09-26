@@ -79,8 +79,6 @@ function processOperations(operations: OperationEntry[], pubSub: PubSub) {
                     kind: oc.kind,
                     hash: oe.hash,
                     source: oc.source,
-                    status: "not defined"
-                    // status: oc.status,
                 };
                 pubSub.publish(keys.newReveal, newReveal);
                 global.Operations.push(newReveal);
@@ -91,7 +89,6 @@ function processOperations(operations: OperationEntry[], pubSub: PubSub) {
                     hash: oe.hash,
                     source: oc.source,
                     delegate: oc.metadata.delegate,
-                    status: "not defined"
                 };
                 pubSub.publish(keys.newOrigination, newOrigination);
                 global.Operations.push(newOrigination);
@@ -102,7 +99,6 @@ function processOperations(operations: OperationEntry[], pubSub: PubSub) {
                     hash: oe.hash,
                     source: oc.source,
                     delegate: oc.metadata.delegate,
-                    status: "not defined"
                 };
                 pubSub.publish(keys.newDelegation, newDelegation);
                 global.Operations.push(newDelegation);

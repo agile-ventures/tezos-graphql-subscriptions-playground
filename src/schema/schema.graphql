@@ -85,41 +85,71 @@ Examples of valid block identifiers:
 scalar BlockIdentifier
 
 schema {
-    query: Query
+    query: Query,
+    subscription: Subscription
 }
+
 type Query {
-    """
-    Block fetches a Tezos block by number, hash (Base58Check-encoded) or relative pointer (head~n).
-    If neither is supplied, the most recent known block (head) is returned.
- 
-    NOTE: not used in subscriptions project
-    """
-    block(block: BlockIdentifier): Block
-
-    """
-    Blocks returns all blocks in a given interval, but maximum of <count> elements.
-    Hash (Base58Check-encoded), level, relative pointer (head~n) and head are allowed in the "from" a "to" arguments.
-
-    Example queries:
-    blocks(from: "head~4") {...}  # return last 5 blocks
-    blocks(count: 5) {...}  # return last 5 blocks
-    blocks(from: "head~9", count: 5) {...}  # five blocks before them
-    blocks(to: "<somehash>", count: 5) {...}  # return 5 blocks before and including <somehash>
-    blocks(from: "<somehash>", count: 5) {...}  # return 5 blocks since and including <somehash>
-
-    NOTE: not used in subscriptions project
-    """
-    blocks(from: BlockIdentifier, to: BlockIdentifier, count: Int): [Block!]!
-
-    """
-    Particular operations stored in memory for dev and debug purposes
-    """
     operations: [OperationNotification!]!
     transactions: [TransactionNotification!]!
     endorsements: [EndorsementNotification!]!
     reveals: [RevealNotification!]!
     originations: [OriginationNotification!]!
     delegations: [DelegationNotification!]!
+}
+
+type Subscription {
+    operation: OperationNotification
+    transaction(source: Address, destination: Address): TransactionNotification
+    endorsement(hash: OperationHash, delegate: Address): EndorsementNotification
+    reveal(hash: OperationHash, source: Address, status: OperationResultStatus): RevealNotification
+    origination(hash: OperationHash, source: Address, status: OperationResultStatus): OriginationNotification
+    delegation(hash: OperationHash, source: Address, status: OperationResultStatus): DelegationNotification
+}
+
+"""
+Subscription related type definitions
+"""
+
+# NOTE: notification types are used for transfering partial data through pubsub to clients
+type OperationNotification {
+  kind: OperationKind!
+  hash: OperationHash!
+}
+
+type TransactionNotification {
+  kind: OperationKind!
+  hash: OperationHash!
+  fee: Mutez!
+  amount: Mutez!
+  source: Address!
+  destination: Address!
+}
+
+type EndorsementNotification {
+  kind: OperationKind!
+  hash: OperationHash!
+  delegate: Address!
+}
+
+type RevealNotification {
+  kind: OperationKind!
+  hash: OperationHash!
+  source: Address!
+}
+
+type OriginationNotification {
+  kind: OperationKind!
+  hash: OperationHash!
+  source: Address!
+  delegate: Address!
+}
+
+type DelegationNotification {
+  kind: OperationKind!
+  hash: OperationHash!
+  source: Address!
+  delegate: Address!
 }
 
 """
@@ -904,60 +934,4 @@ enum VotingPeriodKind {
     TESTING_VOTE
     TESTING
     PROMOTION_VOTE
-}
-
-"""
-Subscription related type definitions
-"""
-type Subscription {
-    operation: OperationNotification
-    transaction(source: String, destination: String): TransactionNotification
-    endorsement(hash: String, delegate: String): EndorsementNotification
-    reveal(hash: String, source: String, status: String): RevealNotification
-    origination(hash: String, source: String, status: String): OriginationNotification
-    delegation(hash: String, source: String, status: String): DelegationNotification
-}
-
-# NOTE: notification types are used for transfering partial data through pubsub to clients
-type OperationNotification {
-  kind: String!
-  hash: String!
-}
-
-type TransactionNotification {
-  kind: String!
-  hash: String!
-  fee: String!
-  amount: String!
-  source: String!
-  destination: String!
-}
-
-type EndorsementNotification {
-  kind: String!
-  hash: String!
-  delegate: String!
-}
-
-type RevealNotification {
-  kind: String!
-  hash: String!
-  source: String!
-  status: String!
-}
-
-type OriginationNotification {
-  kind: String!
-  hash: String!
-  source: String!
-  delegate: String!
-  status: String!
-}
-
-type DelegationNotification {
-  kind: String!
-  hash: String!
-  source: String!
-  delegate: String!
-  status: String!
 }
