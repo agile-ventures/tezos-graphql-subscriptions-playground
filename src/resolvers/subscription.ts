@@ -1,15 +1,23 @@
 import { withFilter } from "graphql-yoga";
 import { argsToArgsConfig } from "graphql/type/definition";
+import { IOperationNotification, IActivationNotification, ITransactionNotification } from "../types/types";
 import { keys } from './keys';
 
 export const Subscription = {
     operationAdded: {
         subscribe: (parent: any, args: any, context: any, info: any) => subscribe(keys.newOperation, parent, args, context, info),
-        resolve: (payload: any) => payload,
+        resolve: (payload: IOperationNotification) => payload,
     },
     activationAdded: {
         subscribe: withFilter(
             (parent: any, args: any, context: any, info: any) => subscribe(keys.newActivateAccount, parent, args, context, info),
+            canReturn,
+        ),
+        resolve: (payload: IActivationNotification) => payload,
+    },
+    ballotAdded: {
+        subscribe: withFilter(
+            (parent: any, args: any, context: any, info: any) => subscribe(keys.newBallot, parent, args, context, info),
             canReturn,
         ),
         resolve: (payload: any) => payload,
@@ -75,15 +83,8 @@ export const Subscription = {
             (parent: any, args: any, context: any, info: any) => subscribe(keys.newTransaction, parent, args, context, info),
             canReturn
         ),
-        resolve: (payload: any) => payload,
-    },
-    ballotAdded: {
-        subscribe: withFilter(
-            (parent: any, args: any, context: any, info: any) => subscribe(keys.newBallot, parent, args, context, info),
-            canReturn,
-        ),
-        resolve: (payload: any) => payload,
-    },
+        resolve: (payload: ITransactionNotification) => payload,
+    }
 }
 
 export const OperationContents = {

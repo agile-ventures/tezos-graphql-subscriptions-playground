@@ -90,6 +90,7 @@ schema {
 }
 
 type Query {
+    head: [Block]
     operations: [OperationNotification!]!
     activations: [ActivationNotification!]!
     ballots: [BallotNotification!]!
@@ -278,85 +279,9 @@ type Block {
     metadata: BlockMetadata!
 
     """
-    Returns the delegate with the given address, or null
-    """
-    delegate(address: Address!): Delegate
-
-    """
-    Returns the constants
-    """
-    constants: Constants!
-
-    """
-    Returns the contract with the given address, or null
-    """
-    contract(address: Address): Contract
-
-    """
-    Returns the operation entry with the given hash, or null
-    """
-    operation(hash: OperationHash!): OperationEntry
-
-    """
     All operations in this block as returned from the Tezos node
     """
     operations: [[OperationEntry]]
-
-    """
-    Returns activations from block. Results can be filtered by operation hash, or address (pkh)
-    """
-    activations(hash: OperationHash, address: Address): [ActivateAccount!]!
-
-    """
-    Returns ballots from block. Results can be filtered by operation hash, source, proposal or vote (ballot).
-    """
-    ballots(hash: OperationHash, source: Address, proposal: ProtocolHash, ballot: BallotVote): [Ballot!]!
-
-    """
-    Returns delegations from block. Results can be filtered by operation hash, source, delegate or operation result status.
-    """
-    delegations(hash: OperationHash, source: Address, delegate: Address, status: OperationResultStatus): [Delegation!]!
-
-    """
-    Returns double baking evidence from block. Results can be filtered by operation hash or delegate.
-    """
-    doubleBakingEvidence(hash: OperationHash, delegate: Address): [DoubleBakingEvidence!]!
-
-    """
-    Returns double endorsement evidence from block. Results can be filtered by operation hash or delegate.
-    """
-    doubleEndorsementEvidence(hash: OperationHash, delegate: Address): [DoubleEndorsementEvidence!]!
-
-    """
-    Returns endorsements from block. Results can be filtered by operation hash, or delegate.
-    """
-    endorsements(hash: OperationHash, delegate: Address): [Endorsement!]!
-
-    """
-    Returns originations from block. Results can be filtered by
-    operation hash, source, delegate, originated contract or operation result status.
-    """
-    originations(hash: OperationHash, source: Address, delegate: Address, originatedContract: Address, status: OperationResultStatus): [Origination!]!
-
-    """
-    Returns proposals from block. Results can be filtered by operation hash, source or proposal hash.
-    """
-    proposals(hash: OperationHash, source: Address, proposal: ProtocolHash): [Proposals!]!
-
-    """
-    Returns reveals from block. Results can be filtered by operation hash, source or operation result status.
-    """
-    reveals(hash: OperationHash, source: Address, status: OperationResultStatus): [Reveal!]!
-
-    """
-    Returns seed nonce revelations from block. Results can be filtered by operation hash, source or operation result status.
-    """
-    seedNonceRevelations(hash: OperationHash, delegate: Address): [SeedNonceRevelation!]!
-
-    """
-    Returns transactions from block. Results can be filtered by operation hash, source, destination or operation result status.
-    """
-    transactions(hash: OperationHash, source: Address, destination: Address, status: OperationResultStatus): [Transaction!]!
 }
 
 """

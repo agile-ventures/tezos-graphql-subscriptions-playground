@@ -320,6 +320,39 @@ QUERY VARIABLES:
 }
 
 *****************************************************************************************
+// current head in cache
+query {
+  head {
+    protocol,
+    hash,
+    header {
+      level,
+      proto,
+      predecessor,
+      timestamp,
+      operationsHash,
+      fitness,
+      context,
+      priority,
+      seedNonceHash,
+      signature
+    },
+    metadata {
+      protocol,
+      maxOperationListLength {
+        maxSize,
+        maxOp
+      },
+      baker,
+      level {
+        level,
+        cycle
+      }
+    }
+  }
+}
+
+*****************************************************************************************
 // generic operations in cache
 query {
   operations {
@@ -350,4 +383,3 @@ query {
 }
 
 ******************************************************************************************
-

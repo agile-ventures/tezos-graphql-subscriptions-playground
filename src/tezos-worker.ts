@@ -1,9 +1,22 @@
-import { RpcClient } from '@taquito/rpc';
+import { BlockResponse, RpcClient } from '@taquito/rpc';
 import { PubSub } from 'graphql-yoga';
 import { keys } from './resolvers/keys';
-import { OperationEntry, Block } from './types/types'
+import { IOperationNotification, OperationEntry } from './types/types'
 import NodeCache from "node-cache";
 import { cacheKeys } from './cache-keys';
+import { 
+    IActivationNotification, 
+    IBallotNotification, 
+    IDelegationNotification, 
+    IDoubleBakingEvidenceNotification, 
+    IDoubleEndorsementEvidenceNotification, 
+    ITransactionNotification,
+    IEndorsementNotification,
+    IOriginationNotification,
+    IProposals,
+    IRevealNotification,
+    ISeedNonceRevelationNotification
+} from './types/types'
 
 export class TezosWorker {
     client: RpcClient;
@@ -20,24 +33,23 @@ export class TezosWorker {
         // NOTE keeping operations in memory for dev and testing purposes
         this.cache.set(cacheKeys.operations, []);
 
-        // getBlock(client, pubSub);
         let interval = setInterval(() => {
-            this.getBlock();
+            this.getHead();
         }, 5000);
     }
 
-    getBlock()
+    getHead()
     {
         // NOTE: will be replaced by call to tezos indexer
         this.client.getBlock()
-            .then(data => this.processBlock(data))
+            .then((data: BlockResponse) => this.processBlock(data))
             .catch(err => console.error(err));
     }
 
-    processBlock(block: any) {
-        let head = this.cache.get<any>(cacheKeys.head);
+    processBlock(block: BlockResponse) {
+        let head = this.cache.get<BlockResponse>(cacheKeys.head);
         if (head && head.hash === block.hash) {
-            console.log('block ' + block.hash + ' already notified');
+            console.log('.');
             return;
         }
 
@@ -46,7 +58,6 @@ export class TezosWorker {
 
         block.operations.forEach((o: any[]) => {
             if (!o) return;
-
             operationsCount += o.length;
             this.processOperations(o);
         })
@@ -56,7 +67,6 @@ export class TezosWorker {
     }
 
     processOperations(operations: OperationEntry[]) {
-        
         operations
             .forEach((oe: any) => oe.contents
                 .forEach((oc: any) => this.publishNotification(oe, oc)));
@@ -65,21 +75,19 @@ export class TezosWorker {
     publishNotification(oe: any, oc: any)
     {
         var payload: any;
-        var key: string;
         switch (oc.kind)
         {
-            case 'activation':{
-                payload = {
+            case 'activation': {
+                payload = <IActivationNotification> { 
                     hash: oe.hash,
                     kind: keys.newActivateAccount,
                     pkh: oc.pkh,
                     secret: oc.secret,
                 };
-                key = keys.newActivateAccount;
                 break;
             }
-            case 'ballot':{
-                payload = {
+            case 'ballot': {
+                payload = <IBallotNotification> {
                     hash: oe.hash,
                     kind: keys.newBallot,
                     source: oc.source,
@@ -87,11 +95,10 @@ export class TezosWorker {
                     proposal: oc.proposal,
                     ballot: oc.ballot,
                 };
-                key = keys.newBallot;
                 break;
             }
-            case 'delegation':{
-                payload = {
+            case 'delegation': {
+                payload = <IDelegationNotification> {
                     hash: oe.hash,
                     kind: keys.newDelegation,
                     source: oc.source,
@@ -101,92 +108,84 @@ export class TezosWorker {
                     storateLimit: oc.storateLimit,
                     delegate: oc.metadata.delegate,
                 };
-                key = keys.newDelegation;
                 break;
             }
-            case 'doubleBakingEvidence':{
-                payload = {
+            case 'doubleBakingEvidence': {
+                payload = <IDoubleBakingEvidenceNotification> {
                     hash: oe.hash,
                     kind: keys.newDoubleBakingEvidence,
                     bh1: oc.bh1,
                     bh2: oc.bh2,
                 };
-                key = keys.newDoubleBakingEvidence;
                 break;
             }
-            case 'doubleEndorsementEvidence':{
-                payload = {
+            case 'doubleEndorsementEvidence': {
+                payload = <IDoubleEndorsementEvidenceNotification> {
                     hash: oe.hash,
                     kind: keys.newDoubleEndorsementEvidence,
                     op1: oc.op1,
                     op2: oc.op2,
                 };
-                key = keys.newDoubleEndorsementEvidence;
                 break;
             }
-            case 'endorsement':{
-                payload = {
+            case 'endorsement': {
+                payload = <IEndorsementNotification> {
                     hash: oe.hash,
                     kind: keys.newEndorsement,
                     delegate: oc.metadata.delegate,
                 };
-                key = keys.newEndorsement;
                 break;
             }
-            case 'origination':{
-                payload = {
+            case 'origination': {
+                payload = <IOriginationNotification> {
                     hash: oe.hash,
                     kind: keys.newOrigination,
                     source: oc.source,
                     delegate: oc.metadata.delegate,
                 };
-                key = keys.newOrigination;
                 break;
             }
-            case 'proposals':{
-                payload = {
+            case 'proposals': {
+                payload = <IProposals> {
                     hash: oe.hash,
                     kind: keys.newProposals,
                     source: oc.source,
                     period: oc.period,
                     proposals: oc.proposals
                 };
-                key = keys.newProposals;
                 break;
             }
-            case 'reveal':{
-                payload = {
+            case 'reveal': {
+                payload = <IRevealNotification> {
                     hash: oe.hash,
                     kind: keys.newReveal,
                     source: oc.source,
                 };
-                key = keys.newReveal;
                 break;
             }
-            case 'seedNonceRevelation':{
-                payload = {
+            case 'seedNonceRevelation': {
+                payload = <ISeedNonceRevelationNotification> {
                     hash: oe.hash,
                     kind: keys.newSeedNonceRevelation,
                     level: oc.level,
                     nonce: oc.nonce,
                 };
-                key = keys.newSeedNonceRevelation;
                 break;
             }
-            case 'transaction':{
-                payload = {
+            case 'transaction': {
+                payload = <ITransactionNotification> { 
                     hash: oe.hash,
                     kind: keys.newTransaction,
                     fee: oc.fee,
                     amount: oc.amount,
                     source: oc.source,
-                    destination: oc.destination,
+                    destination: oc.destination
                 };
-                key = keys.newTransaction;
                 break;
             }
             default: {
-                console.log(oc.kind);
+                console.warn(oc.kind + ' operation is not supported');
+                return;
             }
         }
 
@@ -194,9 +193,9 @@ export class TezosWorker {
         this.pubSub.publish(keys.newOperation, payload);
         
         // publish specific operation notification
-        this.pubSub.publish(key, payload);
+        this.pubSub.publish(payload.kind, payload);
 
         // NOTE keeping operations in memory for dev and testing purposes
-        this.cache.get<any>(cacheKeys.operations).push(payload);
+        this.cache.get<Array<IOperationNotification>>(cacheKeys.operations).push(payload);
     }
 }

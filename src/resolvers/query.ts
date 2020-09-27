@@ -2,6 +2,10 @@ import { keys } from './keys';
 import { cacheKeys } from './../cache-keys';
 
 export const Query = {
+    head(parent: any, args: any, context: any) {
+        return new Array<any>(global.Cache.get<any>(cacheKeys.head));
+    },
+
     operations(parent: any, args: any, context: any) {
         return getOperations();
     },

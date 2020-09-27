@@ -409,3 +409,79 @@ export interface OperationError {
 }
 
 export type BigMapKeyType = 'string' | 'nat' | 'int' | 'bytes' | 'bool' | 'mutez' | 'address' | 'key_hash';
+
+export interface IOperationNotification {
+    kind: string;
+    hash: string;
+}
+  
+export interface IActivationNotification extends IOperationNotification {
+    pkh: string
+    secret: string
+}
+
+export interface IBallotNotification extends IOperationNotification {
+    kind: string
+    source: string
+    period: string
+    proposal: string
+    ballot: string
+}
+
+export interface IDelegationNotification extends IOperationNotification {
+    kind: string
+    source: string
+    fee: string
+    counter: string
+    gasLimit: string
+    storateLimit: string
+    delegate: string
+}
+
+export interface IDoubleBakingEvidenceNotification extends IOperationNotification {
+    kind: string
+    bh1: string
+    bh2: string
+}
+
+export interface IDoubleEndorsementEvidenceNotification extends IOperationNotification {
+    kind: string
+    op1: string
+    op2: string
+}
+
+export interface IEndorsementNotification extends IOperationNotification {
+    kind: string
+    delegate: string
+}
+
+export interface IOriginationNotification extends IOperationNotification {
+    kind: string
+    source: string
+    delegate: string
+}
+
+export interface IProposals extends IOperationNotification {
+    kind: string
+    source: string
+    period: string
+    proposals: string
+}
+
+export interface IRevealNotification extends IOperationNotification {
+    kind: string
+    source: string
+}
+
+export interface ISeedNonceRevelationNotification extends IOperationNotification {
+    kind: string
+    level: string
+    nonce: string
+}
+
+export interface ITransactionNotification extends IOperationNotification {
+    fee: string
+    amount: string
+    source: string
+    destination: string
+}
