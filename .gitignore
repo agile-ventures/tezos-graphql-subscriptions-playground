@@ -12,6 +12,7 @@ pids
 logs
 results
 tmp
+.nyc_output
 
 # Build
 public/css/main.css

@@ -5,7 +5,8 @@
     "main": "index.js",
     "scripts": {
         "start": "tsc && node dist/server.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "mocha -r ts-node/register tests/**/*.test.ts",
+        "coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" npm run test"
     },
     "keywords": [],
     "author": "",
@@ -17,5 +18,16 @@
         "graphql-yoga": "^1.18.3",
         "node-cache": "^5.1.2",
         "taquito": "^1.0.0"
+    },
+    "devDependencies": {
+        "@types/chai": "^4.2.12",
+        "@types/mocha": "^8.0.3",
+        "@types/sinon": "^9.0.6",
+        "chai": "^4.2.0",
+        "mocha": "^8.1.3",
+        "nyc": "^15.1.0",
+        "sinon": "^9.0.3",
+        "ts-node": "^9.0.0",
+        "typescript": "^4.0.3"
     }
 }

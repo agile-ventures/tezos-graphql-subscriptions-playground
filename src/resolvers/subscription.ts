@@ -99,11 +99,7 @@ export const OperationResult = {
     }
 }
 
-function subscribe(key: string, parent: any, args: any, context: any, info: any) {
-    return context.pubSub.asyncIterator(key);
-}
-
-function canReturn(payload: any, variables: any): boolean {
+export function canReturn(payload: any, variables: any): boolean {
     let ret = true;
     getMembers(variables).forEach((p: string) => {
         if (payload[p]) {
@@ -113,6 +109,10 @@ function canReturn(payload: any, variables: any): boolean {
     return ret
 }
 
-function getMembers(instance: any): string[] {
+export function getMembers(instance: any): string[] {
     return Object.getOwnPropertyNames(instance);
+}
+
+function subscribe(key: string, parent: any, args: any, context: any, info: any) {
+    return context.pubSub.asyncIterator(key);
 }
