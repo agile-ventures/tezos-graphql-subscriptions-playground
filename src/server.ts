@@ -1,27 +1,29 @@
 import { GraphQLServer } from 'graphql-yoga'
 import { RpcClient } from '@taquito/rpc';
 import { PubSub } from 'graphql-yoga'
-import { OperationEntry, Block } from './types/types'
 import { TezosWorker } from './tezos-worker'
 import { Query } from './resolvers/query'
-import { Subscription } from './resolvers/subscription'
-
-const provider = 'https://testnet-tezos.giganode.io'; //'https://api.tezos.org.ua';
-let client = new RpcClient(provider);
-
-const pubSub = new PubSub();
-
-declare global {
-    var Operations: any[]
-    var Head: Block
-};
+import { Subscription, OperationContents, OperationResult } from './resolvers/subscription'
+import NodeCache from "node-cache";
 
 const resolvers = {
     Query,
-    Subscription
+    Subscription,
+    OperationContents,
+    OperationResult
 };
 
-const worker = new TezosWorker(client, pubSub);
+const provider = 'https://testnet-tezos.giganode.io'; //'https://api.tezos.org.ua';
+const client = new RpcClient(provider);
+const pubSub = new PubSub();
+const cache = new NodeCache({ useClones: false });
+
+declare global {
+    var Cache: NodeCache
+};
+global.Cache = cache;
+
+const worker = new TezosWorker(client, pubSub, cache);
 worker.start();
 
 const server = new GraphQLServer({

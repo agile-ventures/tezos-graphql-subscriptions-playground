@@ -4,317 +4,114 @@ import { keys } from './keys';
 
 export const Subscription = {
     operationAdded: {
-        subscribe: operationSubscribe,
-        resolve: (payload: any) => {
-            return payload
-        },
+        subscribe: (parent: any, args: any, context: any, info: any) => subscribe(keys.newOperation, parent, args, context, info),
+        resolve: (payload: any) => payload,
     },
     activationAdded: {
         subscribe: withFilter(
-            activationSubscribe,
-            (payload: any, variables: any) => {
-                let ret = true;
-                if (!variables.address) {
-                    return ret;
-                }
-
-                if (variables.address) {
-                    ret = ret && payload.address === variables.address;
-                }
-
-                return ret;
-            },
+            (parent: any, args: any, context: any, info: any) => subscribe(keys.newActivateAccount, parent, args, context, info),
+            canReturn,
         ),
-        resolve: (payload: any) => {
-            return payload
-        },
-    },
-    ballotAdded: {
-        subscribe: withFilter(
-            ballotSubscribe,
-            (payload: any, variables: any) => {
-                let ret = true;
-                if (!variables.source && !variables.proposal && !variables.ballot) {
-                    return ret;
-                }
-
-                if (variables.source) {
-                    ret = ret && payload.source === variables.source;
-                }
-
-                if (variables.proposal) {
-                    ret = ret && payload.proposal === variables.proposal;
-                }
-
-                if (variables.ballot) {
-                    ret = ret && payload.ballot === variables.ballot;
-                }
-
-                return ret;
-            },
-        ),
-        resolve: (payload: any) => {
-            return payload
-        },
+        resolve: (payload: any) => payload,
     },
     delegationAdded: {
         subscribe: withFilter(
-            delegationSubscribe,
-            (payload: any, variables: any) => {
-                let ret = true;
-                if (!variables.source && !variables.delegate && !variables.status) {
-                    return ret;
-                }
-
-                if (variables.source) {
-                    ret = ret && payload.source === variables.source;
-                }
-
-                if (variables.delegate) {
-                    ret = ret && payload.delegate === variables.delegate;
-                }
-                
-                if (variables.status) {
-                    ret = ret && payload.status === variables.status;
-                }
-
-                return ret;
-            },
+            (parent: any, args: any, context: any, info: any) => subscribe(keys.newDelegation, parent, args, context, info),
+            canReturn,
         ),
-        resolve: (payload: any) => {
-            return payload;
-        },
+        resolve: (payload: any) => payload,
     },
     doubleBakingEvidenceAdded: {
         subscribe: withFilter(
-            doubleBakingEvidenceSubscribe,
-            (payload: any, variables: any) => {
-                let ret = true;
-                if (!variables.delegate) {
-                    return ret;
-                }
-
-                if (variables.delegate) {
-                    ret = ret && payload.delegate === variables.delegate;
-                }
-
-                return ret;
-            },
+            (parent: any, args: any, context: any, info: any) => subscribe(keys.newDoubleBakingEvidence, parent, args, context, info),
+            canReturn,
         ),
-        resolve: (payload: any) => {
-            return payload
-        },
+        resolve: (payload: any) => payload,
     },
     doubleEndorsementEvidenceAdded: {
         subscribe: withFilter(
-            doubleEndorsementEvidenceSubscribe,
-            (payload: any, variables: any) => {
-                let ret = true;
-                if (!variables.delegate) {
-                    return ret;
-                }
-
-                if (variables.delegate) {
-                    ret = ret && payload.delegate === variables.delegate;
-                }
-
-                return ret;
-            },
+            (parent: any, args: any, context: any, info: any) => subscribe(keys.newDoubleEndorsementEvidence, parent, args, context, info),
+            canReturn,
         ),
-        resolve: (payload: any) => {
-            return payload
-        },
+        resolve: (payload: any) => payload,
     },
     endorsementAdded: {
         subscribe: withFilter(
-            endorsementSubscribe,
-            (payload: any, variables: any) => {
-                let ret = true;
-                if (!variables.delegate) {
-                    return ret;
-                }
-
-                if (variables.delegate) {
-                    ret = ret && payload.delegate === variables.delegate;
-                }
-
-                return ret;
-            },
+            (parent: any, args: any, context: any, info: any) => subscribe(keys.newEndorsement, parent, args, context, info),
+            canReturn,
         ),
-        resolve: (payload: any) => {
-            return payload;
-        },
+        resolve: (payload: any) => payload,
     },
     originationAdded: {
         subscribe: withFilter(
-            originationSubscribe,
-            (payload: any, variables: any) => {
-                let ret = true;
-                if (!variables.source && !variables.delegate && !variables.originatedContract && !variables.status) {
-                    return ret;
-                }
-
-                if (variables.source) {
-                    ret = ret && payload.source === variables.source;
-                }
-
-                if (variables.delegate) {
-                    ret = ret && payload.delegate === variables.delegate;
-                }
-                
-                if (variables.originatedContract) {
-                    ret = ret && payload.originatedContract === variables.originatedContract;
-                }
-
-                if (variables.status) {
-                    ret = ret && payload.status === variables.status;
-                }
-
-                return ret;
-            },
+            (parent: any, args: any, context: any, info: any) => subscribe(keys.newOrigination, parent, args, context, info),
+            canReturn,
         ),
-        resolve: (payload: any) => {
-            return payload;
-        },
+        resolve: (payload: any) => payload,
     },
     proposalsAdded: {
         subscribe: withFilter(
-            proposalsSubscribe,
-            (payload: any, variables: any) => {
-                let ret = true;
-                if (!variables.source && !variables.proposal) {
-                    return ret;
-                }
-
-                if (variables.source) {
-                    ret = ret && payload.source === variables.source;
-                }
-
-                if (variables.proposal) {
-                    ret = ret && payload.proposal === variables.proposal;
-                }
-                
-                return ret;
-            },
+            (parent: any, args: any, context: any, info: any) => subscribe(keys.newProposals, parent, args, context, info),
+            canReturn,
         ),
-        resolve: (payload: any) => {
-            return payload;
-        },
+        resolve: (payload: any) => payload,
     },
     revealAdded: {
         subscribe: withFilter(
-            revealSubscribe,
-            (payload: any, variables: any) => {
-                let ret = true;
-                if (!variables.source && !variables.status) {
-                    return ret;
-                }
-
-                if (variables.source) {
-                    ret = ret && payload.source === variables.source;
-                }
-
-                if (variables.status) {
-                    ret = ret && payload.status === variables.status;
-                }
-
-                return ret;
-            },
+            (parent: any, args: any, context: any, info: any) => subscribe(keys.newReveal, parent, args, context, info),
+            canReturn,
         ),
-        resolve: (payload: any) => {
-            return payload;
-        },
+        resolve: (payload: any) => payload,
     },
     seedNonceRevelationAdded: {
         subscribe: withFilter(
-            seedNonceRevelationSubscribe,
-            (payload: any, variables: any) => {
-                let ret = true;
-                if (!variables.delegate) {
-                    return ret;
-                }
-
-                if (variables.delegate) {
-                    ret = ret && payload.delegate === variables.delegate;
-                }
-
-                return ret;
-            },
+            (parent: any, args: any, context: any, info: any) => subscribe(keys.newSeedNonceRevelation, parent, args, context, info),
+            canReturn,
         ),
-        resolve: (payload: any) => {
-            return payload;
-        },
+        resolve: (payload: any) => payload,
     },
     transactionAdded: {
         subscribe: withFilter(
-            transactionSubscribe,
-            (payload: any, variables: any) => {
-                let ret = true;
-                if (!variables.source && !variables.destination) {
-                    return ret;
-                }
-
-                if (variables.source) {
-                    ret = ret && payload.source === variables.source;
-                }
-
-                if (variables.destination) {
-                    ret = ret && payload.destination === variables.destination;
-                }
-
-                return ret;
-            },
+            (parent: any, args: any, context: any, info: any) => subscribe(keys.newTransaction, parent, args, context, info),
+            canReturn
         ),
-        resolve: (payload: any) => {
-            return payload
-        },
+        resolve: (payload: any) => payload,
+    },
+    ballotAdded: {
+        subscribe: withFilter(
+            (parent: any, args: any, context: any, info: any) => subscribe(keys.newBallot, parent, args, context, info),
+            canReturn,
+        ),
+        resolve: (payload: any) => payload,
     },
 }
 
-function operationSubscribe(parent: any, args: any, context: any, info: any) {
-    return context.pubSub.asyncIterator(keys.newOperation);
+export const OperationContents = {
+    __resolveType() {
+        return null;
+    }
 }
 
-function activationSubscribe(parent: any, args: any, context: any, info: any) {
-    return context.pubSub.asyncIterator(keys.newActivateAccount);
+export const OperationResult = {
+    __resolveType() {
+        return null;
+    }
 }
 
-function ballotSubscribe(parent: any, args: any, context: any, info: any) {
-    return context.pubSub.asyncIterator(keys.newBallot);
+function subscribe(key: string, parent: any, args: any, context: any, info: any) {
+    return context.pubSub.asyncIterator(key);
 }
 
-function delegationSubscribe(parent: any, args: any, context: any, info: any) {
-    return context.pubSub.asyncIterator(keys.newDelegation);
+function canReturn(payload: any, variables: any): boolean {
+    let ret = true;
+    getMembers(variables).forEach((p: string) => {
+        if (payload[p]) {
+            ret = ret && variables[p] === payload[p];
+        }
+    });
+    return ret
 }
 
-function doubleBakingEvidenceSubscribe(parent: any, args: any, context: any, info: any) {
-    return context.pubSub.asyncIterator(keys.newDoubleBakingEvidence);
-}
-
-function doubleEndorsementEvidenceSubscribe(parent: any, args: any, context: any, info: any) {
-    return context.pubSub.asyncIterator(keys.newDoubleEndorsementEvidence);
-}
-
-function endorsementSubscribe(parent: any, args: any, context: any, info: any) {
-    return context.pubSub.asyncIterator(keys.newEndorsement);
-}
-
-function originationSubscribe(parent: any, args: any, context: any, info: any) {
-    return context.pubSub.asyncIterator(keys.newOrigination);
-}
-
-function proposalsSubscribe(parent: any, args: any, context: any, info: any) {
-    return context.pubSub.asyncIterator(keys.newProposals);
-}
-
-function revealSubscribe(parent: any, args: any, context: any, info: any) {
-    return context.pubSub.asyncIterator(keys.newReveal);
-}
-
-function seedNonceRevelationSubscribe(parent: any, args: any, context: any, info: any) {
-    return context.pubSub.asyncIterator(keys.newSeedNonceRevelation);
-}
-
-function transactionSubscribe(parent: any, args: any, context: any, info: any) {
-    return context.pubSub.asyncIterator(keys.newTransaction);
+function getMembers(instance: any): string[] {
+    return Object.getOwnPropertyNames(instance);
 }

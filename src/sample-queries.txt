@@ -28,36 +28,7 @@ subscription onActivationAdded($address: Address) {
 
 QUERY VARIABLES:
 {
-  "address": "tz1RNwBwVmTJjNRnAcfaPet6b74ZR7NEFikA",
-}
-
-******************************************************************************************
-// subscribe to transactions
-subscription {
-  transactionAdded {
-    hash,
-    fee,
-    amount,
-    source,
-    destination
-  }
-}
-
-// subscribe to transactions for specific source and destination addresses
-subscription onTransactionAdded($source: Address, $destination: Address) {
-  transactionAdded(source: $source, destination: $destination) {
-    hash
-    fee
-    amount
-    source
-    destination
-  }
-}
-
-QUERY VARIABLES:
-{
-  "source": "tz1RNwBwVmTJjNRnAcfaPet6b74ZR7NEFikA",
-  "destination": "tz1W5kSd1Evb7AzJGbTmDNniS35yDYsz28c5"
+  "address": "tz1RNwBwVmTJjNRnAcfaPet6b74ZR7NEFikA"
 }
 
 ******************************************************************************************
@@ -70,6 +41,24 @@ subscription {
     proposal,
     ballot
   }
+}
+
+// subscribe to ballots for specific source, proposal and ballot
+subscription onBallotAdded($source: Address, $proposal: ProtocolHash, $ballot: BallotVote) {
+  ballotAdded(source: $source, proposal: $proposal, ballot: $ballot) {
+    hash,
+    source,
+    period,
+    proposal,
+    ballot
+  }
+}
+
+QUERY VARIABLES:
+{
+  "source": "tz1RNwBwVmTJjNRnAcfaPet6b74ZR7NEFikA",
+  "proposal": "ooKbZZduz2M9mXgnG2YqcFh3mjCQ2N2o9TBWfXK2fuzf6Fh5h4M",
+  "ballot": "PASS"
 }
 
 ******************************************************************************************
@@ -102,7 +91,7 @@ subscription onDelegationAdded($source: Address, $delegate: Address) {
 QUERY VARIABLES:
 {
   "source": "tz1RNwBwVmTJjNRnAcfaPet6b74ZR7NEFikA",
-  "delegate": "tz1RNwBwVmTJjNRnAcfaPet6b74ZR7NEFikA",
+  "delegate": "tz1RNwBwVmTJjNRnAcfaPet6b74ZR7NEFikA"
 }
 
 ******************************************************************************************
@@ -121,6 +110,26 @@ subscription {
   }
 }
 
+// subscribe to double baking evidence for specific delegate
+subscription onDoubleBakingEvidenceAdded($delegate: Address) {
+  doubleBakingEvidenceAdded(delegate: $delegate) {
+    hash,
+    bh1 {
+      level,
+      timestamp
+    },
+    bh2 {
+      level,
+      timestamp
+    }
+  }
+}
+
+QUERY VARIABLES:
+{
+  "delegate": "tz1X7fu4GXBXp9A8fchu1px3zzMDKtagDBk3"
+}
+
 ******************************************************************************************
 // subscribe to double endorsement evidence
 subscription {
@@ -135,6 +144,27 @@ subscription {
       signature
     },
   }
+}
+
+// subscribe to double endorsement evidence for specific delegate
+subscription onDoubleEndorsementEvidenceAdded($delegate: Address) {
+  doubleEndorsementEvidenceAdded(delegate: $delegate) {
+    hash,
+    op1 {
+      branch,
+      signature
+    },
+    op2 {
+      branch,
+      signature
+    },
+  }
+  }
+}
+
+QUERY VARIABLES:
+{
+  "delegate": "tz1X7fu4GXBXp9A8fchu1px3zzMDKtagDBk3"
 }
 
 ******************************************************************************************
@@ -156,7 +186,7 @@ subscription onEndorsementAdded($delegate: Address) {
 
 QUERY VARIABLES:
 {
-  "delegate": "tz1RNwBwVmTJjNRnAcfaPet6b74ZR7NEFikA",
+  "delegate": "tz1RNwBwVmTJjNRnAcfaPet6b74ZR7NEFikA"
 }
 
 ******************************************************************************************
@@ -167,6 +197,23 @@ subscription {
     source,
     delegate
   }
+}
+
+// subscribe to originations for specific source, delegate, originated contract and status
+subscription onOriginationAdded($source: Address, $delegate: Address, $originatedContract: Address, $status: OperationResultStatus) {
+  originationAdded(source: $source, delegate: $delegate, originatedContract: $originatedContract, status: $status) {
+    hash,
+    source,
+    delegate
+  }
+}
+
+QUERY VARIABLES:
+{
+  "source": "tz1X7fu4GXBXp9A8fchu1px3zzMDKtagDBk3",
+  "delegate": "tz1W5kSd1Evb7AzJGbTmDNniS35yDYsz28c5",
+  "originatedContract": "ooKbZZduz2M9mXgnG2YqcFh3mjCQ2N2o9TBWfXK2fuzf6Fh5h4M",
+  "status": "APPLIED"
 }
 
 ******************************************************************************************
@@ -180,6 +227,22 @@ subscription {
   }
 }
 
+// subscribe to proposals for specific source and proposal
+subscription onProposalsAdded($source: Address, $proposal: ProtocolHash) {
+  proposalsAdded(source: $source, proposal: $proposal) {
+    hash,
+    source,
+    period,
+    proposals
+  }
+}
+
+QUERY VARIABLES:
+{
+  "source": "tz1X7fu4GXBXp9A8fchu1px3zzMDKtagDBk3",
+  "proposal": "ooKbZZduz2M9mXgnG2YqcFh3mjCQ2N2o9TBWfXK2fuzf6Fh5h4M"
+}
+
 ******************************************************************************************
 // subscribe to reveals
 subscription {
@@ -187,6 +250,20 @@ subscription {
     hash,
     source
   }
+}
+
+// subscribe to reveals for specific source and status
+subscription onRevealAdded($source: Address, $status: OperationResultStatus) {
+  revealAdded(source: $source, status: $status) {
+    hash,
+    source
+  }
+}
+
+QUERY VARIABLES:
+{
+  "source": "tz1X7fu4GXBXp9A8fchu1px3zzMDKtagDBk3",
+  "status": "APPLIED"
 }
 
 ******************************************************************************************
@@ -197,6 +274,49 @@ subscription {
     level,
     nonce
   }
+}
+
+// subscribe to seed nonce revelations for specific delegate
+subscription onSeedNonceRevelationAdded($delegate: Address) {
+  seedNonceRevelationAdded(delegate: $delegate) {
+    hash,
+    level,
+    nonce
+  }
+}
+
+QUERY VARIABLES:
+{
+  "delegate": "tz1X7fu4GXBXp9A8fchu1px3zzMDKtagDBk3"
+}
+
+******************************************************************************************
+// subscribe to transactions
+subscription {
+  transactionAdded {
+    hash,
+    fee,
+    amount,
+    source,
+    destination
+  }
+}
+
+// subscribe to transactions for specific source and destination addresses
+subscription onTransactionAdded($source: Address, $destination: Address) {
+  transactionAdded(source: $source, destination: $destination) {
+    hash
+    fee
+    amount
+    source
+    destination
+  }
+}
+
+QUERY VARIABLES:
+{
+  "source": "tz1RNwBwVmTJjNRnAcfaPet6b74ZR7NEFikA",
+  "destination": "tz1W5kSd1Evb7AzJGbTmDNniS35yDYsz28c5"
 }
 
 *****************************************************************************************
@@ -214,6 +334,18 @@ query {
   endorsements {
     hash,
     delegate
+  }
+}
+
+******************************************************************************************
+// transactions in cache
+query {
+  transactions {
+    hash,
+    fee,
+    amount,
+    source,
+    destination
   }
 }
 

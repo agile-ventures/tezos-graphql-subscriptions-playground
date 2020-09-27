@@ -2,19 +2,23 @@ import { RpcClient } from '@taquito/rpc';
 import { PubSub } from 'graphql-yoga';
 import { keys } from './resolvers/keys';
 import { OperationEntry, Block } from './types/types'
+import NodeCache from "node-cache";
+import { cacheKeys } from './cache-keys';
 
 export class TezosWorker {
     client: RpcClient;
     pubSub: PubSub;
+    cache: NodeCache;
 
-    constructor(client: RpcClient, pubSub: PubSub){
+    constructor(client: RpcClient, pubSub: PubSub, cache: NodeCache){
         this.client = client;
         this.pubSub = pubSub;
+        this.cache = cache;
     }
 
     start() {
         // NOTE keeping operations in memory for dev and testing purposes
-        global.Operations = [];
+        this.cache.set(cacheKeys.operations, []);
 
         // getBlock(client, pubSub);
         let interval = setInterval(() => {
@@ -31,12 +35,13 @@ export class TezosWorker {
     }
 
     processBlock(block: any) {
-        if (global.Head && global.Head.hash === block.hash) {
+        let head = this.cache.get<any>(cacheKeys.head);
+        if (head && head.hash === block.hash) {
             console.log('block ' + block.hash + ' already notified');
             return;
         }
 
-        global.Head = block;
+        this.cache.set(cacheKeys.head, block);
         let operationsCount = 0;
 
         block.operations.forEach((o: any[]) => {
@@ -55,11 +60,6 @@ export class TezosWorker {
         operations
             .forEach((oe: any) => oe.contents
                 .forEach((oc: any) => this.publishNotification(oe, oc)));
-
-        // NOTE keeping operations in memory for dev and testing purposes
-        if (global.Operations.length > 1000){
-            global.Operations.splice(0, 500);
-        }
     }
 
     publishNotification(oe: any, oc: any)
@@ -197,6 +197,6 @@ export class TezosWorker {
         this.pubSub.publish(key, payload);
 
         // NOTE keeping operations in memory for dev and testing purposes
-        global.Operations.push(payload);
+        this.cache.get<any>(cacheKeys.operations).push(payload);
     }
 }

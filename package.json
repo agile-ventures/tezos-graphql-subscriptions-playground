@@ -15,6 +15,7 @@
         "@types/express": "^4.17.8",
         "express": "^4.17.1",
         "graphql-yoga": "^1.18.3",
+        "node-cache": "^5.1.2",
         "taquito": "^1.0.0"
     }
 }

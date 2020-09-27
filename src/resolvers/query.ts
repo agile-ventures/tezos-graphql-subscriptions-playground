@@ -1,27 +1,32 @@
 import { keys } from './keys';
+import { cacheKeys } from './../cache-keys';
 
 export const Query = {
     operations(parent: any, args: any, context: any) {
-        return global.Operations;
+        return getOperations();
     },
 
     transactions(parent: any, args: any, context: any) {
-        return global.Operations.filter(o => o.kind === keys.newTransaction);
+        return getOperations().filter((o: { kind: string; }) => o.kind === keys.newTransaction);
     },
 
     endorsements(parent: any, args: any, context: any) {
-        return global.Operations.filter(o => o.kind === keys.newEndorsement);
+        return getOperations().filter((o: { kind: string; }) => o.kind === keys.newEndorsement);
     },
 
     reveals(parent: any, args: any, context: any) {
-        return global.Operations.filter(o => o.kind === keys.newReveal);
+        return getOperations().filter((o: { kind: string; }) => o.kind === keys.newReveal);
     },
 
     originations(parent: any, args: any, context: any) {
-        return global.Operations.filter(o => o.kind === keys.newOrigination);
+        return getOperations().filter((o: { kind: string; }) => o.kind === keys.newOrigination);
     },
 
     delegations(parent: any, args: any, context: any) {
-        return global.Operations.filter(o => o.kind === keys.newDelegation);
+        return getOperations().filter((o: { kind: string; }) => o.kind === keys.newDelegation);
     },
+}
+
+function getOperations(): any {
+    return global.Cache.get<any>(cacheKeys.operations);
 }
