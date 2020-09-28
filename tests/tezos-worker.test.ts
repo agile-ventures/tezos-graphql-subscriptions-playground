@@ -3,9 +3,10 @@ import { assert, expect } from "chai";
 import NodeCache from "node-cache";
 import { cacheKeys } from "../src/cache-keys";
 import { TezosWorker } from "../src/tezos-worker";
-import { Block, IOperationNotification } from "../src/types/types";
+import { IOperationNotification, IEndorsementNotification, ITransactionNotification } from "../src/types/types";
 import sinon from "sinon";
 import { PubSub } from "graphql-yoga";
+import { keys } from '../src/resolvers/keys';
 
 describe('tezos worker', () => {
   describe('getHead', () => {
@@ -90,7 +91,7 @@ describe('tezos worker', () => {
 });
 
 describe('processBlock', () => {
-  it('block with operations (endorsements and transactions)', () => {
+  it('block with endorsements', () => {
     // arrange
     const callback = sinon.spy();
     const pubSubMock = <PubSub> {
@@ -104,7 +105,25 @@ describe('processBlock', () => {
     const worker = new TezosWorker(null, pubSubMock, cache);
     const oldHead = <BlockResponse> { hash: "tr9X7fu4GXBXp9A8fchu1px3zzMDKtagDJd7" };
     const head = getBlock();
-    
+
+    let expectedNotifications = [];
+    let endorsements = head.operations[0];
+    endorsements.forEach((e: any) => 
+      e.contents.forEach((c: any) =>
+        expectedNotifications.push(<IEndorsementNotification> { 
+          hash:  e.hash,
+          kind: keys.newEndorsement,
+          delegate: c.metadata.delegate
+    })));
+
+    endorsements.forEach((e: any) => {
+      expectedNotifications.push(<IEndorsementNotification> { 
+        hash:  e.hash,
+        kind: keys.newEndorsement,
+        delegate: e.contents[0].metadata.delegate
+      });
+    });
+
     cache.set(cacheKeys.head, oldHead);
     cache.set(cacheKeys.operations, new Array<IOperationNotification>());
     
@@ -112,11 +131,60 @@ describe('processBlock', () => {
     worker.processBlock(head);
 
     // assert
-    const actualOperations = cache.get<Array<IOperationNotification>>(cacheKeys.operations);
-    assert.equal(15, actualOperations.length);
+    assert.equal(11, callback.withArgs(keys.newEndorsement).callCount);
 
-    assert.equal(11, callback.withArgs("ENDORSEMENT").callCount);
-    assert.equal(4, callback.withArgs("TRANSACTION").callCount);
+    expectedNotifications.forEach((n: any) => {
+      assert.equal(1, callback.withArgs(keys.newOperation, n).callCount);
+      assert.equal(1, callback.withArgs(keys.newEndorsement, n).callCount);
+    });
+
+    assert.equal(30, callback.callCount);
+  });
+});
+
+describe('processBlock', () => {
+  it('block with transactions', () => {
+    // arrange
+    const callback = sinon.spy();
+    const pubSubMock = <PubSub> {
+      publish: function(kind: any, payload:any): boolean { 
+        callback(kind, payload);
+        return true;
+      }
+    };
+
+    const cache = new NodeCache({ useClones: false });
+    const worker = new TezosWorker(null, pubSubMock, cache);
+    const oldHead = <BlockResponse> { hash: "tr9X7fu4GXBXp9A8fchu1px3zzMDKtagDJd7" };
+    const head = getBlock();
+
+    let expectedNotifications = [];
+    let transations = head.operations[3];
+    transations.forEach((t: any) => 
+      t.contents.forEach((c: any) =>
+        expectedNotifications.push(<ITransactionNotification> { 
+          hash:  t.hash,
+          kind: keys.newTransaction,
+          fee: c.fee,
+          amount: c.amount,
+          source: c.source,
+          destination: c.destination
+    })));
+
+    cache.set(cacheKeys.head, oldHead);
+    cache.set(cacheKeys.operations, new Array<IOperationNotification>());
+    
+    // act
+    worker.processBlock(head);
+
+    // assert
+    assert.equal(4, callback.withArgs(keys.newTransaction).callCount);
+
+    expectedNotifications.forEach((n: any) => {
+      assert.equal(1, callback.withArgs(keys.newOperation, n).callCount);
+      assert.equal(1, callback.withArgs(keys.newTransaction, n).callCount);
+    });
+
     assert.equal(30, callback.callCount);
   });
 });
