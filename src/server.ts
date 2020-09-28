@@ -5,6 +5,7 @@ import { TezosWorker } from './tezos-worker'
 import { Query } from './resolvers/query'
 import { Subscription, OperationContents, OperationResult } from './resolvers/subscription'
 import NodeCache from "node-cache";
+import dotenv from 'dotenv';
 
 const resolvers = {
     Query,
@@ -13,7 +14,9 @@ const resolvers = {
     OperationResult
 };
 
-const provider = 'https://testnet-tezos.giganode.io'; //'https://api.tezos.org.ua';
+dotenv.config();
+
+const provider = process.env.TEZOS_NODE;
 const client = new RpcClient(provider);
 const pubSub = new PubSub();
 const cache = new NodeCache({ useClones: false });
