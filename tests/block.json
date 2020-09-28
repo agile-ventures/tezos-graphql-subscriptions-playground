@@ -1,0 +1,281 @@
+{
+    "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+    "chain_id": "NetXjD3HPJJjmcd",
+    "hash": "BLBiBqzhMU1z5VpcTxHZc1wwwvU92LE4YMU96vTfiQSSbVHCqss",
+    "header": { "level": 757268, "proto": 2, "predecessor": "BLBZTiDbcrmuWQhGLCGzfuuJPJk2vrJLpridiMtAtdJ39F9qB91", "timestamp": "2020-09-27T23:57:46Z", "validation_pass": 4, "operations_hash": "LLoaaasbA4BxdA4xJXqSZGE9nuTBrv7D6bc34ZgKPXxVZb3pCuEMA", "fitness": ["01", "00000000000b8e13"], "context": "CoWBBiyhFTEQxUEr9LPFKpRyMroa6DZQo2ZvpnskEzscAfyWqQ29", "priority": 0, "proof_of_work_nonce": "b7ed34cbb07f0100", "signature": "siggMQg7WGkSrZeiZ93esBHztLDon2C3PfYA36QwombgUuadMzRrr4314rFybtvwZR6WLZvQF2HS5EFx8QEkRB5LS6M4gHFN" },
+    "metadata": { "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb", "next_protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb", "test_chain_status": { "status": "not_running" }, "max_operations_ttl": 60, "max_operation_data_length": 16384, "max_block_header_length": 238, "max_operation_list_length": [{ "max_size": 32768, "max_op": 32 }, { "max_size": 32768 }, { "max_size": 135168, "max_op": 132 }, { "max_size": 524288 }], "baker": "tz1RomaiWJV3NFDZWTMVR2aEeHknsn3iF5Gi", "level": { "level": 757268, "level_position": 757267, "cycle": 369, "cycle_position": 1555, "voting_period": 369, "voting_period_position": 1555, "expected_commitment": false }, "voting_period_kind": "proposal", "nonce_hash": null, "consumed_gas": "410625", "deactivated": [], "balance_updates": [{ "kind": "contract", "contract": "tz1RomaiWJV3NFDZWTMVR2aEeHknsn3iF5Gi", "change": "-512000000" }, { "kind": "freezer", "category": "deposits", "delegate": "tz1RomaiWJV3NFDZWTMVR2aEeHknsn3iF5Gi", "cycle": 369, "change": "512000000" }, { "kind": "freezer", "category": "rewards", "delegate": "tz1RomaiWJV3NFDZWTMVR2aEeHknsn3iF5Gi", "cycle": 369, "change": "40000000" }] },
+    "operations": [
+        [{
+            "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+            "chain_id": "NetXjD3HPJJjmcd",
+            "hash": "onoJurXYPjsy5fPWvnUi3X8FKMjrscFt4PNMrJp5qNV7GLZouRB",
+            "branch": "BLBZTiDbcrmuWQhGLCGzfuuJPJk2vrJLpridiMtAtdJ39F9qB91",
+            "contents": [{
+                "kind": "endorsement",
+                "level": 757267,
+                "metadata": { "balance_updates": [{ "kind": "contract", "contract": "tz3dsRx27KTtsVcSJHtXj2vNBosczF9G5iww", "change": "-64000000" }, { "kind": "freezer", "category": "deposits", "delegate": "tz3dsRx27KTtsVcSJHtXj2vNBosczF9G5iww", "cycle": 369, "change": "64000000" }, { "kind": "freezer", "category": "rewards", "delegate": "tz3dsRx27KTtsVcSJHtXj2vNBosczF9G5iww", "cycle": 369, "change": "1250000" }], "delegate": "tz3dsRx27KTtsVcSJHtXj2vNBosczF9G5iww", "slots": [11] }
+            }],
+            "signature": "sigYa1MkpoNhD16ZVsfzgZWnLRhuWfdfrLazs7k58KQgpHQSWRZDg2Khhau3NtgiSxBrzCen2yAPufEt6zADJtrFebAE3AYk"
+        }, {
+            "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+            "chain_id": "NetXjD3HPJJjmcd",
+            "hash": "opBnkNEuxJ9PkXwn1HrXRind7gqSns2hYna6TebDsa23Dkp1BBC",
+            "branch": "BLBZTiDbcrmuWQhGLCGzfuuJPJk2vrJLpridiMtAtdJ39F9qB91",
+            "contents": [{
+                "kind": "endorsement",
+                "level": 757267,
+                "metadata": { "balance_updates": [{ "kind": "contract", "contract": "tz1RpdqrmqYY6JUn5a3RVCdFCi1UeBMaMNwN", "change": "-64000000" }, { "kind": "freezer", "category": "deposits", "delegate": "tz1RpdqrmqYY6JUn5a3RVCdFCi1UeBMaMNwN", "cycle": 369, "change": "64000000" }, { "kind": "freezer", "category": "rewards", "delegate": "tz1RpdqrmqYY6JUn5a3RVCdFCi1UeBMaMNwN", "cycle": 369, "change": "1250000" }], "delegate": "tz1RpdqrmqYY6JUn5a3RVCdFCi1UeBMaMNwN", "slots": [5] }
+            }],
+            "signature": "sigUxQ5292QvWgRqjcEq8Hz7yfocnMVnWuh8Y8aMquDm6jvnFojX2ua2V43ahKy1sTVBWNRU46XYg2K4X4nsDa9HM6E8eQKP"
+        }, {
+            "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+            "chain_id": "NetXjD3HPJJjmcd",
+            "hash": "ooZWGmmvnJ9pWPVcX3Sao9Q8mZpVJhAFucHUd6Syx7a6CG6YyZP",
+            "branch": "BLBZTiDbcrmuWQhGLCGzfuuJPJk2vrJLpridiMtAtdJ39F9qB91",
+            "contents": [{
+                "kind": "endorsement",
+                "level": 757267,
+                "metadata": { "balance_updates": [{ "kind": "contract", "contract": "tz1RomaiWJV3NFDZWTMVR2aEeHknsn3iF5Gi", "change": "-128000000" }, { "kind": "freezer", "category": "deposits", "delegate": "tz1RomaiWJV3NFDZWTMVR2aEeHknsn3iF5Gi", "cycle": 369, "change": "128000000" }, { "kind": "freezer", "category": "rewards", "delegate": "tz1RomaiWJV3NFDZWTMVR2aEeHknsn3iF5Gi", "cycle": 369, "change": "2500000" }], "delegate": "tz1RomaiWJV3NFDZWTMVR2aEeHknsn3iF5Gi", "slots": [30, 17] }
+            }],
+            "signature": "sigeVnkTZufrKM3J1wrs87hXVWSkd4GA1Xz5zAJnCSz18uYzzVLxHgHgkzYxh9iGaMEDLTxUJwFcNbwt5WxLMBR88TAagKAw"
+        }, {
+            "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+            "chain_id": "NetXjD3HPJJjmcd",
+            "hash": "ooLuppgFufFMJVMAUGiW5Zxj3Ggmwh79NydZ28J9iEeNmHKtEFf",
+            "branch": "BLBZTiDbcrmuWQhGLCGzfuuJPJk2vrJLpridiMtAtdJ39F9qB91",
+            "contents": [{
+                "kind": "endorsement",
+                "level": 757267,
+                "metadata": { "balance_updates": [{ "kind": "contract", "contract": "tz1PgkWZdr5Vcbb3CbhubheYuEGpxJtKDMhT", "change": "-64000000" }, { "kind": "freezer", "category": "deposits", "delegate": "tz1PgkWZdr5Vcbb3CbhubheYuEGpxJtKDMhT", "cycle": 369, "change": "64000000" }, { "kind": "freezer", "category": "rewards", "delegate": "tz1PgkWZdr5Vcbb3CbhubheYuEGpxJtKDMhT", "cycle": 369, "change": "1250000" }], "delegate": "tz1PgkWZdr5Vcbb3CbhubheYuEGpxJtKDMhT", "slots": [23] }
+            }],
+            "signature": "sigSQaDcisx9aKgi31FSoF89EBzaBWnK1SJx589MQCm5G7oCzKQE878arkC6QRHYZmkDA1seUmwuVSA4F2Ry4bvTXKB4Xn5L"
+        }, {
+            "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+            "chain_id": "NetXjD3HPJJjmcd",
+            "hash": "opCpM6Wz9UyfeJBsKM97TVp5rzJ6oTpoBoZ57yKECiM9jZj32gB",
+            "branch": "BLBZTiDbcrmuWQhGLCGzfuuJPJk2vrJLpridiMtAtdJ39F9qB91",
+            "contents": [{
+                "kind": "endorsement",
+                "level": 757267,
+                "metadata": { "balance_updates": [{ "kind": "contract", "contract": "tz1aWXP237BLwNHJcCD4b3DutCevhqq2T1Z9", "change": "-192000000" }, { "kind": "freezer", "category": "deposits", "delegate": "tz1aWXP237BLwNHJcCD4b3DutCevhqq2T1Z9", "cycle": 369, "change": "192000000" }, { "kind": "freezer", "category": "rewards", "delegate": "tz1aWXP237BLwNHJcCD4b3DutCevhqq2T1Z9", "cycle": 369, "change": "3750000" }], "delegate": "tz1aWXP237BLwNHJcCD4b3DutCevhqq2T1Z9", "slots": [26, 21, 15] }
+            }],
+            "signature": "sigrBGSh86NGkV6ARrAh75chxfuU3FsyNnCqn7dvmkp7Au3WGjbmTK1GyA9zG94CeDFFURkwJzmJJuVG2kufsK3x6JA1oVcZ"
+        }, {
+            "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+            "chain_id": "NetXjD3HPJJjmcd",
+            "hash": "ooTD13xGQsKub5eV23mr6iTJd7RPTRBZ1Ggm3Dc9AzJh46E75aN",
+            "branch": "BLBZTiDbcrmuWQhGLCGzfuuJPJk2vrJLpridiMtAtdJ39F9qB91",
+            "contents": [{
+                "kind": "endorsement",
+                "level": 757267,
+                "metadata": { "balance_updates": [{ "kind": "contract", "contract": "tz3WXYtyDUNL91qfiCJtVUX746QpNv5i5ve5", "change": "-128000000" }, { "kind": "freezer", "category": "deposits", "delegate": "tz3WXYtyDUNL91qfiCJtVUX746QpNv5i5ve5", "cycle": 369, "change": "128000000" }, { "kind": "freezer", "category": "rewards", "delegate": "tz3WXYtyDUNL91qfiCJtVUX746QpNv5i5ve5", "cycle": 369, "change": "2500000" }], "delegate": "tz3WXYtyDUNL91qfiCJtVUX746QpNv5i5ve5", "slots": [20, 14] }
+            }],
+            "signature": "sigsq8cs2xZZZ5EAWoxJjnfsomb9hHZcPdjmdvcFDK8LJQaMHg5jrWAJ1jDyWpEmxbRA6iBHtzwBpffCwK1v3MtZtT24agCE"
+        }, {
+            "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+            "chain_id": "NetXjD3HPJJjmcd",
+            "hash": "ooSAnEafT7bBwzg1YVQB3xBjR4dgZcccSedFx4sR6e1EJo5Bdce",
+            "branch": "BLBZTiDbcrmuWQhGLCGzfuuJPJk2vrJLpridiMtAtdJ39F9qB91",
+            "contents": [{
+                "kind": "endorsement",
+                "level": 757267,
+                "metadata": { "balance_updates": [{ "kind": "contract", "contract": "tz1TEZtYnuLiZLdA6c7JysAUJcHMrogu4Cpr", "change": "-256000000" }, { "kind": "freezer", "category": "deposits", "delegate": "tz1TEZtYnuLiZLdA6c7JysAUJcHMrogu4Cpr", "cycle": 369, "change": "256000000" }, { "kind": "freezer", "category": "rewards", "delegate": "tz1TEZtYnuLiZLdA6c7JysAUJcHMrogu4Cpr", "cycle": 369, "change": "5000000" }], "delegate": "tz1TEZtYnuLiZLdA6c7JysAUJcHMrogu4Cpr", "slots": [28, 19, 12, 1] }
+            }],
+            "signature": "sigqU5PrAuMzmTRZtmgH4DRxAr8Qv3xqD9Hf8c8ReMonHX2msu2HAhQxYYg6mgvQtKG6uKLEqGc93m8BMAE6aGvfUqYpE8Yu"
+        }, {
+            "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+            "chain_id": "NetXjD3HPJJjmcd",
+            "hash": "opaAV77mpFSf7PahsyA8sVhtUKk3YDFqwD59SnFp1escmETv2VK",
+            "branch": "BLBZTiDbcrmuWQhGLCGzfuuJPJk2vrJLpridiMtAtdJ39F9qB91",
+            "contents": [{
+                "kind": "endorsement",
+                "level": 757267,
+                "metadata": { "balance_updates": [{ "kind": "contract", "contract": "tz1NRTQeqcuwybgrZfJavBY3of83u8uLpFBj", "change": "-384000000" }, { "kind": "freezer", "category": "deposits", "delegate": "tz1NRTQeqcuwybgrZfJavBY3of83u8uLpFBj", "cycle": 369, "change": "384000000" }, { "kind": "freezer", "category": "rewards", "delegate": "tz1NRTQeqcuwybgrZfJavBY3of83u8uLpFBj", "cycle": 369, "change": "7500000" }], "delegate": "tz1NRTQeqcuwybgrZfJavBY3of83u8uLpFBj", "slots": [18, 16, 13, 10, 4, 0] }
+            }],
+            "signature": "sigmwaUP6aVp3PCBrKXQFafXEm8vK6aLDnFtB8v5rKtkDWy2cqREcnepthEfkxuVEsPhpQxSyiET97rygvbPjsSTboR2DDM7"
+        }, {
+            "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+            "chain_id": "NetXjD3HPJJjmcd",
+            "hash": "ooQa7fviKk5PxF87wpfJbVPQf9Y3rt2NJv8MR53VWJw3nrvtGpM",
+            "branch": "BLBZTiDbcrmuWQhGLCGzfuuJPJk2vrJLpridiMtAtdJ39F9qB91",
+            "contents": [{
+                "kind": "endorsement",
+                "level": 757267,
+                "metadata": { "balance_updates": [{ "kind": "contract", "contract": "tz1T8UYSbVuRm6CdhjvwCfXsKXb4yL9ai9Q3", "change": "-192000000" }, { "kind": "freezer", "category": "deposits", "delegate": "tz1T8UYSbVuRm6CdhjvwCfXsKXb4yL9ai9Q3", "cycle": 369, "change": "192000000" }, { "kind": "freezer", "category": "rewards", "delegate": "tz1T8UYSbVuRm6CdhjvwCfXsKXb4yL9ai9Q3", "cycle": 369, "change": "3750000" }], "delegate": "tz1T8UYSbVuRm6CdhjvwCfXsKXb4yL9ai9Q3", "slots": [31, 27, 3] }
+            }],
+            "signature": "sigPCBvW5iPPocCj2owRwSj7aqWkTwaEGj33eNvKwABam34NA4Fv14BjVqFQzQPEmKW31PLkg1eiqEAETJ1z2tn5nio6bb7t"
+        }, {
+            "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+            "chain_id": "NetXjD3HPJJjmcd",
+            "hash": "opB66sHJJo8ZZdSmGk6FagafgLMjUHxtW4yQspcDrrYeQhywFDw",
+            "branch": "BLBZTiDbcrmuWQhGLCGzfuuJPJk2vrJLpridiMtAtdJ39F9qB91",
+            "contents": [{
+                "kind": "endorsement",
+                "level": 757267,
+                "metadata": { "balance_updates": [{ "kind": "contract", "contract": "tz1e7uhpwmiKp8Yd2KwFwmVhoT31L478KUe3", "change": "-64000000" }, { "kind": "freezer", "category": "deposits", "delegate": "tz1e7uhpwmiKp8Yd2KwFwmVhoT31L478KUe3", "cycle": 369, "change": "64000000" }, { "kind": "freezer", "category": "rewards", "delegate": "tz1e7uhpwmiKp8Yd2KwFwmVhoT31L478KUe3", "cycle": 369, "change": "1250000" }], "delegate": "tz1e7uhpwmiKp8Yd2KwFwmVhoT31L478KUe3", "slots": [29] }
+            }],
+            "signature": "sigThM1grjzPbRBex1HwdWjy18RchGwyv92NPMLku3dAEWr13TgGZCCJ5WEw1z9iUT1fZ44dJmAt7YzRYaQuWSPkRUPpiMbF"
+        }, {
+            "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+            "chain_id": "NetXjD3HPJJjmcd",
+            "hash": "opYNvVGUkAa7nTZn1Y152hc7ZmT9zHGfCuJNEx1JzbLfHoxuogD",
+            "branch": "BLBZTiDbcrmuWQhGLCGzfuuJPJk2vrJLpridiMtAtdJ39F9qB91",
+            "contents": [{
+                "kind": "endorsement",
+                "level": 757267,
+                "metadata": { "balance_updates": [{ "kind": "contract", "contract": "tz1VxS7ff4YnZRs8b4mMP4WaMVpoQjuo1rjf", "change": "-512000000" }, { "kind": "freezer", "category": "deposits", "delegate": "tz1VxS7ff4YnZRs8b4mMP4WaMVpoQjuo1rjf", "cycle": 369, "change": "512000000" }, { "kind": "freezer", "category": "rewards", "delegate": "tz1VxS7ff4YnZRs8b4mMP4WaMVpoQjuo1rjf", "cycle": 369, "change": "10000000" }], "delegate": "tz1VxS7ff4YnZRs8b4mMP4WaMVpoQjuo1rjf", "slots": [25, 24, 22, 9, 8, 7, 6, 2] }
+            }],
+            "signature": "sigU8qn9ktKGMCVAxmhqP8w9eFxswUGEvekg6p492XZ51Y3bnD9QGE3EGKvLcDRFmURyqx3HMLn8wPVUXZHgnQ7sHkTVqDhz"
+        }],
+        [],
+        [],
+        [{
+            "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+            "chain_id": "NetXjD3HPJJjmcd",
+            "hash": "op7vdVHF5g2pHi1fMoX4Toh4BHnoZSvCqE5siVMNKaj4kF74K58",
+            "branch": "BLTFZqAV97RqB6iJsmPYy4YuUbBJdKAtVFmFrm84X6Wekmhopne",
+            "contents": [{
+                "kind": "transaction",
+                "source": "tz1R3vJ5TV8Y5pVj8dicBR23Zv8JArusDkYr",
+                "fee": "2501",
+                "counter": "1013589",
+                "gas_limit": "21987",
+                "storage_limit": "0",
+                "amount": "0",
+                "destination": "KT1CUTjTqf4UMf6c9A8ZA4e1ntWbLVTnvrKG",
+                "parameters": { "entrypoint": "updateValue", "value": { "prim": "Pair", "args": [{ "string": "2020-09-27T23:57:32Z" }, { "int": "11228" }] } },
+                "metadata": { "balance_updates": [{ "kind": "contract", "contract": "tz1R3vJ5TV8Y5pVj8dicBR23Zv8JArusDkYr", "change": "-2501" }, { "kind": "freezer", "category": "fees", "delegate": "tz1RomaiWJV3NFDZWTMVR2aEeHknsn3iF5Gi", "cycle": 369, "change": "2501" }], "operation_result": { "status": "applied", "storage": { "prim": "Pair", "args": [{ "prim": "Pair", "args": [{ "int": "1601251052" }, { "int": "11228" }] }, { "bytes": "00003b5d4596c032347b72fb51f688c45200d0cb50db" }] }, "consumed_gas": "21787", "storage_size": "527" } }
+            }],
+            "signature": "sigYQdeYERVBW5dRAYb5NCA7P5GTvLfQG2d9rj9PhTkQ6ncePfmG7BjnP69JqsSBafzLZFZQAQpngFjjWV2TWhiJ54UT82vH"
+        }, {
+            "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+            "chain_id": "NetXjD3HPJJjmcd",
+            "hash": "opM9UjT2UVdpA4VyAUo5gdfn6JdpngcV5rjruTBiTqTwpsL92Np",
+            "branch": "BLTFZqAV97RqB6iJsmPYy4YuUbBJdKAtVFmFrm84X6Wekmhopne",
+            "contents": [{
+                "kind": "transaction",
+                "source": "tz1Yshp26pvsFcjwpDQvoLdHsWEJMrvwuCpo",
+                "fee": "2655",
+                "counter": "1354383",
+                "gas_limit": "23429",
+                "storage_limit": "0",
+                "amount": "0",
+                "destination": "KT1CoUCcQdzgDL9eVEjTnUHWHPtaX4FxkVBc",
+                "parameters": { "entrypoint": "update_value", "value": { "prim": "Pair", "args": [{ "string": "2020-09-27T23:56:00Z" }, { "prim": "Pair", "args": [{ "int": "217" }, { "prim": "Pair", "args": [{ "int": "93" }, { "int": "202" }] }] }] } },
+                "metadata": { "balance_updates": [{ "kind": "contract", "contract": "tz1Yshp26pvsFcjwpDQvoLdHsWEJMrvwuCpo", "change": "-2655" }, { "kind": "freezer", "category": "fees", "delegate": "tz1RomaiWJV3NFDZWTMVR2aEeHknsn3iF5Gi", "cycle": 369, "change": "2655" }], "operation_result": { "status": "applied", "storage": { "prim": "Pair", "args": [{ "prim": "Pair", "args": [{ "int": "1601250960" }, { "prim": "Pair", "args": [{ "int": "217" }, { "prim": "Pair", "args": [{ "int": "93" }, { "int": "202" }] }] }] }, { "bytes": "0000912fb293dfedb03c3b0e11d20e42e652d728e032" }] }, "consumed_gas": "23229", "storage_size": "621" } }
+            }],
+            "signature": "sigbtDD75xNmGbKWsPaZ2FuYYTZqKJ1yFgRtCY2Fr17occ7kfkehXbTJH6pXEyiECiGqzEcspQrMC9kGGkTnztHx5ybn4Pgo"
+        }, {
+            "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+            "chain_id": "NetXjD3HPJJjmcd",
+            "hash": "oocCFD9LULn1rL3aTn9mVXgah7owBQLYJkVqbmdV1niMWcC2XWs",
+            "branch": "BMMD3525usTXAbKz2vnme6WD8jEJxzxUqNjRjmhnKtMHRQyDdCP",
+            "contents": [{
+                "kind": "transaction",
+                "source": "tz2CLsh2PpSbpH8y3iSXH9CpNE6oHTqX95VK",
+                "fee": "38211",
+                "counter": "2010287",
+                "gas_limit": "61985",
+                "storage_limit": "20",
+                "amount": "0",
+                "destination": "KT1VZprQjiuHG9qz2F7hhiSgzttq9qw6Vvb9",
+                "parameters": { "entrypoint": "update", "value": [{ "prim": "Elt", "args": [{ "string": "BAT-USD" }, { "prim": "Pair", "args": [{ "string": "spsig1GhM1fMH28XGfVdfZ4BbFALqZXGY3eXnqZrBocG9jNBqTmaSJGZjCoBrerDhDJVNS6W72ni5VoGnmwsxtdPTGFt3M4iJmJ" }, { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "231770" }, { "prim": "Pair", "args": [{ "int": "231770" }, { "prim": "Pair", "args": [{ "int": "231770" }, { "prim": "Pair", "args": [{ "int": "231770" }, { "int": "0" }] }] }] }] }] }] }] }] }, { "prim": "Elt", "args": [{ "string": "BCH-USD" }, { "prim": "Pair", "args": [{ "string": "spsig1eGKwqQyVg3zgGuMBoZUfpxbRKMxkxohSfupC77Fx4T5nSyx2wce1ShMLL9eY7FGH8h4sxEexJLv6zQV88Ub3Xdg3AMHvh" }, { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "222000000" }, { "prim": "Pair", "args": [{ "int": "222000000" }, { "prim": "Pair", "args": [{ "int": "222000000" }, { "prim": "Pair", "args": [{ "int": "222000000" }, { "int": "0" }] }] }] }] }] }] }] }] }, { "prim": "Elt", "args": [{ "string": "BTC-USD" }, { "prim": "Pair", "args": [{ "string": "spsig1QrMSSNbGYfFqmWUJhsUoZWhbYPmx8PYAgBzULQ6mfr9ZU1kpggojYKPi1uw3sR2z4TAUJR3qpkLrG2mTvF3EW8hoASQmP" }, { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "10735980000" }, { "prim": "Pair", "args": [{ "int": "10736540000" }, { "prim": "Pair", "args": [{ "int": "10732100000" }, { "prim": "Pair", "args": [{ "int": "10732100000" }, { "int": "260752" }] }] }] }] }] }] }] }] }, { "prim": "Elt", "args": [{ "string": "DAI-USD" }, { "prim": "Pair", "args": [{ "string": "spsig1MPmigiyoKaJZHGBTYZJvZqDcXMEQ2yzkjuikt7TopDdZfvGsggaJifkQ6KS6zcUKSUkb3BfyKEuvttoARUfUzE8NtWqFt" }, { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "1019980" }, { "prim": "Pair", "args": [{ "int": "1019980" }, { "prim": "Pair", "args": [{ "int": "1019980" }, { "prim": "Pair", "args": [{ "int": "1019980" }, { "int": "0" }] }] }] }] }] }] }] }] }, { "prim": "Elt", "args": [{ "string": "ETH-USD" }, { "prim": "Pair", "args": [{ "string": "spsig1JrsUT7ppFiJpYdH73NquRT9sMUuPSkCuc4gMuPcoGw2bdJmztGdXYYNpqVhJZXQ3Tf4BqCiLYN6vVDyQ3scbujMkwLogG" }, { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "353650000" }, { "prim": "Pair", "args": [{ "int": "354180000" }, { "prim": "Pair", "args": [{ "int": "353650000" }, { "prim": "Pair", "args": [{ "int": "354180000" }, { "int": "66046" }] }] }] }] }] }] }] }] }, { "prim": "Elt", "args": [{ "string": "LINK-USD" }, { "prim": "Pair", "args": [{ "string": "spsig1SgoKKJuxFozt1bhzBTkdcCLk7wimoiHEjAeCLnRBSaZ2nJ18NbX7mjJx627Mq5xipBgxuVEi68BkZ7S6BWsNUF9kMkFbB" }, { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "10386310" }, { "prim": "Pair", "args": [{ "int": "10386310" }, { "prim": "Pair", "args": [{ "int": "10386310" }, { "prim": "Pair", "args": [{ "int": "10386310" }, { "int": "0" }] }] }] }] }] }] }] }] }, { "prim": "Elt", "args": [{ "string": "LTC-USD" }, { "prim": "Pair", "args": [{ "string": "spsig1Bkj5F7dAc7tUnKzEtjjbTuW1B2RFTgTZEz41Jo8dEzqxDZB5zEu21HTU7HmveJ5jkbFFXb7Yv6c1NsLNG7SH7vY6P2fxV" }, { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "46120000" }, { "prim": "Pair", "args": [{ "int": "46120000" }, { "prim": "Pair", "args": [{ "int": "46120000" }, { "prim": "Pair", "args": [{ "int": "46120000" }, { "int": "0" }] }] }] }] }] }] }] }] }, { "prim": "Elt", "args": [{ "string": "OXT-USD" }, { "prim": "Pair", "args": [{ "string": "spsig1EepbNSTsb3acQxk4G21SSSyv6kL12N2w9JDhHBD5hPpCebpRiYVduk177AHR3Lvd3PKBWyyDrfDjSaDYgKAAYt6KvGU4m" }, { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "306200" }, { "prim": "Pair", "args": [{ "int": "306200" }, { "prim": "Pair", "args": [{ "int": "306200" }, { "prim": "Pair", "args": [{ "int": "306200" }, { "int": "0" }] }] }] }] }] }] }] }] }, { "prim": "Elt", "args": [{ "string": "ZEC-USD" }, { "prim": "Pair", "args": [{ "string": "spsig1cDWmzZdLhfDEnCsoL8wXAWG34iqmJG7LdYj6aNfUoutZNBKfiW53p4niCmLra2DuSaFviefG4SyWKPzD9t5VZxbKy4jNt" }, { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "56590000" }, { "prim": "Pair", "args": [{ "int": "56590000" }, { "prim": "Pair", "args": [{ "int": "56590000" }, { "prim": "Pair", "args": [{ "int": "56590000" }, { "int": "0" }] }] }] }] }] }] }] }] }] },
+                "metadata": { "balance_updates": [{ "kind": "contract", "contract": "tz2CLsh2PpSbpH8y3iSXH9CpNE6oHTqX95VK", "change": "-38211" }, { "kind": "freezer", "category": "fees", "delegate": "tz1RomaiWJV3NFDZWTMVR2aEeHknsn3iF5Gi", "cycle": 369, "change": "38211" }], "operation_result": { "status": "applied", "storage": { "prim": "Pair", "args": [{ "int": "14877" }, { "prim": "Some", "args": [{ "bytes": "01038b4535ef4c08ff3b27eb51ab40d191e7e6182cbd54cd896d7f4ba0047c5cfd89" }] }] }, "big_map_diff": [{ "action": "update", "big_map": "14877", "key_hash": "exprtvjRp9MJwQ7KBJctitWq3c7f5NZKRWvxaQfGeYRzfH2FBL9Swi", "key": { "string": "BAT-USD" }, "value": { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "231770" }, { "prim": "Pair", "args": [{ "int": "231770" }, { "prim": "Pair", "args": [{ "int": "231770" }, { "prim": "Pair", "args": [{ "int": "231770" }, { "int": "0" }] }] }] }] }] }] } }, { "action": "update", "big_map": "14877", "key_hash": "exprukb7Pf4ztBzjqi25bM7YCMzoZaeZhCqKEnmjEZwQ5A6uYr4bkY", "key": { "string": "BCH-USD" }, "value": { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "222000000" }, { "prim": "Pair", "args": [{ "int": "222000000" }, { "prim": "Pair", "args": [{ "int": "222000000" }, { "prim": "Pair", "args": [{ "int": "222000000" }, { "int": "0" }] }] }] }] }] }] } }, { "action": "update", "big_map": "14877", "key_hash": "expruDEDcy5nG4V1Up1HToC5wXZGtZXHCYNsYHBgZyUJKA44e2qnhV", "key": { "string": "BTC-USD" }, "value": { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "10735980000" }, { "prim": "Pair", "args": [{ "int": "10736540000" }, { "prim": "Pair", "args": [{ "int": "10732100000" }, { "prim": "Pair", "args": [{ "int": "10732100000" }, { "int": "260752" }] }] }] }] }] }] } }, { "action": "update", "big_map": "14877", "key_hash": "exprv8BEGyu7WAgPJsiinYtLGhBhxmDo293RuePMtipQrQ89A7Bzkq", "key": { "string": "DAI-USD" }, "value": { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "1019980" }, { "prim": "Pair", "args": [{ "int": "1019980" }, { "prim": "Pair", "args": [{ "int": "1019980" }, { "prim": "Pair", "args": [{ "int": "1019980" }, { "int": "0" }] }] }] }] }] }] } }, { "action": "update", "big_map": "14877", "key_hash": "exprv9NLX1skZHFM1i6eXc7eAazz25T1BVjkDzc47fWEEjn6y2Zsay", "key": { "string": "ETH-USD" }, "value": { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "353650000" }, { "prim": "Pair", "args": [{ "int": "354180000" }, { "prim": "Pair", "args": [{ "int": "353650000" }, { "prim": "Pair", "args": [{ "int": "354180000" }, { "int": "66046" }] }] }] }] }] }] } }, { "action": "update", "big_map": "14877", "key_hash": "expruN2dG6bWSAUNefFCdJ244bEekeGkUMCNhcQGhzJXmAYpcbgnVG", "key": { "string": "LINK-USD" }, "value": { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "10386310" }, { "prim": "Pair", "args": [{ "int": "10386310" }, { "prim": "Pair", "args": [{ "int": "10386310" }, { "prim": "Pair", "args": [{ "int": "10386310" }, { "int": "0" }] }] }] }] }] }] } }, { "action": "update", "big_map": "14877", "key_hash": "expruSu9akzwvn3s2neMSDpnVCWVGJ1S1DpGR31nHRxj46zGAEN9dP", "key": { "string": "LTC-USD" }, "value": { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "46120000" }, { "prim": "Pair", "args": [{ "int": "46120000" }, { "prim": "Pair", "args": [{ "int": "46120000" }, { "prim": "Pair", "args": [{ "int": "46120000" }, { "int": "0" }] }] }] }] }] }] } }, { "action": "update", "big_map": "14877", "key_hash": "expruzorDPUqPMi7zK7okL4q6Hm8RfM9G9MU16tkdRuLhnyv2SAPAx", "key": { "string": "OXT-USD" }, "value": { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "306200" }, { "prim": "Pair", "args": [{ "int": "306200" }, { "prim": "Pair", "args": [{ "int": "306200" }, { "prim": "Pair", "args": [{ "int": "306200" }, { "int": "0" }] }] }] }] }] }] } }, { "action": "update", "big_map": "14877", "key_hash": "exprv9JJ388D7sz5ptYqSZEwLLPy4DLCZg3ZGfXTtJ65vrxG1g6wxR", "key": { "string": "ZEC-USD" }, "value": { "prim": "Pair", "args": [{ "int": "1601164620" }, { "prim": "Pair", "args": [{ "int": "1601164680" }, { "prim": "Pair", "args": [{ "int": "56590000" }, { "prim": "Pair", "args": [{ "int": "56590000" }, { "prim": "Pair", "args": [{ "int": "56590000" }, { "prim": "Pair", "args": [{ "int": "56590000" }, { "int": "0" }] }] }] }] }] }] } }], "consumed_gas": "61885", "storage_size": "1738" } }
+            }, {
+                "kind": "transaction",
+                "source": "tz2CLsh2PpSbpH8y3iSXH9CpNE6oHTqX95VK",
+                "fee": "0",
+                "counter": "2010288",
+                "gas_limit": "301322",
+                "storage_limit": "20",
+                "amount": "0",
+                "destination": "KT1VZprQjiuHG9qz2F7hhiSgzttq9qw6Vvb9",
+                "parameters": { "entrypoint": "push", "value": { "string": "KT1N897aHVKtZ2UTbhw6DydZW7aRCUYff4E9%update" } },
+                "metadata": {
+                    "balance_updates": [],
+                    "operation_result": { "status": "applied", "storage": { "prim": "Pair", "args": [{ "int": "14877" }, { "prim": "Some", "args": [{ "bytes": "01038b4535ef4c08ff3b27eb51ab40d191e7e6182cbd54cd896d7f4ba0047c5cfd89" }] }] }, "big_map_diff": [{ "action": "copy", "source_big_map": "14877", "destination_big_map": "-1" }], "consumed_gas": "94750", "storage_size": "1738" },
+                    "internal_operation_results": [{
+                        "kind": "transaction",
+                        "source": "KT1VZprQjiuHG9qz2F7hhiSgzttq9qw6Vvb9",
+                        "nonce": 0,
+                        "amount": "0",
+                        "destination": "KT1N897aHVKtZ2UTbhw6DydZW7aRCUYff4E9",
+                        "parameters": { "entrypoint": "update", "value": { "int": "-1" } },
+                        "result": {
+                            "status": "applied",
+                            "storage": {
+                                "prim": "Pair",
+                                "args": [{
+                                    "prim": "Pair",
+                                    "args": [
+                                        [{ "string": "BAT-USD" }, { "string": "BCH-USD" }, { "string": "BTC-USD" }, { "string": "DAI-USD" }, { "string": "ETH-USD" }, { "string": "LINK-USD" }, { "string": "LTC-USD" }, { "string": "OXT-USD" }, { "string": "ZEC-USD" }], { "int": "16943" }
+                                    ]
+                                }, { "prim": "Pair", "args": [{ "int": "6" }, { "bytes": "01e62cf825dc67a2b714536b29af90cf0fcc7e218800" }] }]
+                            },
+                            "big_map_diff": [{
+                                "action": "update",
+                                "big_map": "16943",
+                                "key_hash": "expruDEDcy5nG4V1Up1HToC5wXZGtZXHCYNsYHBgZyUJKA44e2qnhV",
+                                "key": { "string": "BTC-USD" },
+                                "value": {
+                                    "prim": "Pair",
+                                    "args": [{ "prim": "Pair", "args": [{ "int": "10737698757" }, { "int": "1601164620" }] }, {
+                                        "prim": "Pair",
+                                        "args": [{
+                                            "prim": "Pair",
+                                            "args": [{ "prim": "Pair", "args": [{ "int": "3980" }, { "int": "3985" }] }, {
+                                                "prim": "Pair",
+                                                "args": [
+                                                    [{ "prim": "Elt", "args": [{ "int": "3980" }, { "int": "609096694228880" }] }, { "prim": "Elt", "args": [{ "int": "3981" }, { "int": "80327227680000" }] }, { "prim": "Elt", "args": [{ "int": "3982" }, { "int": "885503554980000" }] }, { "prim": "Elt", "args": [{ "int": "3983" }, { "int": "490091688770000" }] }, { "prim": "Elt", "args": [{ "int": "3984" }, { "int": "174414016344591" }] }, { "prim": "Elt", "args": [{ "int": "3985" }, { "int": "2798802452160000" }] }], { "int": "5038235634163471" }
+                                                ]
+                                            }]
+                                        }, {
+                                            "prim": "Pair",
+                                            "args": [{ "prim": "Pair", "args": [{ "int": "3980" }, { "int": "3985" }] }, {
+                                                "prim": "Pair",
+                                                "args": [
+                                                    [{ "prim": "Elt", "args": [{ "int": "3980" }, { "int": "56680" }] }, { "prim": "Elt", "args": [{ "int": "3981" }, { "int": "7476" }] }, { "prim": "Elt", "args": [{ "int": "3982" }, { "int": "82434" }] }, { "prim": "Elt", "args": [{ "int": "3983" }, { "int": "45641" }] }, { "prim": "Elt", "args": [{ "int": "3984" }, { "int": "16227" }] }, { "prim": "Elt", "args": [{ "int": "3985" }, { "int": "260752" }] }], { "int": "469210" }
+                                                ]
+                                            }]
+                                        }]
+                                    }]
+                                }
+                            }, {
+                                "action": "update",
+                                "big_map": "16943",
+                                "key_hash": "exprv9NLX1skZHFM1i6eXc7eAazz25T1BVjkDzc47fWEEjn6y2Zsay",
+                                "key": { "string": "ETH-USD" },
+                                "value": {
+                                    "prim": "Pair",
+                                    "args": [{ "prim": "Pair", "args": [{ "int": "354806359" }, { "int": "1601164620" }] }, {
+                                        "prim": "Pair",
+                                        "args": [{
+                                            "prim": "Pair",
+                                            "args": [{ "prim": "Pair", "args": [{ "int": "2526" }, { "int": "2531" }] }, {
+                                                "prim": "Pair",
+                                                "args": [
+                                                    [{ "prim": "Elt", "args": [{ "int": "2526" }, { "int": "161679069560987" }] }, { "prim": "Elt", "args": [{ "int": "2527" }, { "int": "401583301163259" }] }, { "prim": "Elt", "args": [{ "int": "2528" }, { "int": "338752992696400" }] }, { "prim": "Elt", "args": [{ "int": "2529" }, { "int": "531115677061164" }] }, { "prim": "Elt", "args": [{ "int": "2530" }, { "int": "117131299890000" }] }, { "prim": "Elt", "args": [{ "int": "2531" }, { "int": "23380504131318" }] }], { "int": "1573642844503128" }
+                                                ]
+                                            }]
+                                        }, {
+                                            "prim": "Pair",
+                                            "args": [{ "prim": "Pair", "args": [{ "int": "2526" }, { "int": "2531" }] }, {
+                                                "prim": "Pair",
+                                                "args": [
+                                                    [{ "prim": "Elt", "args": [{ "int": "2526" }, { "int": "457039" }] }, { "prim": "Elt", "args": [{ "int": "2527" }, { "int": "1130223" }] }, { "prim": "Elt", "args": [{ "int": "2528" }, { "int": "955400" }] }, { "prim": "Elt", "args": [{ "int": "2529" }, { "int": "1496508" }] }, { "prim": "Elt", "args": [{ "int": "2530" }, { "int": "330000" }] }, { "prim": "Elt", "args": [{ "int": "2531" }, { "int": "66046" }] }], { "int": "4435216" }
+                                                ]
+                                            }]
+                                        }]
+                                    }]
+                                }
+                            }],
+                            "consumed_gas": "206472",
+                            "storage_size": "6712"
+                        }
+                    }]
+                }
+            }],
+            "signature": "signizYq7cWX1c5suBv2QB5fQSUwNkJaDceEjtRRrouVHYVpbQ91mvbJZ6fYwkbWUnaYpVmnQhg6YXd3Ee6trdeuyNBCfmPn"
+        }]
+    ]
+}

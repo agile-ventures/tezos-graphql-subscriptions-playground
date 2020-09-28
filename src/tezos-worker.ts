@@ -37,9 +37,7 @@ export class TezosWorker {
             this.getHead();
         }, 5000);
     }
-
-    getHead()
-    {
+    getHead() {
         // NOTE: will be replaced by call to tezos indexer
         this.client.getBlock()
             .then((data: BlockResponse) => this.processBlock(data))
