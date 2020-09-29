@@ -194,6 +194,13 @@ export class TezosWorker {
         this.pubSub.publish(payload.kind, payload);
 
         // NOTE keeping operations in memory for dev and testing purposes
-        this.cache.get<Array<IOperationNotification>>(cacheKeys.operations).push(payload);
+        // node cache is initialized with useClones: false so reference to variable is stored
+        let operations = this.cache.get<Array<IOperationNotification>>(cacheKeys.operations);
+        operations.push(payload);
+
+        // NOTE keeping operations in memory for dev and testing purposes
+        if (operations.length > 5000) {
+            operations.splice(0, 1000);
+        }
     }
 }

@@ -6,6 +6,7 @@
     "scripts": {
         "start": "node dist/src/server.js",
         "build": "tsc -p .",
+        "debug": "tsc && node dist/src/server.js",
         "test": "mocha -r ts-node/register tests/**/*.test.ts",
         "coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" npm run test"
     },

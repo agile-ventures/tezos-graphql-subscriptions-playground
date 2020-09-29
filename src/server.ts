@@ -32,9 +32,9 @@ worker.start();
 const server = new GraphQLServer({
     typeDefs: './src/schema/schema.graphql',
     resolvers,
-    context: request => {
+    context: cp => {
         return {
-            ...request,
+            ...cp,
             pubSub
         }
     },

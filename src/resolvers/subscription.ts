@@ -1,6 +1,7 @@
 import { withFilter } from "graphql-yoga";
 import { argsToArgsConfig } from "graphql/type/definition";
 import { IOperationNotification, IActivationNotification, ITransactionNotification } from "../types/types";
+import { authenticateSubscription } from "./authenticator";
 import { keys } from './keys';
 
 export const Subscription = {
@@ -114,5 +115,6 @@ export function getMembers(instance: any): string[] {
 }
 
 function subscribe(key: string, parent: any, args: any, context: any, info: any) {
+    authenticateSubscription(context.connection.context);
     return context.pubSub.asyncIterator(key);
 }
