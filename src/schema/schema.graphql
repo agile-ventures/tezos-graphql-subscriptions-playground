@@ -172,81 +172,63 @@ Subscription related type definitions
 NOTE: notification types are used for transfering partial data through pubsub to clients
 """
 type OperationNotification {
-  kind: String!
-  hash: OperationHash!
+    kind: String!
+    data: OperationContents!
 }
 
 type ActivationNotification {
-  hash: OperationHash!
-  pkh: Address!
-  secret: String!
+    kind: String!
+    data: ActivateAccount!
 }
 
 type BallotNotification {
-  hash: OperationHash!
-  source: Address!
-  period: Int!
-  proposal: ProtocolHash!
-  ballot: BallotVote!
+    kind: String!
+    data: Ballot!
 }
 
 type DelegationNotification {
-  hash: OperationHash!
-  source: Address!
-  fee: Mutez!
-  counter: BigNumber!
-  gasLimit: BigNumber!
-  storageLimit: BigNumber!
-  delegate: Address!
+    kind: String!
+    data: Delegation!
 }
 
 type DoubleBakingEvidenceNotification {
-  hash: OperationHash!
-  bh1: BlockHeader!
-  bh2: BlockHeader!
+    kind: String!
+    data: DoubleBakingEvidence!
 }
 
 type DoubleEndorsementEvidenceNotification {
-  hash: OperationHash!
-  op1: InlinedEndorsement!
-  op2: InlinedEndorsement!
+    kind: String!
+    data: DoubleEndorsementEvidence!
 }
 
 type EndorsementNotification {
-  hash: OperationHash!
-  delegate: Address!
+    kind: String!
+    data: Endorsement!
 }
 
 type OriginationNotification {
-  hash: OperationHash!
-  source: Address!
-  delegate: Address!
+    kind: String!
+    data: Origination!
 }
 
 type ProposalsNotification {
-  hash: OperationHash!
-  source: Address!
-  period: Int!
-  proposals: [ProtocolHash!]!
+    kind: String!
+    data: Proposals!
 }
 
 type RevealNotification {
-  hash: OperationHash!
-  source: Address!
+    kind: String!
+    data: Reveal!
 }
 
 type SeedNonceRevelationNotification {
-  hash: OperationHash!
-  level: Int!
-  nonce: String!
+    kind: String!
+    data: SeedNonceRevelation!
 }
 
 type TransactionNotification {
-  hash: OperationHash!
-  fee: Mutez!
-  amount: Mutez!
-  source: Address!
-  destination: Address!
+    kind: String!
+    data: Transaction!
 }
 
 """

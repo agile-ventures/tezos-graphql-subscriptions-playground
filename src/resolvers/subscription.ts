@@ -1,6 +1,20 @@
 import { withFilter } from "graphql-yoga";
 import { argsToArgsConfig } from "graphql/type/definition";
-import { IOperationNotification, IActivationNotification, ITransactionNotification } from "../types/types";
+import { 
+    IOperationNotification,
+    IActivationNotification,
+    IBallotNotification,
+    IDelegationNotification,
+    IDoubleBakingEvidenceNotification,
+    IDoubleEndorsementEvidenceNotification,
+    IEndorsementNotification,
+    IOriginationNotification,
+    IProposalsNotification,
+    IRevealNotification,
+    ISeedNonceRevelationNotification,
+    ITransactionNotification
+
+} from "../types/types";
 import { authenticateSubscription } from "./authenticator";
 import { keys } from './keys';
 
@@ -21,63 +35,63 @@ export const Subscription = {
             (parent: any, args: any, context: any, info: any) => subscribe(keys.newBallot, parent, args, context, info),
             canReturn,
         ),
-        resolve: (payload: any) => payload,
+        resolve: (payload: IBallotNotification) => payload,
     },
     delegationAdded: {
         subscribe: withFilter(
             (parent: any, args: any, context: any, info: any) => subscribe(keys.newDelegation, parent, args, context, info),
             canReturn,
         ),
-        resolve: (payload: any) => payload,
+        resolve: (payload: IDelegationNotification) => payload,
     },
     doubleBakingEvidenceAdded: {
         subscribe: withFilter(
             (parent: any, args: any, context: any, info: any) => subscribe(keys.newDoubleBakingEvidence, parent, args, context, info),
             canReturn,
         ),
-        resolve: (payload: any) => payload,
+        resolve: (payload: IDoubleBakingEvidenceNotification) => payload,
     },
     doubleEndorsementEvidenceAdded: {
         subscribe: withFilter(
             (parent: any, args: any, context: any, info: any) => subscribe(keys.newDoubleEndorsementEvidence, parent, args, context, info),
             canReturn,
         ),
-        resolve: (payload: any) => payload,
+        resolve: (payload: IDoubleEndorsementEvidenceNotification) => payload,
     },
     endorsementAdded: {
         subscribe: withFilter(
             (parent: any, args: any, context: any, info: any) => subscribe(keys.newEndorsement, parent, args, context, info),
             canReturn,
         ),
-        resolve: (payload: any) => payload,
+        resolve: (payload: IEndorsementNotification) => payload,
     },
     originationAdded: {
         subscribe: withFilter(
             (parent: any, args: any, context: any, info: any) => subscribe(keys.newOrigination, parent, args, context, info),
             canReturn,
         ),
-        resolve: (payload: any) => payload,
+        resolve: (payload: IOriginationNotification) => payload,
     },
     proposalsAdded: {
         subscribe: withFilter(
             (parent: any, args: any, context: any, info: any) => subscribe(keys.newProposals, parent, args, context, info),
             canReturn,
         ),
-        resolve: (payload: any) => payload,
+        resolve: (payload: IProposalsNotification) => payload,
     },
     revealAdded: {
         subscribe: withFilter(
             (parent: any, args: any, context: any, info: any) => subscribe(keys.newReveal, parent, args, context, info),
             canReturn,
         ),
-        resolve: (payload: any) => payload,
+        resolve: (payload: IRevealNotification) => payload,
     },
     seedNonceRevelationAdded: {
         subscribe: withFilter(
             (parent: any, args: any, context: any, info: any) => subscribe(keys.newSeedNonceRevelation, parent, args, context, info),
             canReturn,
         ),
-        resolve: (payload: any) => payload,
+        resolve: (payload: ISeedNonceRevelationNotification) => payload,
     },
     transactionAdded: {
         subscribe: withFilter(

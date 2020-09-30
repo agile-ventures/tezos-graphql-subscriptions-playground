@@ -412,76 +412,60 @@ export type BigMapKeyType = 'string' | 'nat' | 'int' | 'bytes' | 'bool' | 'mutez
 
 export interface IOperationNotification {
     kind: string;
-    hash: string;
-}
-  
-export interface IActivationNotification extends IOperationNotification {
-    pkh: string
-    secret: string
+    data: any;
 }
 
-export interface IBallotNotification extends IOperationNotification {
-    kind: string
-    source: string
-    period: string
-    proposal: string
-    ballot: string
+export interface IActivationNotification {
+    kind: string;
+    data: ActivateAccount;
 }
 
-export interface IDelegationNotification extends IOperationNotification {
-    kind: string
-    source: string
-    fee: string
-    counter: string
-    gasLimit: string
-    storateLimit: string
-    delegate: string
+export interface IBallotNotification {
+    kind: string;
+    data: Ballot;
 }
 
-export interface IDoubleBakingEvidenceNotification extends IOperationNotification {
-    kind: string
-    bh1: string
-    bh2: string
+export interface IDelegationNotification {
+    kind: string;
+    data: Delegation;
 }
 
-export interface IDoubleEndorsementEvidenceNotification extends IOperationNotification {
-    kind: string
-    op1: string
-    op2: string
+export interface IDoubleBakingEvidenceNotification {
+    kind: string;
+    data: DoubleBakingEvidence;
 }
 
-export interface IEndorsementNotification extends IOperationNotification {
-    kind: string
-    delegate: string
+export interface IDoubleEndorsementEvidenceNotification {
+    kind: string;
+    data: DoubleEndorsementEvidence;
 }
 
-export interface IOriginationNotification extends IOperationNotification {
-    kind: string
-    source: string
-    delegate: string
+export interface IEndorsementNotification {
+    kind: string;
+    data: Endorsement;
 }
 
-export interface IProposals extends IOperationNotification {
-    kind: string
-    source: string
-    period: string
-    proposals: string
+export interface IOriginationNotification {
+    kind: string;
+    data: Origination;
 }
 
-export interface IRevealNotification extends IOperationNotification {
-    kind: string
-    source: string
+export interface IProposalsNotification {
+    kind: string;
+    data: Proposals;
 }
 
-export interface ISeedNonceRevelationNotification extends IOperationNotification {
-    kind: string
-    level: string
-    nonce: string
+export interface IRevealNotification {
+    kind: string;
+    data: Reveal;
 }
 
-export interface ITransactionNotification extends IOperationNotification {
-    fee: string
-    amount: string
-    source: string
-    destination: string
+export interface ISeedNonceRevelationNotification {
+    kind: string;
+    data: SeedNonceRevelation;
+}
+
+export interface ITransactionNotification {
+    kind: string;
+    data: Transaction;
 }

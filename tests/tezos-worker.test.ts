@@ -3,7 +3,7 @@ import { assert, expect } from "chai";
 import NodeCache from "node-cache";
 import { cacheKeys } from "../src/cache-keys";
 import { TezosWorker } from "../src/tezos-worker";
-import { IOperationNotification, IEndorsementNotification, ITransactionNotification } from "../src/types/types";
+import { IOperationNotification, IEndorsementNotification } from "../src/types/types";
 import sinon from "sinon";
 import { PubSub } from "graphql-yoga";
 import { keys } from '../src/resolvers/keys';
@@ -97,7 +97,7 @@ describe('processBlock', () => {
     const callback = sinon.spy();
     const pubSubMock = <PubSub> {
       publish: function(kind: any, payload:any): boolean { 
-        callback(kind, payload);
+        callback(kind, payload.data);
         return true;
       }
     };
@@ -110,20 +110,17 @@ describe('processBlock', () => {
     let expectedNotifications = [];
     let endorsements = head.operations[0];
     endorsements.forEach((e: any) => 
-      e.contents.forEach((c: any) =>
-        expectedNotifications.push(<IEndorsementNotification> { 
-          hash:  e.hash,
+      e.contents.forEach((c: any) => {
+        expectedNotifications.push(<IOperationNotification> { 
+          kind: keys.newOperation,
+          data: c
+        });
+        expectedNotifications.push(<IOperationNotification> { 
           kind: keys.newEndorsement,
-          delegate: c.metadata.delegate
-    })));
-
-    endorsements.forEach((e: any) => {
-      expectedNotifications.push(<IEndorsementNotification> { 
-        hash:  e.hash,
-        kind: keys.newEndorsement,
-        delegate: e.contents[0].metadata.delegate
-      });
-    });
+          data: c
+        });
+      }
+    ));
 
     cache.set(cacheKeys.head, oldHead);
     cache.set(cacheKeys.operations, new Array<IOperationNotification>());
@@ -135,11 +132,9 @@ describe('processBlock', () => {
     assert.equal(11, callback.withArgs(keys.newEndorsement).callCount);
 
     expectedNotifications.forEach((n: any) => {
-      assert.equal(1, callback.withArgs(keys.newOperation, n).callCount);
-      assert.equal(1, callback.withArgs(keys.newEndorsement, n).callCount);
+      assert.equal(1, callback.withArgs(keys.newOperation, n.data).callCount);
+      assert.equal(1, callback.withArgs(keys.newEndorsement, n.data).callCount);
     });
-
-    assert.equal(30, callback.callCount);
   });
 });
 
@@ -149,7 +144,7 @@ describe('processBlock', () => {
     const callback = sinon.spy();
     const pubSubMock = <PubSub> {
       publish: function(kind: any, payload:any): boolean { 
-        callback(kind, payload);
+        callback(kind, payload.data);
         return true;
       }
     };
@@ -162,15 +157,17 @@ describe('processBlock', () => {
     let expectedNotifications = [];
     let transations = head.operations[3];
     transations.forEach((t: any) => 
-      t.contents.forEach((c: any) =>
-        expectedNotifications.push(<ITransactionNotification> { 
-          hash:  t.hash,
+      t.contents.forEach((c: any) =>{
+        expectedNotifications.push(<IOperationNotification> { 
+          kind: keys.newOperation,
+          data: c
+        });
+        expectedNotifications.push(<IOperationNotification> { 
           kind: keys.newTransaction,
-          fee: c.fee,
-          amount: c.amount,
-          source: c.source,
-          destination: c.destination
-    })));
+          data: c
+        });
+      }
+    ));
 
     cache.set(cacheKeys.head, oldHead);
     cache.set(cacheKeys.operations, new Array<IOperationNotification>());
@@ -182,11 +179,9 @@ describe('processBlock', () => {
     assert.equal(4, callback.withArgs(keys.newTransaction).callCount);
 
     expectedNotifications.forEach((n: any) => {
-      assert.equal(1, callback.withArgs(keys.newOperation, n).callCount);
-      assert.equal(1, callback.withArgs(keys.newTransaction, n).callCount);
+      assert.equal(1, callback.withArgs(keys.newOperation, n.data).callCount);
+      assert.equal(1, callback.withArgs(keys.newTransaction, n.data).callCount);
     });
-
-    assert.equal(30, callback.callCount);
   });
 });
 

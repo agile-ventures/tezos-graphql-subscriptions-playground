@@ -40,5 +40,6 @@ export const Query = {
 }
 
 function getOperations(): any {
-    return global.Cache.get<any>(cacheKeys.operations);
+    let ops = global.Cache.get<any>(cacheKeys.operations);
+    return ops;
 }

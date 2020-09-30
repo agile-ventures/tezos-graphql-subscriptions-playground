@@ -208,7 +208,9 @@
                                 "args": [{
                                     "prim": "Pair",
                                     "args": [
-                                        [{ "string": "BAT-USD" }, { "string": "BCH-USD" }, { "string": "BTC-USD" }, { "string": "DAI-USD" }, { "string": "ETH-USD" }, { "string": "LINK-USD" }, { "string": "LTC-USD" }, { "string": "OXT-USD" }, { "string": "ZEC-USD" }], { "int": "16943" }
+                                        [
+                                            { "string": "BAT-USD" }, { "string": "BCH-USD" }, { "string": "BTC-USD" }, { "string": "DAI-USD" }, { "string": "ETH-USD" }, { "string": "LINK-USD" }, { "string": "LTC-USD" }, { "string": "OXT-USD" }, { "string": "ZEC-USD" }
+                                        ], { "int": "16943" }
                                     ]
                                 }, { "prim": "Pair", "args": [{ "int": "6" }, { "bytes": "01e62cf825dc67a2b714536b29af90cf0fcc7e218800" }] }]
                             },
