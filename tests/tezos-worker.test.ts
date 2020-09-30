@@ -7,31 +7,32 @@ import { IOperationNotification, IEndorsementNotification, ITransactionNotificat
 import sinon from "sinon";
 import { PubSub } from "graphql-yoga";
 import { keys } from '../src/resolvers/keys';
+import { MonitorBlockHeader } from '../src/tezos-monitor';
 
 describe('tezos worker', () => {
-  describe('getHead', () => {
-    it('returns head from rpc client', () => {
+  describe('onNewBlock', () => {
+    it('returns head from rpc client', async () => {
       // arrange
       const hash = "xz1X7fu4GXBXp9A8fchu1px3zzMDKtagDBk5";
-      const expected = { hash: hash };
-      var actual: { hash: string; };
+      const blockHeader = <MonitorBlockHeader>{ hash, level: 666 };
+      let receivedArgs: any;
 
       const callback = sinon.spy();
       const client = <RpcClient> {
-        getBlock: function(): Promise<any> { 
-          actual = expected;
+        getBlock: function (args): Promise<any> { 
+          receivedArgs = args;
           callback();
-          return new Promise((resolve, reject) => { return expected });
+          return new Promise((resolve, reject) => resolve({ hash }));
         }
       };
       const mock = sinon.mock(client);
       const worker = new TezosWorker(client, null, null);
       
       // act
-      worker.getHead();
+      await worker.onNewBlock(blockHeader);
 
       // assert
-      assert.deepEqual(expected, actual);
+      assert.deepEqual(receivedArgs, { block: hash });
       assert.equal(true, callback.calledOnce);
     }); 
   });

@@ -2,6 +2,7 @@ import { GraphQLServer } from 'graphql-yoga'
 import { RpcClient } from '@taquito/rpc';
 import { PubSub } from 'graphql-yoga'
 import { TezosWorker } from './tezos-worker'
+import { TezosMonitor } from './tezos-monitor'
 import { Query } from './resolvers/query'
 import { Subscription, OperationContents, OperationResult } from './resolvers/subscription'
 import NodeCache from "node-cache";
@@ -26,8 +27,11 @@ declare global {
 };
 global.Cache = cache;
 
+const monitor = new TezosMonitor(provider);
 const worker = new TezosWorker(client, pubSub, cache);
-worker.start();
+
+worker.startListening(monitor);
+monitor.start();
 
 const server = new GraphQLServer({
     typeDefs: './src/schema/schema.graphql',

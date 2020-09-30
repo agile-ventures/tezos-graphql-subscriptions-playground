@@ -17,31 +17,28 @@ import {
     IRevealNotification,
     ISeedNonceRevelationNotification
 } from './types/types'
+import { MonitorBlockHeader, TezosMonitor } from './tezos-monitor';
 
 export class TezosWorker {
-    client: RpcClient;
-    pubSub: PubSub;
-    cache: NodeCache;
+    constructor(
+        private readonly client: RpcClient,
+        private readonly pubSub: PubSub,
+        private readonly cache: NodeCache) {}
 
-    constructor(client: RpcClient, pubSub: PubSub, cache: NodeCache){
-        this.client = client;
-        this.pubSub = pubSub;
-        this.cache = cache;
-    }
-
-    start() {
+    startListening(monitor: TezosMonitor) {
         // NOTE keeping operations in memory for dev and testing purposes
         this.cache.set(cacheKeys.operations, []);
-
-        let interval = setInterval(() => {
-            this.getHead();
-        }, 5000);
+        monitor.blockHeaders.subscribe(b => this.onNewBlock(b));
     }
-    getHead() {
-        // NOTE: will be replaced by call to tezos indexer
-        this.client.getBlock()
-            .then((data: BlockResponse) => this.processBlock(data))
-            .catch(err => console.error(err));
+
+    async onNewBlock(blockHeader: MonitorBlockHeader) {
+        try {
+            // NOTE: will be replaced by call to tezos indexer
+            let block = await this.client.getBlock({ block: blockHeader.hash });
+            this.processBlock(block);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     processBlock(block: BlockResponse) {
