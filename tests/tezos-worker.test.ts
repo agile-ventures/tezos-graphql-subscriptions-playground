@@ -81,8 +81,10 @@ describe('TezosWorker', () => {
 
   describe('processBlock(block: BlockResponse)', () => {
     var tests = [
+      { args: [2, keys.newActivateAccount], expected: 2 },
+      { args: [1, keys.newBallot], expected: 2 },
+      { args: [3, keys.newDelegation], expected: 2 },
       { args: [0, keys.newEndorsement], expected: 11 },
-      { args: [2, keys.newActivateAccount], expected: 1 },
       { args: [3, keys.newTransaction], expected: 4 },
     ];
 
@@ -108,7 +110,7 @@ describe('TezosWorker', () => {
         let expectedNotifications = [];
         let operations = head.operations[test.args[0]];
         operations.forEach((o: any) => 
-          o.contents.forEach((c: any) => {
+          o.contents.filter((c: { kind: NodeCache.Key; }) => c.kind === test.args[1]).forEach((c: any) => {
             expectedNotifications.push(<IOperationNotification> { 
               kind: keys.newOperation,
               data: c

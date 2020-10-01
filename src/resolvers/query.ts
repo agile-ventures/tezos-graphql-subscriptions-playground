@@ -13,6 +13,10 @@ export const Query = {
 
     async block(parent: any, args: { block: string | number | null }, context: any): Promise<Block | null> {
         authenticateQuery(context.request);
+        
+        let block = global.Client.getBlock({ block: args.block?.toString() || 'head' });
+        console.log(JSON.stringify(block));
+
         return convertResponseOrNull(await handleNotFound(() => global.Client.getBlock({ block: args.block?.toString() || 'head' })));
     },
 

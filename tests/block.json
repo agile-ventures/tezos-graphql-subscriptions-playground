@@ -507,25 +507,74 @@
                 "signature": "sigU8qn9ktKGMCVAxmhqP8w9eFxswUGEvekg6p492XZ51Y3bnD9QGE3EGKvLcDRFmURyqx3HMLn8wPVUXZHgnQ7sHkTVqDhz"
             }
         ],
-        [],
         [{
-            "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
-            "chainId": "NetXdQprcVkpaWU",
-            "hash": "op1sLcRpXZ7tQZpSay9v56R1CWPG1JrWsyhf8aGs8juqLKZm6eD",
-            "branch": "BKxRsx3MZ9YxcQDzFiWaJ4Vce5NCAaeEc57yc2LVxmS4FGzyhig",
-            "contents": [{
-                "kind": "activate_account",
-                "pkh": "tz1R1hfHW2ZreLcTTZx7UsHipAdXzkQbte35",
-                "secret": "87196733225fbedf4d7cf98e767fc3049c22dc6a",
-                "metadata": {
-                    "balanceUpdates": [{
-                        "kind": "contract",
-                        "contract": "tz1R1hfHW2ZreLcTTZx7UsHipAdXzkQbte35",
-                        "change": "4799400000"
-                    }]
-                }
-            }]
-        }],
+                "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+                "chainId": "NetXdQprcVkpaWU",
+                "hash": "opGRLCQ9AAg5ixCTUsSyeUEJoJUAhrrsUvubEaFLbQxoKnpnNXZ",
+                "branch": "BL7bUwsyxBkRrxQWDN1q98YezRrxZvoWSYMB23X8wMzPJCjwLEN",
+                "contents": [{
+                    "kind": "ballot",
+                    "source": "tz1cSoWttzYi9taqyHfcKS86b5M31SoaTQdg",
+                    "period": 34,
+                    "proposal": "PsDELPH1Kxsxt8f9eWbxQeRxkjfbxoqM52jvs5Y5fBxWWh4ifpo",
+                    "ballot": "yay",
+                    "metadata": {}
+                }],
+                "signature": "sigXfAm8zGs82hf4WpA3AXtRE4x3UdfRXxi1EbmYfmVtuYcRiKY7zrpU8we3fFJoqq74iNhSGuHgsdcZKiktwQAPpH3Reg9g"
+            },
+            {
+                "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+                "chainId": "NetXdQprcVkpaWU",
+                "hash": "ghURLCQ9AAg5ixCTUsSyeUEJoJUAhrrsUvubEaFLbQxoKnpnOED",
+                "branch": "BL7bUwsyxBkRrxQWDN1q98YezRrxZvoWSYMB23X8wMzPJCjwLEN",
+                "contents": [{
+                    "kind": "ballot",
+                    "source": "tz1gKdWttzYi9taqyHfcKS86b5M31SoaTOdf",
+                    "period": 22,
+                    "proposal": "SfDELPH1Kxsxt8f9eWbxQeRxkjfbxoqM52jvs5Y5fBxWWh4ifer",
+                    "ballot": "yay",
+                    "metadata": {}
+                }],
+                "signature": "sigYfAm8zGs82hf4WpA3AXtRE4x3UdfRXxi1EbmYfmVtuYcRiKY7zrpU8we3fFJoqq74iNhSGuHgsdcZKiktwQAPpH3Reg8v"
+            }
+        ],
+        [{
+                "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+                "chainId": "NetXdQprcVkpaWU",
+                "hash": "op1sLcRpXZ7tQZpSay9v56R1CWPG1JrWsyhf8aGs8juqLKZm6eD",
+                "branch": "BKxRsx3MZ9YxcQDzFiWaJ4Vce5NCAaeEc57yc2LVxmS4FGzyhig",
+                "contents": [{
+                    "kind": "activate_account",
+                    "pkh": "tz1R1hfHW2ZreLcTTZx7UsHipAdXzkQbte35",
+                    "secret": "87196733225fbedf4d7cf98e767fc3049c22dc6a",
+                    "metadata": {
+                        "balanceUpdates": [{
+                            "kind": "contract",
+                            "contract": "tz1R1hfHW2ZreLcTTZx7UsHipAdXzkQbte35",
+                            "change": "4799400000"
+                        }]
+                    }
+                }]
+            },
+            {
+                "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+                "chainId": "NetXdQprcVkpaWU",
+                "hash": "fg4sLcRpXZ7tQZpSay9v56R1CWPG1JrWsyhf8aGs8juqLKZm8gE",
+                "branch": "BKxRsx3MZ9YxcQDzFiWaJ4Vce5NCAaeEc57yc2LVxmS4FGzyhig",
+                "contents": [{
+                    "kind": "activate_account",
+                    "pkh": "tz5E6hfHW2ZreLcTTZx7UsHipAdXzkQbte87",
+                    "secret": "87196733225fbedf4d7cf98e767fc3049c22dc6a",
+                    "metadata": {
+                        "balanceUpdates": [{
+                            "kind": "contract",
+                            "contract": "tz5E6hfHW2ZreLcTTZx7UsHipAdXzkQbte87",
+                            "change": "5299400000"
+                        }]
+                    }
+                }]
+            }
+        ],
         [{
                 "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
                 "chain_id": "NetXjD3HPJJjmcd",
@@ -2246,6 +2295,76 @@
                     }
                 ],
                 "signature": "signizYq7cWX1c5suBv2QB5fQSUwNkJaDceEjtRRrouVHYVpbQ91mvbJZ6fYwkbWUnaYpVmnQhg6YXd3Ee6trdeuyNBCfmPn"
+            },
+            {
+                "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+                "chainId": "NetXdQprcVkpaWU",
+                "hash": "onmwV5Qi73MYBRCmAWHn1L9FNz4wvJ28JQYLSQB7tt18owEptgw",
+                "branch": "BLTk8KtV226LHiQ8RjrrtcZ4iMdPACV2AQc719QyDre16nhBco6",
+                "contents": [{
+                    "kind": "delegation",
+                    "source": "tz1a5QW18ULwjJK71LSc7UqNGgryrFouHzf1",
+                    "fee": "1296",
+                    "counter": "7078823",
+                    "gasLimit": "10100",
+                    "storageLimit": "0",
+                    "delegate": "tz1WCd2jm4uSt4vntk4vSuUWoZQGhLcDuR9q",
+                    "metadata": {
+                        "balanceUpdates": [{
+                                "kind": "contract",
+                                "contract": "tz1a5QW18ULwjJK71LSc7UqNGgryrFouHzf1",
+                                "change": "-1296"
+                            },
+                            {
+                                "kind": "freezer",
+                                "category": "fees",
+                                "delegate": "tz3VEZ4k6a4Wx42iyev6i2aVAptTRLEAivNN",
+                                "cycle": 281,
+                                "change": "1296"
+                            }
+                        ],
+                        "operationResult": {
+                            "status": "applied",
+                            "consumedGas": "10000"
+                        }
+                    }
+                }],
+                "signature": "sigumf5h4XYJZCyCguUeo9obCzXfmTaTxsu2yXQSKcovc1i1yxQZrdf51pDcMtTbF6YYbTQpzbJV22jL3HsNeX2eALfchnuA"
+            },
+            {
+                "protocol": "PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb",
+                "chainId": "NetXdQprcVkpaWU",
+                "hash": "onmwV5Qi73MYBRCmAWHn1L9FNz4wvJ28JQYLSQB7tt18owEptgw",
+                "branch": "BLTk8KtV226LHiQ8RjrrtcZ4iMdPACV2AQc719QyDre16nhBco6",
+                "contents": [{
+                    "kind": "delegation",
+                    "source": "tz3d5QW18ULwjJK71LSc7UqNGgryrFouHdf8",
+                    "fee": "129",
+                    "counter": "123456",
+                    "gasLimit": "20200",
+                    "storageLimit": "0",
+                    "delegate": "tz1DKe2jm4uSt4vntk4vSuUWoZQGhLcDur6q",
+                    "metadata": {
+                        "balanceUpdates": [{
+                                "kind": "contract",
+                                "contract": "tz1a5QW18ULwjJK71LSc7UqNGgryrFouHzf1",
+                                "change": "-300"
+                            },
+                            {
+                                "kind": "freezer",
+                                "category": "fees",
+                                "delegate": "tz3VEZ4k6a4Wx42iyev6i2aVAptTRLEAivNN",
+                                "cycle": 281,
+                                "change": "300"
+                            }
+                        ],
+                        "operationResult": {
+                            "status": "applied",
+                            "consumedGas": "10000"
+                        }
+                    }
+                }],
+                "signature": "sigumf5h4XYJZCyCguUeo9obCzXfmTaTxsu2yXQSKcovc1i1yxQZrdf51pDcMtTbF6YYbTQpzbJV22jL3HsNeX2eALfchnuA"
             }
         ]
     ]
