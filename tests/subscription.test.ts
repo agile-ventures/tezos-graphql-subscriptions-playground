@@ -1,9 +1,9 @@
 import { assert, expect } from "chai";
 import { canReturn, getMembers } from "../src/resolvers/subscription";
 
-describe('subscription', () => {
-  describe('canReturn', () => {
-    it('args are empty', () => {
+describe('Subscription', () => {
+  describe('canReturn(payload: any, variables: any)', () => {
+    it('should return true, because filter arguments are empty', () => {
       // arrange
       const payload = {
         "delegate": "tz1X7fu4GXBXp9A8fchu1px3zzMDKtagDBk3"
@@ -19,8 +19,8 @@ describe('subscription', () => {
     }); 
   });
 
-  describe('canReturn', () => {
-    it('payload and args match', () => {
+  describe('canReturn(payload: any, variables: any)', () => {
+    it('should return true, because payload properties match arguments', () => {
       // arrange
       const payload = { 
         "delegate": "tz1X7fu4GXBXp9A8fchu1px3zzMDKtagDBk3"
@@ -38,8 +38,8 @@ describe('subscription', () => {
     }); 
   });
 
-  describe('canReturn', () => {
-    it('payload and args dont match', () => {
+  describe('canReturn(payload: any, variables: any)', () => {
+    it('should return false, because filter arguments are empty', () => {
       // arrange
       const payload = { 
         "delegate": "tz1X7fu4GXBXp9A8fchu1px3zzMDKtagDBk3"
@@ -57,8 +57,8 @@ describe('subscription', () => {
     }); 
   });
 
-  describe('canReturn', () => {
-    it('args property not in payload', () => {
+  describe('canReturn(payload: any, variables: any)', () => {
+    it('should return true, because filter arguments are not present in payload', () => {
       // arrange
       const payload = { 
         "delegate": "tz1X7fu4GXBXp9A8fchu1px3zzMDKtagDBk3"
@@ -76,8 +76,8 @@ describe('subscription', () => {
     }); 
   });
 
-  describe('getMembers', () => {
-    it('property names correctly returned', () => {
+  describe('getMembers(instance: any)', () => {
+    it('should return all arguments values from the object', () => {
       // arrange
       const args = { 
         "delegate": "tz1X7fu4GXBXp9A8fchu1px3zzMDKtagDBk3",

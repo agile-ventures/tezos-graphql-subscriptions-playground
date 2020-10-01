@@ -20,7 +20,6 @@ export class TezosWorker {
 
     async onNewBlock(blockHeader: MonitorBlockHeader) {
         try {
-            // NOTE: will be replaced by call to tezos indexer
             let block = await this.client.getBlock({ block: blockHeader.hash });
             this.processBlock(block);
         } catch (err) {

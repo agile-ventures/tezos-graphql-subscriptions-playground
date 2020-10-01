@@ -9,13 +9,17 @@ import { PubSub } from "graphql-yoga";
 import { keys } from '../src/resolvers/keys';
 import { MonitorBlockHeader } from '../src/tezos-monitor';
 
-describe('tezos worker', () => {
-  describe('onNewBlock', () => {
-    it('returns head from rpc client', async () => {
+describe('TezosWorker', () => {
+  describe('async onNewBlock(blockHeader: MonitorBlockHeader)', () => {
+    it('should return head block from rpc client', async () => {
       // arrange
+      const cache = new NodeCache({ useClones: false });
       const hash = "xz1X7fu4GXBXp9A8fchu1px3zzMDKtagDBk5";
       const blockHeader = <MonitorBlockHeader>{ hash, level: 666 };
       let receivedArgs: any;
+
+      const block = <BlockResponse> { hash: hash };
+      cache.set(cacheKeys.head, block);
 
       const callback = sinon.spy();
       const client = <RpcClient> {
@@ -25,8 +29,7 @@ describe('tezos worker', () => {
           return new Promise((resolve, reject) => resolve({ hash }));
         }
       };
-      const mock = sinon.mock(client);
-      const worker = new TezosWorker(client, null, null);
+      const worker = new TezosWorker(client, null, cache);
       
       // act
       await worker.onNewBlock(blockHeader);
@@ -37,8 +40,8 @@ describe('tezos worker', () => {
     }); 
   });
 
-  describe('processBlock', () => {
-    it('block is already processed', () => {
+  describe('processBlock(block: BlockResponse)', () => {
+    it('should not pusn any operations notifications because block was already processed', () => {
       // arrange
       const cache = new NodeCache({ useClones: false });
       const worker = new TezosWorker(null, null, cache);
@@ -59,8 +62,8 @@ describe('tezos worker', () => {
     }); 
   });
 
-  describe('processBlock', () => {
-    it('block with no operations', () => {
+  describe('processBlock(block: BlockResponse)', () => {
+    it('should not push any operations notifications because there are no operations on the block', () => {
       // arrange
       const callback = sinon.spy();
       const pubSub = <PubSub> {
@@ -71,7 +74,7 @@ describe('tezos worker', () => {
       };
 
       const cache = new NodeCache({ useClones: false });
-      const worker = new TezosWorker(null, null, cache);
+      const worker = new TezosWorker(null, pubSub, cache);
       const head = <BlockResponse> { 
         hash: "xz1X7fu4GXBXp9A8fchu1px3zzMDKtagDBk5",
         operations: [[]]
@@ -89,15 +92,16 @@ describe('tezos worker', () => {
       assert.equal(true, callback.notCalled);
     });
   });
-});
 
-describe('TezosWorker', () => {
   describe('processBlock(block: BlockResponse)', () => {
     var tests = [
       { args: [0, keys.newEndorsement], expected: 11 },
       { args: [2, keys.newActivateAccount], expected: 1 },
       { args: [3, keys.newTransaction], expected: 4 },
     ];
+
+    // silent console loging in test output
+    sinon.stub(console, "log");
 
     tests.forEach(function(test) {
       it('should push ' + test.expected + ' notifications for operation kind ' + test.args[1], () => {
@@ -113,12 +117,12 @@ describe('TezosWorker', () => {
         const cache = new NodeCache({ useClones: false });
         const worker = new TezosWorker(null, pubSubMock, cache);
         const oldHead = <BlockResponse> { hash: "tr9X7fu4GXBXp9A8fchu1px3zzMDKtagDJd7" };
-        const head = getBlock();
+        const head = getTestBlock();
 
         let expectedNotifications = [];
-        let transations = head.operations[test.args[0]];
-        transations.forEach((t: any) => 
-          t.contents.forEach((c: any) =>{
+        let operations = head.operations[test.args[0]];
+        operations.forEach((o: any) => 
+          o.contents.forEach((c: any) => {
             expectedNotifications.push(<IOperationNotification> { 
               kind: keys.newOperation,
               data: c
@@ -148,7 +152,7 @@ describe('TezosWorker', () => {
   });
 });
 
-function getBlock() : any {
+function getTestBlock() : any {
   const fs = require('fs');
   return JSON.parse(fs.readFileSync('./tests/block.json'));
 }
