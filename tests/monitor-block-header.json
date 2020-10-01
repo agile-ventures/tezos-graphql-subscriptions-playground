@@ -1,0 +1,15 @@
+{
+    "hash": "BLkPpL5krDwjZq19YMbqpKuJwVZiqCARV8kwm31MKn3PMcN4ASX",
+    "level": 1152696,
+    "proto": 6,
+    "predecessor": "BMX2cmYo5akZWCoDLUxkcybpguV11YvuAHwhPDb3Zi4K4jdmUAb",
+    "timestamp": "2020-10-01T19:32:28Z",
+    "validation_pass": 4,
+    "operations_hash": "LLoZaMpMCHCk7t7Fx34tpXuw3AmupUi4dAPm4UXYaox4qvhGDVd2B",
+    "fitness": [
+        "01",
+        "00000000000796b8"
+    ],
+    "context": "CoVcFuRYsjZEUdnoUa3kxRKnoaa58hX2q6RZswP1y5N5pRGxyYF1",
+    "protocol_data": "0000ba45727ce8c3010000fccd812958a27366879662c3f2926ed9d1fa7b8d923bbee2a826546580cd8cb471bb6c8116d59c9e2284a31c879cc499f9ce675a947ead63128a94ed583ffa0f"
+}

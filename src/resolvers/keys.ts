@@ -11,4 +11,5 @@ export const keys = {
     newReveal: "REVEAL",
     newSeedNonceRevelation: "SEED_NONCE_REVELATION",
     newTransaction: "TRANSACTION",
+    newMonitorBlockHeader: "MONITOR_BLOCK_HEADER"
 }

@@ -1,7 +1,7 @@
 import { BlockResponse, RpcClient } from '@taquito/rpc';
 import { PubSub } from 'graphql-yoga';
 import { keys } from './resolvers/keys';
-import { IOperationNotification, OperationEntry } from './types/types'
+import { IMonitorBlockHeaderNotification, IOperationNotification, OperationEntry } from './types/types'
 import NodeCache from "node-cache";
 import { cacheKeys } from './cache-keys';
 import { MonitorBlockHeader, TezosMonitor } from './tezos-monitor';
@@ -10,7 +10,8 @@ export class TezosWorker {
     constructor(
         private readonly client: RpcClient,
         private readonly pubSub: PubSub,
-        private readonly cache: NodeCache) {}
+        private readonly cache: NodeCache) {
+        }
 
     startListening(monitor: TezosMonitor) {
         // NOTE keeping operations in memory for dev and testing purposes
@@ -19,6 +20,11 @@ export class TezosWorker {
     }
 
     async onNewBlock(blockHeader: MonitorBlockHeader) {
+        const payload: any = <IMonitorBlockHeaderNotification> { 
+            data: blockHeader
+        };
+        this.pubSub.publish(keys.newMonitorBlockHeader, payload);
+
         try {
             let block = await this.client.getBlock({ block: blockHeader.hash });
             this.processBlock(block);
@@ -28,12 +34,6 @@ export class TezosWorker {
     }
 
     processBlock(block: BlockResponse) {
-        let head = this.cache.get<BlockResponse>(cacheKeys.head);
-        if (head && head.hash === block.hash) {
-            console.log('.');
-            return;
-        }
-
         this.cache.set(cacheKeys.head, block);
         let operationsCount = 0;
 
@@ -55,8 +55,9 @@ export class TezosWorker {
 
     private publishNotification(oe: any, op: any)
     {
+        op.kind = this.Map(op.kind);
         const payload: any = <IOperationNotification> { 
-            kind: this.Map(op.kind),
+            kind: op.kind,
             data: op
         };
 

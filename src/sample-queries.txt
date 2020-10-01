@@ -1,4 +1,23 @@
 ******************************************************************************************
+// subscribe to monitor block header
+subscription {
+  monitorBlockHeaderAdded {
+    data {
+      hash,
+      level,
+      proto,
+      predecessor,
+      timestamp,
+      validation_pass,
+      operations_hash,
+      fitness,
+      context,
+      protocol_data
+    }
+  }
+}
+
+******************************************************************************************
 // subscribe to all operations
 subscription {
   operationAdded {
@@ -388,7 +407,6 @@ query {
 // endorsements in cache
 query {
   endorsements {
-    kind,
     data {
       level,
       metadata {
@@ -403,7 +421,6 @@ query {
 // transactions in cache
 query {
   transactions {
-    kind,
     data {
       source,
       fee,

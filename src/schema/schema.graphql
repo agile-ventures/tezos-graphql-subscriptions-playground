@@ -118,6 +118,11 @@ type Query {
 
 type Subscription {
     """
+    Pushes block header additions from blockchain.
+    """
+    monitorBlockHeaderAdded: MonitorBlockHeaderNotification
+
+    """
     Pushes operation additions from block.
     """
     operationAdded: OperationNotification
@@ -182,63 +187,56 @@ type Subscription {
 Subscription related type definitions
 NOTE: notification types are used for transfering partial data through pubsub to clients
 """
+type MonitorBlockHeaderNotification {
+    data: MonitorBlockHeader!
+}
+
 type OperationNotification {
     kind: String!
     data: OperationContents!
 }
 
 type ActivationNotification {
-    kind: String!
     data: ActivateAccount!
 }
 
 type BallotNotification {
-    kind: String!
     data: Ballot!
 }
 
 type DelegationNotification {
-    kind: String!
     data: Delegation!
 }
 
 type DoubleBakingEvidenceNotification {
-    kind: String!
     data: DoubleBakingEvidence!
 }
 
 type DoubleEndorsementEvidenceNotification {
-    kind: String!
     data: DoubleEndorsementEvidence!
 }
 
 type EndorsementNotification {
-    kind: String!
     data: Endorsement!
 }
 
 type OriginationNotification {
-    kind: String!
     data: Origination!
 }
 
 type ProposalsNotification {
-    kind: String!
     data: Proposals!
 }
 
 type RevealNotification {
-    kind: String!
     data: Reveal!
 }
 
 type SeedNonceRevelationNotification {
-    kind: String!
     data: SeedNonceRevelation!
 }
 
 type TransactionNotification {
-    kind: String!
     data: Transaction!
 }
 
@@ -275,6 +273,22 @@ type Block {
     All operations in this block as returned from the Tezos node
     """
     operations: [[OperationEntry]]
+}
+
+"""
+A monitor block header payload.
+"""
+type MonitorBlockHeader {
+    hash: String
+    level: Int
+    proto: Int
+    predecessor: BlockHash
+    timestamp: DateTime
+    validation_pass: Int
+    operations_hash: OperationsHash
+    fitness: [String]
+    context: ContextHash
+    protocol_data: String
 }
 
 """

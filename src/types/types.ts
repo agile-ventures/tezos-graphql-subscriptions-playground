@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { MonitorBlockHeader } from '../tezos-monitor';
 
 export interface Block {
     protocol: string;
@@ -410,62 +411,55 @@ export interface OperationError {
 
 export type BigMapKeyType = 'string' | 'nat' | 'int' | 'bytes' | 'bool' | 'mutez' | 'address' | 'key_hash';
 
+export interface IMonitorBlockHeaderNotification {
+    data: any;
+}
+
 export interface IOperationNotification {
     kind: string;
     data: any;
 }
 
 export interface IActivationNotification {
-    kind: string;
     data: ActivateAccount;
 }
 
 export interface IBallotNotification {
-    kind: string;
     data: Ballot;
 }
 
 export interface IDelegationNotification {
-    kind: string;
     data: Delegation;
 }
 
 export interface IDoubleBakingEvidenceNotification {
-    kind: string;
     data: DoubleBakingEvidence;
 }
 
 export interface IDoubleEndorsementEvidenceNotification {
-    kind: string;
     data: DoubleEndorsementEvidence;
 }
 
 export interface IEndorsementNotification {
-    kind: string;
     data: Endorsement;
 }
 
 export interface IOriginationNotification {
-    kind: string;
     data: Origination;
 }
 
 export interface IProposalsNotification {
-    kind: string;
     data: Proposals;
 }
 
 export interface IRevealNotification {
-    kind: string;
     data: Reveal;
 }
 
 export interface ISeedNonceRevelationNotification {
-    kind: string;
     data: SeedNonceRevelation;
 }
 
 export interface ITransactionNotification {
-    kind: string;
     data: Transaction;
 }

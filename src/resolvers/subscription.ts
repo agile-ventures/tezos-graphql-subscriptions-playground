@@ -1,6 +1,7 @@
 import { withFilter } from "graphql-yoga";
 import { argsToArgsConfig } from "graphql/type/definition";
 import { 
+    IMonitorBlockHeaderNotification,
     IOperationNotification,
     IActivationNotification,
     IBallotNotification,
@@ -19,6 +20,10 @@ import { authenticateSubscription } from "./authenticator";
 import { keys } from './keys';
 
 export const Subscription = {
+    monitorBlockHeaderAdded: {
+        subscribe: (parent: any, args: any, context: any, info: any) => subscribe(keys.newMonitorBlockHeader, parent, args, context, info),
+        resolve: (payload: IMonitorBlockHeaderNotification) => payload,
+    },
     operationAdded: {
         subscribe: (parent: any, args: any, context: any, info: any) => subscribe(keys.newOperation, parent, args, context, info),
         resolve: (payload: IOperationNotification) => payload,
