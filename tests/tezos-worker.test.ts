@@ -25,7 +25,7 @@ describe('TezosWorker', () => {
       const blockHeader = <MonitorBlockHeader> getTestData('monitor-block-header.json');
       let receivedArgs: any;
 
-      const block = <BlockResponse> { hash: blockHeader.hash };
+      const block = <BlockResponse> { hash: blockHeader.hash, operations: [[]] };
       cache.set(cacheKeys.head, block);
 
       const clientCallback = sinon.spy();
@@ -33,7 +33,7 @@ describe('TezosWorker', () => {
         getBlock: function(args): Promise<any> { 
           receivedArgs = args;
           clientCallback();
-          return new Promise((resolve, reject) => resolve({ hash: blockHeader.hash }));
+          return new Promise((resolve, reject) => resolve(block));
         }
       };
       const worker = new TezosWorker(clientMock, pubSubMock, cache);
