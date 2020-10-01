@@ -64,7 +64,7 @@ describe('tezos worker', () => {
       // arrange
       const callback = sinon.spy();
       const pubSub = <PubSub> {
-        publish: function(kind: any, payload:any) :boolean { 
+        publish: function(kind: any, payload: any) :boolean { 
           callback();
           return true;
         }
@@ -91,103 +91,64 @@ describe('tezos worker', () => {
   });
 });
 
-describe('processBlock', () => {
-  it('block with endorsements', () => {
-    // arrange
-    const callback = sinon.spy();
-    const pubSubMock = <PubSub> {
-      publish: function(kind: any, payload:any): boolean { 
-        callback(kind, payload.data);
-        return true;
-      }
-    };
+describe('TezosWorker', () => {
+  describe('processBlock(block: BlockResponse)', () => {
+    var tests = [
+      { args: [0, keys.newEndorsement], expected: 11 },
+      { args: [2, keys.newActivateAccount], expected: 1 },
+      { args: [3, keys.newTransaction], expected: 4 },
+    ];
 
-    const cache = new NodeCache({ useClones: false });
-    const worker = new TezosWorker(null, pubSubMock, cache);
-    const oldHead = <BlockResponse> { hash: "tr9X7fu4GXBXp9A8fchu1px3zzMDKtagDJd7" };
-    const head = getBlock();
+    tests.forEach(function(test) {
+      it('should push ' + test.expected + ' notifications for operation kind ' + test.args[1], () => {
+        // arrange
+        const callback = sinon.spy();
+        const pubSubMock = <PubSub> {
+          publish: function(kind: any, payload: any): boolean { 
+            callback(kind, payload.data);
+            return true;
+          }
+        };
 
-    let expectedNotifications = [];
-    let endorsements = head.operations[0];
-    endorsements.forEach((e: any) => 
-      e.contents.forEach((c: any) => {
-        expectedNotifications.push(<IOperationNotification> { 
-          kind: keys.newOperation,
-          data: c
+        const cache = new NodeCache({ useClones: false });
+        const worker = new TezosWorker(null, pubSubMock, cache);
+        const oldHead = <BlockResponse> { hash: "tr9X7fu4GXBXp9A8fchu1px3zzMDKtagDJd7" };
+        const head = getBlock();
+
+        let expectedNotifications = [];
+        let transations = head.operations[test.args[0]];
+        transations.forEach((t: any) => 
+          t.contents.forEach((c: any) =>{
+            expectedNotifications.push(<IOperationNotification> { 
+              kind: keys.newOperation,
+              data: c
+            });
+            expectedNotifications.push(<IOperationNotification> { 
+              kind: test.args[1],
+              data: c
+            });
+          }
+        ));
+
+        cache.set(cacheKeys.head, oldHead);
+        cache.set(cacheKeys.operations, new Array<IOperationNotification>());
+        
+        // act
+        worker.processBlock(head);
+
+        // assert
+        assert.equal(test.expected, callback.withArgs(test.args[1]).callCount);
+
+        expectedNotifications.forEach((n: any) => {
+          assert.equal(1, callback.withArgs(keys.newOperation, n.data).callCount);
+          assert.equal(1, callback.withArgs(test.args[1], n.data).callCount);
         });
-        expectedNotifications.push(<IOperationNotification> { 
-          kind: keys.newEndorsement,
-          data: c
-        });
-      }
-    ));
-
-    cache.set(cacheKeys.head, oldHead);
-    cache.set(cacheKeys.operations, new Array<IOperationNotification>());
-    
-    // act
-    worker.processBlock(head);
-
-    // assert
-    assert.equal(11, callback.withArgs(keys.newEndorsement).callCount);
-
-    expectedNotifications.forEach((n: any) => {
-      assert.equal(1, callback.withArgs(keys.newOperation, n.data).callCount);
-      assert.equal(1, callback.withArgs(keys.newEndorsement, n.data).callCount);
-    });
-  });
-});
-
-describe('processBlock', () => {
-  it('block with transactions', () => {
-    // arrange
-    const callback = sinon.spy();
-    const pubSubMock = <PubSub> {
-      publish: function(kind: any, payload:any): boolean { 
-        callback(kind, payload.data);
-        return true;
-      }
-    };
-
-    const cache = new NodeCache({ useClones: false });
-    const worker = new TezosWorker(null, pubSubMock, cache);
-    const oldHead = <BlockResponse> { hash: "tr9X7fu4GXBXp9A8fchu1px3zzMDKtagDJd7" };
-    const head = getBlock();
-
-    let expectedNotifications = [];
-    let transations = head.operations[3];
-    transations.forEach((t: any) => 
-      t.contents.forEach((c: any) =>{
-        expectedNotifications.push(<IOperationNotification> { 
-          kind: keys.newOperation,
-          data: c
-        });
-        expectedNotifications.push(<IOperationNotification> { 
-          kind: keys.newTransaction,
-          data: c
-        });
-      }
-    ));
-
-    cache.set(cacheKeys.head, oldHead);
-    cache.set(cacheKeys.operations, new Array<IOperationNotification>());
-    
-    // act
-    worker.processBlock(head);
-
-    // assert
-    assert.equal(4, callback.withArgs(keys.newTransaction).callCount);
-
-    expectedNotifications.forEach((n: any) => {
-      assert.equal(1, callback.withArgs(keys.newOperation, n.data).callCount);
-      assert.equal(1, callback.withArgs(keys.newTransaction, n.data).callCount);
+      });
     });
   });
 });
 
 function getBlock() : any {
   const fs = require('fs');
-  var json = fs.readFileSync('./tests/block.json');
-  let block = JSON.parse(json);
-  return block;
+  return JSON.parse(fs.readFileSync('./tests/block.json'));
 }

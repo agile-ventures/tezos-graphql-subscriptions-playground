@@ -82,7 +82,7 @@ export class TezosWorker {
     {
         switch (kind)
         {
-            case 'activation': {
+            case 'activate_account': {
                 return keys.newActivateAccount;
             }
             case 'ballot': {

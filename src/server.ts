@@ -7,6 +7,7 @@ import { Query } from './resolvers/query'
 import { Subscription, OperationContents, OperationResult } from './resolvers/subscription'
 import NodeCache from "node-cache";
 import dotenv from 'dotenv';
+import { ClientHttp2Session } from 'http2';
 
 const resolvers = {
     Query,
@@ -24,8 +25,10 @@ const cache = new NodeCache({ useClones: false });
 
 declare global {
     var Cache: NodeCache
+    var Client: RpcClient
 };
 global.Cache = cache;
+global.Client = client;
 
 const monitor = new TezosMonitor(provider);
 const worker = new TezosWorker(client, pubSub, cache);

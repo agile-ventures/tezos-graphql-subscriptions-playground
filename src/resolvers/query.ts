@@ -1,11 +1,19 @@
 import { keys } from './keys';
 import { cacheKeys } from './../cache-keys';
 import { authenticateQuery } from './authenticator';
+import { BlockResponse } from '@taquito/rpc';
+import { Block } from '../types/types';
+import { convertResponseOrNull, handleNotFound } from './utils';
 
 export const Query = {
     head(parent: any, args: any, context: any) {
         authenticateQuery(context.request);
-        return new Array<any>(global.Cache.get<any>(cacheKeys.head));
+        return new Array<BlockResponse>(global.Cache.get<any>(cacheKeys.head));
+    },
+
+    async block(parent: any, args: { block: string | number | null }, context: any): Promise<Block | null> {
+        authenticateQuery(context.request);
+        return convertResponseOrNull(await handleNotFound(() => global.Client.getBlock({ block: args.block?.toString() || 'head' })));
     },
 
     operations(parent: any, args: any, context: any) {

@@ -90,7 +90,18 @@ schema {
 }
 
 type Query {
+    """
+    Fetches a block by hash (Base58Check-encoded) from tezos.
+    If neither is supplied, the most recent known block (head) is returned.
+    """
+    block(block: BlockIdentifier): Block
+
+    """
+    Fetches most recent known block (head) from cache.
+    If neither is supplied, the most recent known block (head) is returned.
+    """
     head: [Block]
+
     operations: [OperationNotification!]!
     activations: [ActivationNotification!]!
     ballots: [BallotNotification!]!
