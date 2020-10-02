@@ -84,8 +84,14 @@ describe('TezosWorker', () => {
       { args: [2, keys.newActivateAccount], expected: 2 },
       { args: [1, keys.newBallot], expected: 2 },
       { args: [3, keys.newDelegation], expected: 2 },
+      { args: [2, keys.newDoubleBakingEvidence], expected: 2 },
+      { args: [2, keys.newDoubleEndorsementEvidence], expected: 2 },
+      { args: [3, keys.newOrigination], expected: 1 },
+      { args: [1, keys.newProposals], expected: 2 },
+      { args: [3, keys.newReveal], expected: 2 },
+      { args: [3, keys.newSeedNonceRevelation], expected: 20 },
       { args: [0, keys.newEndorsement], expected: 11 },
-      { args: [3, keys.newTransaction], expected: 4 },
+      { args: [3, keys.newTransaction], expected: 6 },
     ];
 
     // silent console loging in test output

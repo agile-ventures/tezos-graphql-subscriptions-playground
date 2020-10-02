@@ -124,10 +124,10 @@ export class TezosWorker {
             case 'delegation': {
                 return keys.newDelegation;
             }
-            case 'doubleBakingEvidence': {
+            case 'double_baking_evidence': {
                 return keys.newDoubleBakingEvidence;
             }
-            case 'doubleEndorsementEvidence': {
+            case 'double_endorsement_evidence': {
                 return keys.newDoubleEndorsementEvidence;
             }
             case 'endorsement': {
@@ -142,7 +142,7 @@ export class TezosWorker {
             case 'reveal': {
                 return keys.newReveal;
             }
-            case 'seedNonceRevelation': {
+            case 'seed_nonce_revelation': {
                 return keys.newSeedNonceRevelation;
             }
             case 'transaction': {

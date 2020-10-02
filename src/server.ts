@@ -8,6 +8,7 @@ import { Subscription, OperationContents, OperationResult } from './resolvers/su
 import NodeCache from "node-cache";
 import dotenv from 'dotenv';
 import { ClientHttp2Session } from 'http2';
+import { env } from 'process';
 
 const resolvers = {
     Query,
@@ -46,4 +47,4 @@ const server = new GraphQLServer({
         }
     },
 });
-server.start({ port: process.env.PORT }, () => console.log(`Server is running on http://${process.env.HOST}:${process.env.PORT}`), );
+server.start({ port: process.env.PORT }, () => console.log(`Server is running on http://${process.env.HOST}:${process.env.PORT}, app version: ${process.env.NPM_PACKAGE_VERSION}`), );
