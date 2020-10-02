@@ -30,8 +30,7 @@ export class TezosWorker {
         try {
             block = await this.getBlockWithRetries(blockHeader, this.client, this.getBlock)
         }
-        catch (error)
-        {
+        catch (error) {
             console.error(error);
             return;
         }
@@ -52,7 +51,7 @@ export class TezosWorker {
                     }
 
                     setTimeout(() => {
-                        console.log('retries: ', retries);
+                        console.log('retry: ', retries);
                         this.getBlockWithRetries(blockHeader, client, getBlockFunction, retries - 1, delay)
                             .then(resolve, reject);
                     }, delay);
