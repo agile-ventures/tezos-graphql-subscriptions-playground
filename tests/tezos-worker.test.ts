@@ -7,7 +7,7 @@ import { IOperationNotification, IEndorsementNotification } from "../src/types/t
 import sinon from "sinon";
 import { PubSub } from "graphql-yoga";
 import { keys } from '../src/resolvers/keys';
-import { MonitorBlockHeader } from '../src/tezos-monitor';
+import { MonitorBlockHeader } from '../src/tezos/monitor-block-header';
 
 describe('TezosWorker', () => {
   describe('async onNewBlock(blockHeader: MonitorBlockHeader)', () => {

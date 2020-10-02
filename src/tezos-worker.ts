@@ -4,7 +4,8 @@ import { keys } from './resolvers/keys';
 import { Block, IMonitorBlockHeaderNotification, IOperationNotification, OperationEntry } from './types/types'
 import NodeCache from "node-cache";
 import { cacheKeys } from './cache-keys';
-import { MonitorBlockHeader, TezosMonitor } from './tezos-monitor';
+import { TezosPubSub } from './tezos/tezos-pub-sub';
+import { MonitorBlockHeader } from './tezos/monitor-block-header';
 
 export class TezosWorker {
     constructor(
@@ -13,10 +14,10 @@ export class TezosWorker {
         private readonly cache: NodeCache) {
         }
 
-    startListening(monitor: TezosMonitor) {
+    startListening(tezosPubSub: TezosPubSub) {
         // NOTE keeping operations in memory for dev and testing purposes
         this.cache.set(cacheKeys.operations, []);
-        monitor.blockHeaders.subscribe(b => this.onNewBlock(b));
+        tezosPubSub.monitorBlockHeaders.subscribe(b => this.onNewBlock(b));
     }
 
     async onNewBlock(blockHeader: MonitorBlockHeader) {
