@@ -48,43 +48,6 @@ describe('TezosWorker', () => {
     }); 
   });
 
-  describe('getBlockWithRetries(blockHeader: MonitorBlockHeader, client: RpcClient, getBlockFunction: (blockHeader: MonitorBlockHeader, client: RpcClient) => Promise<BlockResponse>, retries = 10, delay = 5000)', () => {
-    it('should try call getBlockFunction 9 times and 1 time processBlock', async () => {
-      // arrange
-      const blockHeader = <MonitorBlockHeader> getTestData('monitor-block-header.json');
-      const expected = <BlockResponse> { hash: blockHeader.hash, operations: [[]] };
-      const worker = new TezosWorker(null, null, null);
-      
-      const getBlockWithRetriesCallback = sinon.spy();
-      let cycles = 0;
-      function getBlockWithRetriesStub(blockHeader: MonitorBlockHeader, client: RpcClient, retries: number = 10, delay: number = 50): Promise<BlockResponse> {
-        cycles += 1;
-        if (cycles === 10)
-        {
-          return new Promise(async (resolve, reject) => {
-            getBlockWithRetriesCallback("success");
-            resolve(expected);
-          });
-        }
-        else {
-          return new Promise(async (resolve, reject) => {
-            getBlockWithRetriesCallback("failure");
-            reject(new Error('Something bad happened'));
-          });
-        }
-      }
-
-      // act
-      var actual = await worker.getBlockWithRetries(blockHeader, null, getBlockWithRetriesStub, 10, 0);
-
-      // assert
-      assert.deepEqual(actual, expected);
-      assert.equal(9, getBlockWithRetriesCallback.withArgs("failure").callCount);
-      assert.equal(1, getBlockWithRetriesCallback.withArgs("success").callCount);
-
-    });
-  });
-
   describe('processBlock(block: BlockResponse)', () => {
     it('should not push any operations notifications because there are no operations on the block', () => {
       // arrange
