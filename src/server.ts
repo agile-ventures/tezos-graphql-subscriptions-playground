@@ -2,8 +2,7 @@ import { GraphQLServer } from 'graphql-yoga'
 import { RpcClient } from '@taquito/rpc';
 import { PubSub } from 'graphql-yoga'
 import { TezosWorker } from './tezos-worker'
-import { TezosMonitor } from './tezos/tezos-monitor'
-import { TezosPubSub } from './tezos/tezos-pub-sub'
+import { TezosMonitor } from './tezos-monitor'
 import { Query } from './resolvers/query'
 import { Subscription, OperationContents, OperationResult } from './resolvers/subscription'
 import NodeCache from "node-cache";
@@ -20,10 +19,9 @@ const resolvers = {
 
 dotenv.config();
 
-const tezosNodeUrl = process.env.TEZOS_NODE;
-const client = new RpcClient(tezosNodeUrl);
+const provider = process.env.TEZOS_NODE;
+const client = new RpcClient(provider);
 const pubSub = new PubSub();
-const tezosPubSub = new TezosPubSub(pubSub);
 const cache = new NodeCache({ useClones: false });
 
 declare global {
@@ -33,10 +31,10 @@ declare global {
 global.Cache = cache;
 global.Client = client;
 
-const monitor = new TezosMonitor(tezosNodeUrl, tezosPubSub);
+const monitor = new TezosMonitor(provider);
 const worker = new TezosWorker(client, pubSub, cache);
 
-worker.startListening(tezosPubSub);
+worker.startListening(monitor);
 monitor.start();
 
 const server = new GraphQLServer({

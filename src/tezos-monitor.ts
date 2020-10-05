@@ -1,8 +1,19 @@
 import fetch from 'node-fetch';
+import { Observable, Subject } from 'rxjs';
 import { URL } from 'url';
 
-import { TezosPubSub } from './tezos-pub-sub';
-import { MonitorBlockHeader } from './monitor-block-header';
+export interface MonitorBlockHeader {
+    hash: string;
+    level: number;
+    proto: number;
+    predecessor: string;
+    timestamp: string;
+    validation_pass: number;
+    operations_hash: string;
+    fitness: string[];
+    context: string;
+    protocol_data: string;
+}
 
 enum TezosMonitorState {
     Inactive,
@@ -10,17 +21,18 @@ enum TezosMonitorState {
     Running,
 }
 
-/** Monitors Tezos node for new blocks. Then publishes a new header to PubSub. */
 export class TezosMonitor {
     private readonly url: string;
+    private readonly subject = new Subject<MonitorBlockHeader>();
     private state = TezosMonitorState.Inactive;
-    public error: Error | null = null;
+    private lastError: any;
 
-    constructor(
-        tezosNodeUrl: string,
-        private readonly pubSub: TezosPubSub
-    ) {
+    constructor(tezosNodeUrl: string) {
         this.url = new URL('/monitor/heads/main', tezosNodeUrl).toString();
+    }
+
+    get blockHeaders(): Observable<MonitorBlockHeader> {
+        return this.subject;
     }
 
     start(): void {
@@ -50,21 +62,20 @@ export class TezosMonitor {
 
                 console.log('Established connection to Tezos monitor.');
                 this.state = TezosMonitorState.Running;
-                this.error = null;
 
                 for await (let chunk of response.body) {
                     let dataStr = typeof chunk !== 'string' ? chunk.toString() : chunk;
                     let blockHeader = <MonitorBlockHeader>JSON.parse(dataStr);
 
                     console.log('Tezos monitor is pushing a new block.', blockHeader);
-                    this.pubSub.monitorBlockHeaders.publish(blockHeader);
+                    this.subject.next(blockHeader);
 
                     if (<any>this.state === TezosMonitorState.Inactive) {
                         return;
                     }
                 }
             } catch (err) {
-                this.error = err;
+                this.lastError = err;
                 console.error('Failed listening to Tezos monitor. Will reconnect.', this.url, err);
             }
         }

@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { MonitorBlockHeader } from '../tezos-monitor';
 
 export interface Block {
     protocol: string;
