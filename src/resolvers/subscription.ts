@@ -108,8 +108,42 @@ export const Subscription = {
 }
 
 export const OperationContents = {
-    __resolveType() {
-        return null;
+    __resolveType(obj: any, context: any, info: any) {
+        switch (obj.kind) {
+            case keys.newActivateAccount: {
+                return 'ActivateAccount';
+            }
+            case keys.newBallot: {
+                return 'Ballot';
+            }
+            case keys.newDelegation: {
+                return 'Delegation';
+            }
+            case keys.newDoubleBakingEvidence: {
+                return 'DoubleBakingEvidence';
+            }
+            case keys.newDoubleEndorsementEvidence: {
+                return 'DoubleEndorsementEvidence';
+            }
+            case keys.newEndorsement: {
+                return 'Endorsement';
+            }
+            case keys.newOrigination: {
+                return 'Origination';
+            }
+            case keys.newProposals: {
+                return 'Proposals';
+            }
+            case keys.newReveal: {
+                return 'Reveal';
+            }
+            case keys.newSeedNonceRevelation: {
+                return 'SeedNonceRevelation';
+            }
+            case keys.newTransaction: {
+                return 'Transaction';
+            }
+        }
     }
 }
 
