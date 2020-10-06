@@ -148,8 +148,23 @@ export const OperationContents = {
 }
 
 export const OperationResult = {
-    __resolveType() {
-        return null;
+    __resolveType(obj: any, context: any, info: any) {
+        return "TransactionOperationResult";
+        // TODO
+        // switch (obj.kind) {
+        //     case keys.newReveal: {
+        //         return 'RevealOperationResult';
+        //     }
+        //     case keys.newTransaction: {
+        //         return 'TransactionOperationResult';
+        //     }
+        //     case keys.newOrigination: {
+        //         return 'OriginationOperationResult';
+        //     }
+        //     case keys.newDelegation: {
+        //         return 'DelegationOperationResult';
+        //     }
+        // }
     }
 }
 

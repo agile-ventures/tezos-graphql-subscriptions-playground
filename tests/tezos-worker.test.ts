@@ -135,7 +135,7 @@ describe('TezosWorker', () => {
     sinon.stub(console, "log");
 
     tests.forEach(function(test) {
-      it('should push ' + test.expected + ' notifications for operation kind ' + test.args[1], () => {
+      it('should push ' + test.expected + ' notifications for operation key ' + test.args[1], () => {
         // arrange
         const pubSubCallback = sinon.spy();
         const pubSubMock = <PubSub> {
@@ -155,11 +155,11 @@ describe('TezosWorker', () => {
         operations.forEach((o: any) => 
           o.contents.filter((c: { kind: NodeCache.Key; }) => c.kind === test.args[1]).forEach((c: any) => {
             expectedNotifications.push(<IOperationNotification> { 
-              kind: keys.newOperation,
+              key: keys.newOperation,
               data: c
             });
             expectedNotifications.push(<IOperationNotification> { 
-              kind: test.args[1],
+              key: test.args[1],
               data: c
             });
           }

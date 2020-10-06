@@ -1,15 +1,15 @@
 export const keys = {
-    newOperation: "OPERATION",
-    newActivateAccount: "ACTIVATE_ACCOUNT",
-    newBallot: "BALLOT",
-    newDelegation: "DELEGATION",
-    newDoubleBakingEvidence: "DOUBLE_BAKING_EVIDENCE",
-    newDoubleEndorsementEvidence: "DOUBLE_ENDORSEMENT_EVIDENCE",
-    newEndorsement: "ENDORSEMENT",
-    newOrigination: "ORIGINATION",
-    newProposals: "PROPOSALS",
-    newReveal: "REVEAL",
-    newSeedNonceRevelation: "SEED_NONCE_REVELATION",
-    newTransaction: "TRANSACTION",
-    newMonitorBlockHeader: "MONITOR_BLOCK_HEADER"
+    newOperation: "operation",
+    newActivateAccount: "activate_account",
+    newBallot: "ballot",
+    newDelegation: "delegation",
+    newDoubleBakingEvidence: "double_baking_evidence",
+    newDoubleEndorsementEvidence: "double_endorsement_evidence",
+    newEndorsement: "endorsement",
+    newOrigination: "origination",
+    newProposals: "proposals",
+    newReveal: "reveal",
+    newSeedNonceRevelation: "seed_nonce_revelation",
+    newTransaction: "transaction",
+    newMonitorBlockHeader: "monitor_block_header"
 }

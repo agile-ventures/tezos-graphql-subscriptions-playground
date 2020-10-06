@@ -21,7 +21,51 @@ subscription {
 // subscribe to all operations
 subscription {
   operationAdded {
-    kind
+    key,
+    data {
+      ... on Transaction {
+        kind,
+        source,
+        fee,
+        counter,
+        gas_limit,
+        storage_limit,
+        amount,
+        destination,
+        metadata {
+          balance_updates {
+            kind,
+            category,
+            contract,
+            delegate,
+            cycle,
+            change
+          },
+          operation_result {
+            status
+          },
+          internal_operation_results {
+            kind
+          }
+        }
+      }
+      ... on Endorsement {
+        kind,
+        level,
+        metadata {
+          balance_updates {
+            kind,
+            category,
+            contract,
+            delegate,
+            cycle,
+            change
+          },
+          delegate,
+          slots
+        }
+      }
+    }
   }
 }
 
@@ -91,8 +135,8 @@ subscription {
       source,
       fee,
       counter,
-      gasLimit,
-      storageLimit,
+      gas_limit,
+      storage_limit,
       delegate
     }
   }
@@ -105,8 +149,8 @@ subscription onDelegationAdded($source: Address, $delegate: Address) {
       source,
       fee,
       counter,
-      gasLimit,
-      storageLimit,
+      gas_limit,
+      storage_limit,
       delegate
     }
   }
@@ -199,7 +243,7 @@ QUERY VARIABLES:
 subscription {
   endorsementAdded {
     data {
-      metadata{
+      metadata {
         delegate
       }
     }
@@ -210,7 +254,7 @@ subscription {
 subscription onEndorsementAdded($delegate: Address) {
   endorsementAdded(delegate: $delegate) {
     data {
-      metadata{
+      metadata {
         delegate
       }
     }
@@ -367,24 +411,25 @@ QUERY VARIABLES:
 query {
   head {
     protocol,
+    chain_id,
     hash,
     header {
       level,
       proto,
       predecessor,
       timestamp,
-      operationsHash,
+      operations_hash,
       fitness,
       context,
       priority,
-      seedNonceHash,
+      seed_nonce_hash,
       signature
     },
     metadata {
       protocol,
-      maxOperationListLength {
-        maxSize,
-        maxOp
+      max_operation_list_length {
+        max_size,
+        max_op
       },
       baker,
       level {
@@ -396,63 +441,353 @@ query {
 }
 
 *****************************************************************************************
+// block by hask or level
+query ($block: BlockIdentifier) {
+  block (block: $block) {
+    hash,
+    chain_id,
+    hash,
+    header {
+      level,
+      proto,
+      predecessor,
+      timestamp,
+      validation_pass,
+      operations_hash,
+      fitness,
+      context,
+      priority,
+      proof_of_work_nonce,
+      seed_nonce_hash,
+      signature
+    },
+    metadata {
+      protocol,
+      next_protocol,
+      test_chain_status {
+        status
+      },
+      max_operations_ttl,
+      max_operation_data_length,
+      max_block_header_length,
+      max_operation_list_length {
+        max_size,
+        max_op
+      },
+      baker,
+      level {
+        level
+      },
+      voting_period_kind,
+      nonce_hash,
+      consumed_gas,
+      deactivated,
+      balance_updates {
+        kind
+      }
+    }
+  }
+}
+
+QUERY VARIABLES:
+{
+  "block": "1158489"
+}
+
+*****************************************************************************************
 // generic operations in cache
 query {
   operations {
-    kind,
+    key,
     data {
       ... on Endorsement {
         kind,
         level,
         metadata {
-          delegate
-        }        
+          balance_updates {
+            kind,
+            category,
+            contract,
+            delegate,
+            cycle,
+            change
+          },
+          delegate,
+          slots
+        }
       }
       ... on SeedNonceRevelation {
         kind,
         level,
-        nonce
+        nonce,
+        metadata {
+          balance_updates {
+            kind,
+            category,
+            contract,
+            delegate,
+            cycle,
+            change
+          }
+        }
       }
       ... on DoubleEndorsementEvidence {
         kind,
         op1 {
           branch,
+          operations {
+            kind,
+            level
+          }
           signature
         },
         op2 {
           branch,
+          operations {
+            kind,
+            level
+          },
           signature
-        }        
+        },
+        metadata {
+          balance_updates {
+            kind,
+            category,
+            contract,
+            delegate,
+            cycle,
+            change
+          }
+        },
+        operation {
+          protocol,
+          chain_id,
+          hash,
+          branch,
+          signature
+        }
       }
       ... on DoubleBakingEvidence {
         kind,
         bh1 {
           level,
-          timestamp
+          proto,
+          predecessor,
+          timestamp,
+          validation_pass,
+          operations_hash,
+          fitness,
+          context,
+          priority,
+          proof_of_work_nonce,
+          seed_nonce_hash,
+          signature
         },
         bh2 {
           level,
-          timestamp
+					proto,
+          predecessor,
+          timestamp,
+          validation_pass,
+          operations_hash,
+          fitness,
+          context,
+          priority,
+          proof_of_work_nonce,
+          seed_nonce_hash,
+          signature
         }        
       }
       ... on ActivateAccount {
+        kind,
       	pkh,
-      	secret
+      	secret,
+        metadata {
+          balance_updates {
+            kind,
+            category,
+            contract,
+            delegate,
+            cycle,
+            change
+          }
+        },
+        operation {
+          protocol,
+          chain_id,
+         	hash,
+          branch,
+          signature
+        }
       }
 			... on Reveal {
         kind,
-        source
+        source,
+        fee,
+        counter,
+        gas_limit,
+        storage_limit,
+        public_key,
+        metadata {
+          balance_updates {
+            kind,
+            category,
+            contract,
+            delegate,
+            cycle,
+            change
+          },
+          internal_operation_results {
+            kind,
+            source,
+            nonce,
+            amount,
+            destination,
+            parameters {
+              entrypoint,
+              value
+            },
+            public_key,
+            balance,
+            delegate,
+            script {
+              code,
+              storage
+            },
+            result {
+              ... on RevealOperationResult {
+                status,
+                consumed_gas,
+                errors {
+                  kind,
+                  id
+                }
+              }
+            }
+          }
+        }
       }
       ... on Transaction {
         kind,
-        amount
+        source,
+        fee,
+        counter,
+        gas_limit,
+        storage_limit,
+        amount,
+        destination,
+        parameters,
+        metadata {
+          balance_updates {
+            kind,
+            category,
+            contract,
+            delegate,
+            cycle,
+            change
+          },
+          operation_result {
+            ... on TransactionOperationResult {
+              status,
+              consumed_gas,
+              errors {
+                kind,
+                id
+              },
+              storage,
+              big_map_diff {
+                key_hash,
+                key,
+                value
+              },
+              balance_updates {
+                kind,
+                category,
+                contract,
+                delegate,
+                cycle,
+                change
+              },
+              originated_contracts,
+              storage_size,
+              paid_storage_size_diff,
+              allocated_destination_contract
+            }
+          },
+          internal_operation_results {
+            kind,
+            source,
+            nonce,
+            amount,
+            destination,
+            parameters {
+              entrypoint,
+              value
+            },
+            public_key,
+            balance,
+            delegate,
+            script {
+              code,
+              storage
+            }
+          }
+        }
       }
       ... on Delegation {
         kind,
         source,
         fee,
         counter,
-        delegate        
+        gas_limit,
+        storage_limit,
+        delegate,
+        metadata {
+          balance_updates {
+            kind,
+            category,
+            contract,
+            delegate,
+            cycle,
+            change
+          },
+          operation_result {
+            status,
+            consumed_gas,
+            errors {
+              kind,
+              id
+            }
+          },
+          internal_operation_results {
+            kind,
+            source,
+            nonce,
+            amount,
+            destination,
+            parameters {
+              entrypoint,
+              value
+            },
+            public_key,
+            balance,
+            delegate,
+            script {
+              code,
+              storage
+            },
+            result {
+              ... on DelegationOperationResult {
+                status,
+                consumed_gas,
+                errors {
+                  kind,
+                  id
+                }
+              }
+            }
+          }
+        }
       }
       ... on Origination {
         kind,
@@ -463,7 +798,7 @@ query {
         kind,
         source,
         period,
-        proposals        
+        proposals
       }
       ... on Ballot {
         kind,
@@ -481,10 +816,19 @@ query {
 query {
   endorsements {
     data {
+      key,
       level,
-      metadata {
+			metadata {
+        balance_updates {
+          kind,
+          category,
+          contract,
+          delegate,
+          cycle,
+          change
+        },
         delegate,
-        slots,
+        slots
       }
     }
   }
@@ -494,18 +838,71 @@ query {
 // transactions in cache
 query {
   transactions {
+    key,
     data {
+      kind,
       source,
       fee,
       counter,
+      gas_limit,
+      storage_limit,
       amount,
       destination,
       parameters,
       metadata {
-        internalOperationResults {
+        balance_updates {
+          kind,
+          category,
+          contract,
+          delegate,
+          cycle,
+          change
+        },
+        operation_result {
+          status,
+          consumed_gas,
+          errors {
+            kind,
+            id
+          },
+          storage,
+          big_map_diff {
+            key_hash,
+            key,
+            value
+          },
+          balance_updates {
+            kind,
+            category,
+            contract,
+            delegate,
+            cycle,
+            change
+          },
+          originated_contracts,
+          storage_size,
+          paid_storage_size_diff,
+          allocated_destination_contract
+        },
+        internal_operation_results {
+          kind,
           source,
-          nonce
-        }
+          nonce,
+          amount,
+          destination,
+          parameters {
+            entrypoint,
+            value
+          },
+          public_key,
+          balance,
+          delegate,
+          script {
+            code,
+            storage
+          }
+        },
+        
       }
     }
   }

@@ -1,7 +1,7 @@
 import { BlockResponse, RpcClient } from '@taquito/rpc';
 import { PubSub } from 'graphql-yoga';
 import { keys } from './resolvers/keys';
-import { Block, IMonitorBlockHeaderNotification, IOperationNotification, OperationEntry } from './types/types'
+import { IMonitorBlockHeaderNotification, IOperationNotification, OperationEntry } from './types/types'
 import NodeCache from "node-cache";
 import { cacheKeys } from './cache-keys';
 import { MonitorBlockHeader, TezosMonitor } from './tezos-monitor';
@@ -11,7 +11,7 @@ export class TezosWorker {
         private readonly client: RpcClient,
         private readonly pubSub: PubSub,
         private readonly cache: NodeCache) {
-        }
+    }
 
     startListening(monitor: TezosMonitor) {
         // NOTE keeping operations in memory for dev and testing purposes
@@ -85,11 +85,8 @@ export class TezosWorker {
 
     private publishNotification(oe: any, op: any)
     {
-        // NOTE: mapping operation kind to upper case to fit typescript enum type
-        op.kind = this.Map(op.kind);
-
-        const payload: any = <IOperationNotification> { 
-            kind: op.kind,
+        const payload: IOperationNotification = { 
+            key: op.kind,
             data: op
         };
 
@@ -97,7 +94,7 @@ export class TezosWorker {
         this.pubSub.publish(keys.newOperation, payload);
         
         // publish specific operation notification
-        this.pubSub.publish(payload.kind, payload);
+        this.pubSub.publish(payload.key, payload);
 
         // NOTE keeping operations in memory for dev and testing purposes
         // node cache is initialized with useClones: false so reference to variable is stored
@@ -109,52 +106,4 @@ export class TezosWorker {
             operations.splice(0, 1000);
         }
     }
-
-    Map(kind: string) : string
-    {
-        switch (kind)
-        {
-            case 'activate_account': {
-                return keys.newActivateAccount;
-            }
-            case 'ballot': {
-                return keys.newBallot;
-            }
-            case 'delegation': {
-                return keys.newDelegation;
-            }
-            case 'double_baking_evidence': {
-                return keys.newDoubleBakingEvidence;
-            }
-            case 'double_endorsement_evidence': {
-                return keys.newDoubleEndorsementEvidence;
-            }
-            case 'endorsement': {
-                return keys.newEndorsement;
-            }
-            case 'origination': {
-                return keys.newOrigination;
-            }
-            case 'proposals': {
-                return keys.newProposals;
-            }
-            case 'reveal': {
-                return keys.newReveal;
-            }
-            case 'seed_nonce_revelation': {
-                return keys.newSeedNonceRevelation;
-            }
-            case 'transaction': {
-                return keys.newTransaction;
-            }
-            default: {
-                console.warn(kind + ' operation kind is not supported');
-                return null;
-            }
-        }
-    }
-}
-
-function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 }

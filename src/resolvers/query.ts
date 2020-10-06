@@ -2,7 +2,6 @@ import { keys } from './keys';
 import { cacheKeys } from './../cache-keys';
 import { authenticateQuery } from './authenticator';
 import { BlockResponse } from '@taquito/rpc';
-import { Block } from '../types/types';
 import { convertResponseOrNull, handleNotFound } from './utils';
 
 export const Query = {
@@ -11,8 +10,10 @@ export const Query = {
         return new Array<BlockResponse>(global.Cache.get<any>(cacheKeys.head));
     },
 
-    async block(parent: any, args: { block: string | number | null }, context: any): Promise<Block | null> {
+    async block(parent: any, args: { block: string | number | null }, context: any): Promise<BlockResponse | null> {
         authenticateQuery(context.request);
+        // var block = await global.Client.getBlock({ block: args.block?.toString() || 'head' });
+        // console.log(block);
         return convertResponseOrNull(await handleNotFound(() => global.Client.getBlock({ block: args.block?.toString() || 'head' })));
     },
 
@@ -23,27 +24,27 @@ export const Query = {
 
     transactions(parent: any, args: any, context: any) {
         authenticateQuery(context.request);
-        return getOperations().filter((o: { kind: string; }) => o.kind === keys.newTransaction);
+        return getOperations().filter((o: { key: string; }) => o.key === keys.newTransaction);
     },
 
     endorsements(parent: any, args: any, context: any) {
         authenticateQuery(context.request);
-        return getOperations().filter((o: { kind: string; }) => o.kind === keys.newEndorsement);
+        return getOperations().filter((o: { key: string; }) => o.key === keys.newEndorsement);
     },
 
     reveals(parent: any, args: any, context: any) {
         authenticateQuery(context.request);
-        return getOperations().filter((o: { kind: string; }) => o.kind === keys.newReveal);
+        return getOperations().filter((o: { key: string; }) => o.key === keys.newReveal);
     },
 
     originations(parent: any, args: any, context: any) {
         authenticateQuery(context.request);
-        return getOperations().filter((o: { kind: string; }) => o.kind === keys.newOrigination);
+        return getOperations().filter((o: { key: string; }) => o.key === keys.newOrigination);
     },
 
     delegations(parent: any, args: any, context: any) {
         authenticateQuery(context.request);
-        return getOperations().filter((o: { kind: string; }) => o.kind === keys.newDelegation);
+        return getOperations().filter((o: { key: string; }) => o.key === keys.newDelegation);
     },
 }
 

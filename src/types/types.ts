@@ -1,64 +1,18 @@
 import BigNumber from 'bignumber.js';
-import { MonitorBlockHeader } from '../tezos-monitor';
-
-export interface Block {
-    protocol: string;
-    chainId: string;
-    hash: string;
-    header: BlockHeader;
-    metadata: BlockMetadata;
-    operations: OperationEntry[][];
-}
 
 export interface BlockHeader {
     level: number;
     proto: number;
     predecessor: string;
     timestamp: string;
-    validationPass: number;
-    operationsHash: string;
+    validation_pass: number;
+    operations_hash: string;
     fitness: string[];
     context: string;
     priority: number;
-    proofOfWorkNonce: string;
-    seedNonceHash?: string;
+    proof_of_work_nonce: string;
+    seed_nonce_hash?: string;
     signature: string;
-}
-
-export interface BlockMetadata {
-    protocol: string;
-    nextProtocol: string;
-    testChainStatus: TestChainStatus;
-    maxOperationsTtl: number;
-    maxOperationDataLength: number;
-    maxBlockHeaderLength: number;
-    maxOperationListLength: MaxOperationListLength[];
-    baker: string;
-    level: Level;
-    votingPeriodKind: string;
-    nonceHash?: string;
-    consumedGas: string;
-    deactivated: string[];
-    balanceUpdates: BalanceUpdate[];
-}
-
-export interface Level {
-    level: number;
-    levelPosition: number;
-    cycle: number;
-    cyclePosition: number;
-    votingPeriod: number;
-    votingPeriodPosition: number;
-    expectedCommitment: boolean;
-}
-
-export interface TestChainStatus {
-    status: string;
-}
-
-export interface MaxOperationListLength {
-    maxSize: number;
-    maxOp?: number;
 }
 
 export enum BalanceUpdateKind {
@@ -391,6 +345,8 @@ export interface InternalOperationResult {
 
 export type InternalOperationKind = 'reveal' | 'transaction' | 'origination' | 'delegation';
 
+export type OperationKind = 'operation' | 'activate_account' | 'ballot' | 'delegation' | 'double_baking_evidence' | 'double_endorsement_evidence' | 'endorsement' | 'origination'| 'proposals' | 'reveal' | 'seed_nonce_revelation' | 'transaction';
+
 export interface TransactionOperationParameter {
     entrypoint: string;
     value: MichelsonExpression;
@@ -398,7 +354,7 @@ export interface TransactionOperationParameter {
 
 export interface OperationResult {
     status: OperationResultStatus;
-    consumedGas?: string;
+    consumed_gas?: string;
     errors?: OperationError[];
 }
 
@@ -416,7 +372,7 @@ export interface IMonitorBlockHeaderNotification {
 }
 
 export interface IOperationNotification {
-    kind: string;
+    key: string;
     data: any;
 }
 
