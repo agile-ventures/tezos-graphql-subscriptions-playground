@@ -1,11 +1,11 @@
 import { BlockResponse, RpcClient } from '@taquito/rpc';
 import { PubSub } from 'graphql-yoga';
-import { keys } from './resolvers/keys';
-import { IMonitorBlockHeaderNotification, IOperationNotification, OperationEntry } from './types/types'
-import NodeCache from "node-cache";
+import NodeCache from 'node-cache';
+
 import { cacheKeys } from './cache-keys';
+import { keys } from './resolvers/keys';
 import { MonitorBlockHeader, TezosMonitor } from './tezos-monitor';
-import { Hash } from 'crypto';
+import { IMonitorBlockHeaderNotification, IOperationNotification, OperationEntry } from './types/types';
 
 export class TezosWorker {
     constructor(

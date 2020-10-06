@@ -47,6 +47,13 @@ subscription {
           internal_operation_results {
             kind
           }
+        },
+        operation {
+          protocol,
+          chain_id,
+          hash,
+          branch,
+          signature
         }
       }
       ... on Endorsement {
@@ -63,6 +70,13 @@ subscription {
           },
           delegate,
           slots
+        },
+        operation {
+          protocol,
+          chain_id,
+          hash,
+          branch,
+          signature
         }
       }
     }

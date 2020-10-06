@@ -1,7 +1,8 @@
-import { keys } from './keys';
+import { BlockResponse } from '@taquito/rpc';
+
 import { cacheKeys } from './../cache-keys';
 import { authenticateQuery } from './authenticator';
-import { BlockResponse } from '@taquito/rpc';
+import { keys } from './keys';
 import { convertResponseOrNull, handleNotFound } from './utils';
 
 export const Query = {

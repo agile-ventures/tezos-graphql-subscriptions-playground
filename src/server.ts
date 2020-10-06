@@ -1,13 +1,12 @@
-import { GraphQLServer } from 'graphql-yoga'
 import { RpcClient } from '@taquito/rpc';
-import { PubSub } from 'graphql-yoga'
-import { TezosWorker } from './tezos-worker'
-import { TezosMonitor } from './tezos-monitor'
-import { Query } from './resolvers/query'
-import { Subscription, OperationContents, OperationResult } from './resolvers/subscription'
-import NodeCache from "node-cache";
 import dotenv from 'dotenv';
-import { ClientHttp2Session } from 'http2';
+import { GraphQLServer, PubSub } from 'graphql-yoga';
+import NodeCache from 'node-cache';
+
+import { Query } from './resolvers/query';
+import { OperationContents, OperationResult, Subscription } from './resolvers/subscription';
+import { TezosMonitor } from './tezos-monitor';
+import { TezosWorker } from './tezos-worker';
 
 const resolvers = {
     Query,

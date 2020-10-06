@@ -1,22 +1,21 @@
-import { withFilter } from "graphql-yoga";
-import { argsToArgsConfig } from "graphql/type/definition";
-import { 
-    IMonitorBlockHeaderNotification,
-    IOperationNotification,
+import { withFilter } from 'graphql-yoga';
+
+import {
     IActivationNotification,
     IBallotNotification,
     IDelegationNotification,
     IDoubleBakingEvidenceNotification,
     IDoubleEndorsementEvidenceNotification,
     IEndorsementNotification,
+    IMonitorBlockHeaderNotification,
+    IOperationNotification,
     IOriginationNotification,
     IProposalsNotification,
     IRevealNotification,
     ISeedNonceRevelationNotification,
-    ITransactionNotification
-
-} from "../types/types";
-import { authenticateSubscription } from "./authenticator";
+    ITransactionNotification,
+} from '../types/types';
+import { authenticateSubscription } from './authenticator';
 import { keys } from './keys';
 
 export const Subscription = {
