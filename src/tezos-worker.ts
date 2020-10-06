@@ -5,6 +5,7 @@ import { IMonitorBlockHeaderNotification, IOperationNotification, OperationEntry
 import NodeCache from "node-cache";
 import { cacheKeys } from './cache-keys';
 import { MonitorBlockHeader, TezosMonitor } from './tezos-monitor';
+import { Hash } from 'crypto';
 
 export class TezosWorker {
     constructor(
@@ -90,6 +91,14 @@ export class TezosWorker {
             data: op
         };
 
+        payload.data.operation = {
+            protocol: oe.protocol,
+            chain_id: oe.chain_id,
+            hash: oe.hash,
+            branch: oe.branch,
+            signature: oe.signature
+        }
+
         // publish generic operation notification
         this.pubSub.publish(keys.newOperation, payload);
         
@@ -101,7 +110,6 @@ export class TezosWorker {
         let operations = this.cache.get<Array<IOperationNotification>>(cacheKeys.operations);
         operations.push(payload);
 
-        // NOTE keeping operations in memory for dev and testing purposes
         if (operations.length > 5000) {
             operations.splice(0, 1000);
         }

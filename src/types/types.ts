@@ -133,7 +133,7 @@ export interface MichelsonExpressionExtended {
 
 export interface OperationEntry {
     protocol: string;
-    chainId: string;
+    chain_id: string;
     hash: string;
     branch: string;
     contents: OperationContents[];

@@ -12,8 +12,6 @@ export const Query = {
 
     async block(parent: any, args: { block: string | number | null }, context: any): Promise<BlockResponse | null> {
         authenticateQuery(context.request);
-        // var block = await global.Client.getBlock({ block: args.block?.toString() || 'head' });
-        // console.log(block);
         return convertResponseOrNull(await handleNotFound(() => global.Client.getBlock({ block: args.block?.toString() || 'head' })));
     },
 
@@ -49,6 +47,5 @@ export const Query = {
 }
 
 function getOperations(): any {
-    let ops = global.Cache.get<any>(cacheKeys.operations);
-    return ops;
+    return global.Cache.get<any>(cacheKeys.operations);
 }
